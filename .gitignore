@@ -1,0 +1,74 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.iml
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+# golang ignore file
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Folders
+_obj
+_test
+bin/
+pkg/
+.idea/
+sparkTemplate/target
+sparkTemplate.v2/target
+sparkTemplate.v2/driver/target
+sparkTemplate.v2/plugins/target
+sparkTemplate.v2/sdk/target
+sparkTemplate.v2/dockerIntegrationTest/target
+slaveExport/target
+!src/github.com/coreos/etcd/pkg
+
+# auditlog folders
+
+src/qiniu.com/streaming.v2/apps/sched/run/
+src/qiniu.com/streaming.v2/apps/gmeta/run/
+src/qiniu.com/streaming.v2/main/run/
+
+# docker build binary
+
+docker/external/confluent-2.0.0/
+".gitignore" 71L, 1199C
+
+docker/external/confluent-2.0.0/
+docker/external/etcd-v2.2.5-linux-amd64/
+docker/external/hadoop-2.6.0-cdh5.5.1/
+docker/external/jdk1.8.0_91/
+docker/internal/pipeline-exportd
+docker/internal/pipeline-sched
+docker/internal/pipeline-streaming
+docker/internal/pipeline-transform
+
+# Architecture specific extensions/prefixes
+*.[568vq]
+[568vq].out
+
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+_testmain.go
+
+*.exe
+*.test
+*.prof
+
+id_rsa
+known_hosts
