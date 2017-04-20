@@ -146,3 +146,44 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 ![](_media/dingshi.png)
 
+
+#### 基于XSpark的Python语言支持
+
+![](_media/xspark-python.png)
+
+
+#### 基于XSpark的R语言支持
+
+![](_media/xspark-R.png)
+
+#### 基于XSpark的机器学习
+
+![](_media/xspark-mllib.png)
+
+
+#### Spark UI
+  对于有一定经验的Spark开发人员，可以访问`SparkUI`来看当前运行的任务状态。
+  
+![](_media/xspark-sparkui.png)
+  
+
+
+#### XSpark容器监控
+
+ XSpark提供了容器级别的CPU，内存，磁盘监控。可以给Spark任务的调优和故障排查提供有力的支持。
+
+![](_media/xspark-monitor.png)
+  
+
+#### XSpark邮件告警功能
+
+邮件告警经常配合定时任务来使用，当任务失败时，会有邮件发送具体的失败信息到指定的邮箱内。
+
+![](_media/xspark-email.png)
+
+
+#### XSpark快捷重启Interpreter功能
+
+重启Interpretr会初始化Spark解释器。重启Interpreter会结束掉当前正在运行的spark任务，释放资源。
+
+![](_media/xspark-restart.png)
