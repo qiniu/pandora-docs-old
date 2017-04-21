@@ -239,7 +239,7 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \-H 'Content-Type: a
 ```
 PUT /v2/repos/<RepoName>
 Content-Type: application/json
-X-Appid: <AppId>
+Authorization: Pandora <auth>
 
 {
 	"schema": [
@@ -651,7 +651,7 @@ Authorization: Pandora <auth>
 ```
 PUT /v2/repos/<RepoName>/exports/<ExportName>
 Content-Type: application/json
-X-Appid: <AppId>
+Authorization: Pandora <auth>
 {
     "spec": <Spec>
 }
@@ -664,7 +664,7 @@ X-Appid: <AppId>
 
 ```
 GET /v2/repos/<RepoName>/exports
-X-Appid: <AppId>
+Authorization: Pandora <auth>
 ```
 
 **响应报文** 
@@ -683,7 +683,7 @@ X-Appid: <AppId>
 
 ```
 GET /v2/repos/<RepoName>/exports/<ExportName>
-X-Appid: <AppId>
+Authorization: Pandora <auth>
 ```
 
 ### 根据名称删除导出任务
@@ -691,8 +691,189 @@ X-Appid: <AppId>
 
 ```
 DELETE /v2/repos/<RepoName>/exports/<ExportName>
-X-Appid: <AppId>
+Authorization: Pandora <auth>
 ```
+
+### 创建kodo类型数据源
+
+```
+POST /v2/repos/kodo/<RepoName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "region": <Region>, 
+    "bucket": <BucketName>,
+    "keyPrefix": <KeyPrefix>,
+    "fileType":<FileType>,
+    "schema": [
+      {
+        "key": <Key>,
+        "valtype": <ValueType>
+      },
+      ...
+    ]
+}
+```
+
+
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+|RepoName|string|是|数据源节点名称|
+|region|string|是|所属区域|
+|bucket|string|是|对象存储bucket名称|
+|keyPrefix|string|是|文件前缀|
+|fileType|string|是|文件类型，json、text、parquet三选一|
+|schema|array|是|字段信息|
+|schema.key|string|是|字段名称|
+|schema.valtype|string|是|字段类型，支持long、float、string、date|
+
+
+
+### 离线计算任务
+
+```
+POST /v2/jobs/<JobName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+	"srcs":[
+		{
+			"name":<RepoName or JobName>,
+			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+			"type":<Repo or Jobs>
+		},
+		...
+	],
+   "code": <SqlCode or JarName>,
+	"container": {
+       "type": <ContainerType>,
+       "count": <ContainerCount>
+   },
+   "sched":{
+   		"type":<Timing or Loop or Once>
+   		"timing":<0 0 0/1 * * ?>,
+   		"loop":<20m or 1h or 1h20m>
+   },
+   "params":[
+   		{
+   			"paramName":<>,
+   			"defaultValue":<>,
+   		},
+   		...
+   ]
+}
+```
+
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+|src|array|是|数据来源|
+|src.name|string|是|数据源名称或离线任务名称|
+|src.fileFilter|string|否|文件过滤规则，可使用魔法变量|
+|src.type|string|是|数据来源节点类型|
+|code|string|是|sql代码或jar包名称|
+|container|map|是|计算资源|
+|container.type|string|是|规格|
+|container.count|int|是|数量|
+|sched|map|是|调度|
+|sched.type|string|是|调度方式，定时、循环或单次执行三选一|
+|sched.timing|string|否|定时执行|
+|sched.loop|string|否|循环执行|
+|params|array|否|自定义参数|
+|params.paramName|string|是|参数名称|
+|params.defaultValue|string|是|默认值|
+
+
+### 启动/停止离线计算
+
+```
+POST /v2/jobs/<JobName>/actions/start
+Authorization: Pandora <auth>
+{
+	"params":[
+   		{
+   			"paramName":<>,
+   			"value":<>,
+   		},
+   		...
+   ]
+}
+```
+
+
+```
+POST /v2/jobs/<JobName>/actions/stop
+Authorization: Pandora <auth>
+```
+
+
+### 上传Jar
+
+```
+POST /v2/jobs/plugin/<JarName>
+Content-Type: application/java-archive
+Content-MD5: <ContentMD5>
+Authorization: Pandora <auth>
+```
+
+### 获取数据源schema
+
+```
+GET /v2/schemas
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "region": <Region>, 
+    "bucket": <BucketName>,
+    "keyPrefix": <KeyPrefix>,
+    "fileType":<FileType>
+}
+
+
+json or parquet return :
+{
+	"schema": [
+      {
+        "key": <Key>,
+        "valtype": <ValueType>
+      },
+      ...
+    ]
+}
+
+text return :
+{
+	"schema": [
+      {
+        "key": <text>,
+        "valtype": <String>
+      }
+    ]
+}
+
+```
+
+### 查看运行日志
+
+```
+GET /v2/jobs/<jobName>/history?page=1&size=20
+Content-Type: application/json
+Authorization: Pandora <auth>
+
+
+return
+
+[
+	{
+		"startTime":<>,
+		"endTime":<>,
+		"runCount":<>,
+		"status"<success or fail or running or cancel>,
+		"message":<>
+	},
+]
+```
+
+
 
 ### 错误代码及相关说明
 
