@@ -729,7 +729,7 @@ Authorization: Pandora <auth>
 
 
 
-### 离线计算任务
+### 提交离线计算任务
 
 ```
 POST /v2/jobs/<JobName>
@@ -740,18 +740,18 @@ Authorization: Pandora <auth>
 		{
 			"name":<RepoName|JobName>,
 			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
-			"type":<Repo or Jobs>
+			"type":<Repo|Jobs>
 		},
 		...
 	],
    "code": <SqlCode|JarName>,
-	"container": {
+   "container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
    },
    "scheduler":{
    		"type": <Crontab|Loop|Once>,
-   		"Crontab": <0 0 0/1 * * ?>,
+   		"crontab": <0 0 0/1 * * ?>,
    		"loop": <1h|2h|....>
    },
    "params":[
@@ -766,21 +766,21 @@ Authorization: Pandora <auth>
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-|src|array|是|数据来源|
-|src.name|string|是|数据源名称或离线任务名称|
-|src.fileFilter|string|否|文件过滤规则，可使用魔法变量|
-|src.type|string|是|数据来源节点类型|
+|srcs|array|是|数据来源|
+|srcs.name|string|是|数据源名称或离线任务名称|
+|srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量|
+|srcs.type|string|是|数据来源节点类型|
 |code|string|是|sql代码或jar包名称|
 |container|map|是|计算资源|
 |container.type|string|是|规格|
 |container.count|int|是|数量|
-|sched|map|是|调度|
-|sched.type|string|是|调度方式，定时、循环或单次执行三选一|
-|sched.timing|string|否|定时执行|
-|sched.loop|string|否|循环执行|
+|scheduler|map|是|调度|
+|scheduler.type|string|是|调度方式，定时、循环或单次执行三选一|
+|scheduler.crontab|string|否|定时执行|
+|scheduler.loop|string|否|循环执行|
 |params|array|否|自定义参数|
-|params.paramName|string|是|参数名称|
-|params.defaultValue|string|是|默认值|
+|params.name|string|是|参数名称|
+|params.value|string|是|默认值|
 
 
 ### 启动离线计算
