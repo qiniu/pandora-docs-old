@@ -738,26 +738,26 @@ Authorization: Pandora <auth>
 {
 	"srcs":[
 		{
-			"name":<RepoName or JobName>,
+			"name":<RepoName|JobName>,
 			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
 			"type":<Repo or Jobs>
 		},
 		...
 	],
-   "code": <SqlCode or JarName>,
+   "code": <SqlCode|JarName>,
 	"container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
    },
-   "sched":{
-   		"type":<Timing or Loop or Once>
-   		"timing":<0 0 0/1 * * ?>,
-   		"loop":<20m or 1h or 1h20m>
+   "scheduler":{
+   		"type": <Crontab|Loop|Once>,
+   		"Crontab": <0 0 0/1 * * ?>,
+   		"loop": <1h|2h|....>
    },
    "params":[
    		{
-   			"paramName":<>,
-   			"defaultValue":<>,
+   			"name":<ParamName>,
+   			"value":<ParamValue>
    		},
    		...
    ]
@@ -783,7 +783,7 @@ Authorization: Pandora <auth>
 |params.defaultValue|string|是|默认值|
 
 
-### 启动/停止离线计算
+### 启动离线计算
 
 ```
 POST /v2/jobs/<JobName>/actions/start
@@ -791,14 +791,16 @@ Authorization: Pandora <auth>
 {
 	"params":[
    		{
-   			"paramName":<>,
-   			"value":<>,
+   			"name":<ParamName>,
+   			"value":<ParamValue>
    		},
    		...
    ]
 }
 ```
 
+
+### 停止离线计算
 
 ```
 POST /v2/jobs/<JobName>/actions/stop
@@ -846,13 +848,14 @@ text return :
       {
         "key": <text>,
         "valtype": <String>
-      }
+      },
+      ...
     ]
 }
 
 ```
 
-### 查看运行日志
+### 查看历史任务
 
 ```
 GET /v2/jobs/<jobName>/history?page=1&size=20
@@ -864,11 +867,10 @@ return
 
 [
 	{
-		"startTime":<>,
-		"endTime":<>,
-		"runCount":<>,
-		"status"<success or fail or running or cancel>,
-		"message":<>
+		"startTime": <StartTime>,
+		"endTime": <EndTime>,
+		"status": <Success|Fail|Running|Cancel>,
+		"message": <Message>
 	},
 ]
 ```
