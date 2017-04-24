@@ -172,7 +172,11 @@ Authorization: Pandora <auth>
       {
         "key": <Key>,
         "valtype": <ValueType>,
-        "required": <Required>
+        "elemtype": <ElemType>,
+        "required": <Required>,
+        "schema": [
+            ...
+        ]
       },
       ...
     ]
@@ -184,15 +188,63 @@ Authorization: Pandora <auth>
 |RepoName|string|是|消息队列名称,用来标识该消息队列的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(代号`nb`)；</br>此参数是为了降低用户传输数据的成本；应当尽量选择离自己数据源较近的区域|
 |group|string|否|指定该消息队列所属的资源池,如果不填写,则说明独享消息队列资源|
-|schema|array|是|相当于关系型数据库表中的`字段集`|
+|schema|array|是|相当于关系型数据库表中的`字段集`，当valtype取值为map时，该参数需要嵌套，且嵌套深度最大为5|
 | schema.key|string|是|相当于关系型数据库表的`字段`,</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
-| schema.valtype|string|是|描述`key`字段的数据类型,目前仅支持`long`、`date`、`float`和`string`,</br>其中`float`的最大精度是`float64`|
+| schema.valtype|string|是|描述`key`字段的数据类型,目前仅支持`long`、`date`、`float`、`string`、`array`和`map`,</br>其中`float`的最大精度是`float64`；`array`表示数组类型，数组元素必须为同一类型；`map`表示嵌套类型，类似于json object|
+| schema.elemtype|string|否|当数据类型为`array`时，该参数必填，否则将其忽略。该参数表示`array`的元素类型，目前仅支持`long`、`float`、`string`|
 | schema.required|bool|否|描述用户在传输数据时`key`字段是否必填|
 
 **示例**
 
 ```
-curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \-H 'Content-Type: application/json' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \-d '{    "region": "nb",     "group":"test_group",    "schema": [        {            "key": "userName",            "valtype": "string",            "required": true        },        {            "key": "age",            "valtype": "float",            "required": true        }    ]} '
+curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \
+-d '{
+    "region": "nb", 
+    "group":"test_group",
+    "schema": [
+        {
+            "key": "userName",
+            "valtype": "string",
+            "required": true
+        },
+        {
+            "key": "age",
+            "valtype": "float",
+            "required": true
+        },
+        {
+            "key": "addresses",
+            "valtype": "array",
+            "elemtype": "long",
+            "required": true
+        },
+        {
+            "key": "profile",
+            "valtype": "map",
+            "required": true,
+            "schema": [
+              {
+                  "key": "position",
+                  "valtype": "string",
+                  "required": true
+              },
+              {
+                  "key": "salary",
+                  "valtype": "float",
+                  "required": true
+              },
+              {
+                  "key": "education",
+                  "valtype": "array",
+                  "elemtype": "string",
+                  "required": false
+              }
+            ]
+        }
+    ]
+}'
 ```
 ### 查看所有消息队列
 **请求语法**
@@ -276,8 +328,8 @@ curl -X PUT https://pipeline.qiniu.com/v2/repos/test_repo \
 | keyName |string|是|消息队列的`schema`中`key`的值,即字段名称|
 | valName |string|是|对应key的数据内容<br/> 注意:如果是`string`类型,那么 `\t`、`\r`、`\n` `\` 需要用`\`转义,空格`' '` 可以不转义|
 
-!> 注意:多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔,单次分隔的长度不超过100KB**示例**```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/data \-H 'Content-Type: application/text' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{
-	userName=小张		age=22 	userName=小王		age=28 
+!> 注意:对于`array`类型，打点格式为`[e1,e2,...,en]`，数组元素采用逗号分割，且所有元素使用`[]`包括，当元素类型为`string`时，需要加上双引号;对于`map`类型，打点格式为json字符串，比如`{"f1":123,"f2":"abc"}`，注意所有元素使用`{}`包括;另外，多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔,单次分隔的长度不超过100KB**示例**```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/data \-H 'Content-Type: application/text' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{
+	userName=小张		age=22   addresses=["beijing","shanghai"] profile={"position":"engineer",salary:15000} 	userName=小王		age=28   addresses=["hangzhou","shenzhen"] profile={"position":"engineer",salary:12000}
 	}'```
 ### 创建计算任务
 **请求语法**
@@ -532,6 +584,8 @@ Authorization: Pandora <auth>
 > 消息队列类型:long 对应 日志检索服务:long / date
 > 
 > 消息队列类型:float 对应 日志检索服务:float
+> 
+> 消息队列类型:array、map 对应 日志检索服务:object
 > 
 > 消息队列类型:date 对应 日志检索服务:date **示例**
 ```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job2 \-H 'Content-Type: application/json' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{  "type": "logDB",  "spec": {
