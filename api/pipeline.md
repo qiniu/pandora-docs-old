@@ -750,7 +750,7 @@ Authorization: Pandora <auth>
        "count": <ContainerCount>
    },
    "scheduler":{
-   		"type": <Crontab|Loop|Once>,
+   		"type": <crontab|loop|once>,
    		"crontab": <0 0 0/1 * * ?>,
    		"loop": <1h|2h|....>
    },
@@ -854,6 +854,56 @@ text return :
 }
 
 ```
+
+### 离线计算导出数据至对象存储服务
+
+**请求语法**
+```POST /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "type": <kodo>,
+    "spec": {
+         "bucket": <Bucket>,
+         "keyPrefix": <Prefix|Path>, 
+         "email": <Email>,  
+         "accessKey": <AccessKey>,    
+         "fields": {
+             "key1": <#value1>,
+             "key2": <#value2>,
+             ...
+          },   
+         "format": <ExportFormat>,
+         "compress": <true|false>,
+         "retention": <Retention>
+	}
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|bucket|string|是|数据中心名称|
+|keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`once`的时候，就是文件名|
+|email|string|是|bucket所属用户的七牛账户名称|
+|accessKey|string|是|七牛账户的公钥|
+|fields|map|是|字段关系说明,`key`为`kodo-bucket`的字段名,`value`为导出数据的消息队列的字段名|
+|format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`json`|
+|compress|bool|否|是否开启文件压缩功能,默认为`false`|
+|retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
+
+!> 注1: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
+
+!> 注2: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
+
+* `year` 上传时的年份
+* `mon` 上传时的月份
+* `day` 上传时的日期
+* `hour` 上传时的小时
+* `min` 上传时的分钟
+* `sec` 上传时的秒钟
+
 
 ### 查看历史任务
 
