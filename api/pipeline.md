@@ -469,7 +469,7 @@ Authorization: Pandora <auth>
 Authorization: Pandora <auth>
 ```
 ### 导出数据至HTTP地址
-**请求语法**```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <ExportSchema>,  "whence": <ExportWhence>,  "spec": {
+**请求语法**```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <http>,  "whence": <ExportWhence>,  "spec": {
 		"host": <Host>,      
 		"uri": <RequestURI>  
 	}}
@@ -494,7 +494,7 @@ Authorization: Pandora <auth>
 
 **请求语法**
 
-```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <ExportSchema>,  "whence": <ExportWhence>,  "spec": {        "destRepoName": <DestRepoName>,        "series": <SeriesName>,        "tags": {            "tag1": <#key1>,            "tag2": <#key2>,            ...        },        "fields": {            "field1": <#key1>,            "field2": <#key2>,            ...        },        "timestamp": <#key1>,        }
+```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <tsdb>,  "whence": <ExportWhence>,  "spec": {        "destRepoName": <DestRepoName>,        "series": <SeriesName>,        "tags": {            "tag1": <#key1>,            "tag2": <#key2>,            ...        },        "fields": {            "field1": <#key1>,            "field2": <#key2>,            ...        },        "timestamp": <#key1>,        }
 }```
 **请求内容**
 |参数|类型|必填|说明|
@@ -518,7 +518,7 @@ Authorization: Pandora <auth>
 ```
 ### 导出数据至日志检索服务
 **请求语法**
-```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <ExportSchema>,  "whence": <ExportWhence>,  "spec": {        "destRepoName": <DestRepoName>,                      "doc": {            "toRepoSchema1": <#fromRepoSchema1>,            "toRepoSchema2": {            	"toRepoSchema3": <#fromRepoSchema3>,            }            ......        }}```
+```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <logdb>,  "whence": <ExportWhence>,  "spec": {        "destRepoName": <DestRepoName>,                      "doc": {            "toRepoSchema1": <#fromRepoSchema1>,            "toRepoSchema2": {            	"toRepoSchema3": <#fromRepoSchema3>,            }            ......        }}```
 
 **请求内容**
 |参数|类型|必填|说明|
@@ -549,7 +549,7 @@ Authorization: Pandora <auth>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-    "type": <ExportSchema>,
+    "type": <kodo>,
     "whence": <ExportWhence>,
     "spec": {
          "bucket": <Bucket>,
@@ -627,7 +627,7 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/repox/exports/export1 \
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-    "type": <ExportSchema>,
+    "type": <mongodb>,
     "whence": <ExportWhence>,
     "spec": {        "host": <Host>,                                  "dbName": <DatabaseName>,                       "collName": <CollectionName>,                    "mode": [<INSERT>|<UPDATE>|<UPSERT>],                   "updateKey": <UpdateKey>,                       "doc": <Doc>,                                   "version": <MongoVersion>
 	}}   ```
