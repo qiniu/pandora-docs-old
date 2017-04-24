@@ -888,8 +888,8 @@ Authorization: Pandora <auth>
 |keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`once`的时候，就是文件名|
 |email|string|是|bucket所属用户的七牛账户名称|
 |accessKey|string|是|七牛账户的公钥|
-|fields|map|是|字段关系说明,`key`为`kodo-bucket`的字段名,`value`为导出数据的消息队列的字段名|
-|format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`json`|
+|fields|map|是|字段关系说明,`key`为`kodo-bucket`的字段名,`value`为离线任务的数据源中的字段名|
+|format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`parquet`|
 |compress|bool|否|是否开启文件压缩功能,默认为`false`|
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
 
