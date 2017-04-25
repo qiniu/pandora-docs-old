@@ -142,7 +142,7 @@
 
 **操作流程：**
 
-首先，在[下载中心-Plugin]()中，下载Java项目工程。
+首先，在[下载中心](/Downloads)中，下载Plugin-Java项目工程。
 
 解压后，首先阅读**README.html**中的内容，然后使用Java IDE导入Pandora-Plugin项目。
 
