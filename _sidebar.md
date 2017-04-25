@@ -13,8 +13,7 @@
   - [流式处理服务API](/api/pipeline)
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
-- **下载中心**
-  - [SDK](/sdk)
+- [**下载中心**](/Downloads)
 - **计量计费**
 - **Q & A**
 
