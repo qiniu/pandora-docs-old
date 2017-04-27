@@ -168,6 +168,10 @@ Authorization: Pandora <auth>
 {
     "region": <Region>, 
     "group": <GroupName>,
+    "type": <Type>,
+    "bucket": <BucketName>,
+    "keyPrefix": <KeyPrefix>,
+    "fileType":<FileType>,
     "schema": [
       {
         "key": <Key>,
@@ -188,11 +192,15 @@ Authorization: Pandora <auth>
 |RepoName|string|是|消息队列名称,用来标识该消息队列的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(代号`nb`)；</br>此参数是为了降低用户传输数据的成本；应当尽量选择离自己数据源较近的区域|
 |group|string|否|指定该消息队列所属的资源池,如果不填写,则说明独享消息队列资源|
+|type|string|否|目前的合法值是"kodo"和"rt" ，分别表示kodo数据源和实时消息队列。如果不填，那么默认创建一个实时消息队列。|
 |schema|array|是|相当于关系型数据库表中的`字段集`，当valtype取值为map时，该参数需要嵌套，且嵌套深度最大为5|
 | schema.key|string|是|相当于关系型数据库表的`字段`,</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 | schema.valtype|string|是|描述`key`字段的数据类型,目前仅支持`long`、`date`、`float`、`string`、`array`和`map`,</br>其中`float`的最大精度是`float64`；`array`表示数组类型，数组元素必须为同一类型；`map`表示嵌套类型，类似于json object|
 | schema.elemtype|string|否|当数据类型为`array`时，该参数必填，否则将其忽略。该参数表示`array`的元素类型，目前仅支持`long`、`float`、`string`|
 | schema.required|bool|否|描述用户在传输数据时`key`字段是否必填|
+|bucket|string|否|对象存储bucket名称|
+|keyPrefix|string|否|存储对象bucket中的文件前缀|
+|fileType|string|否|存储对象中文件的类型，json、text、parquet三选一|
 
 **示例**
 
@@ -246,6 +254,9 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
     ]
 }'
 ```
+
+!> 注意: 当创建一个`kodo`类型的消息队列时，不需要指定`group`，同时需要用`bucket`、`keyPrefix`和`fileType`三个参数指定创建细节。如果创建的是实时消息队列则不需要这三个参数。
+
 ### 查看所有消息队列
 **请求语法**
 
@@ -258,7 +269,7 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
       {
         "name": <RepoName>,
         "region": <Region>,
-        "derivedFrom": <TransformName>,
+        "derivedFrom": <TransformName|JobName>,
         "group": <GroupName>
       },
       ...
@@ -271,14 +282,17 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
 |:---|:---|:---:|:---|
 |derivedFrom|string|-|表示这个repo是由哪个transform生成的,如果此项为空,说明该repo是由用户自行创建的|
 
-### 根据名称查询消息队列
+### 根据名称查询消息队列
 **请求语法**
 
 ```GET /v2/repos/<RepoName>Authorization: Pandora <auth>
 ```
 **响应报文** 
 
-```Content-Type: application/json{    "region": <Region>,    "group": <GroupName>,    "derivedFrom": <TransformName>,    "schema": [      {        "key": <Key>,        "valtype": <ValueType>,        "required": <Required>      },      ...    ]}
+```Content-Type: application/json{    "region": <Region>,    "group": <GroupName>,
+    "bucket": <BucketName>,
+    "keyPrefix": <KeyPrefix>,
+    "fileType":<FileType>,    "derivedFrom": <TransformName|JobName>,    "schema": [      {        "key": <Key>,        "valtype": <ValueType>,        "required": <Required>      },      ...    ]}
 ```
 ### 根据名称删除消息队列
 **请求语法**
@@ -637,11 +651,13 @@ Authorization: Pandora <auth>
 |compress|bool|否|是否开启文件压缩功能,默认为`false`|
 | retention |int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
 
-!> 注1:当一个文件导出到kodo之后,最多间隔`rotateInterval`之后将再次生成文件做导出。默认值30s,最小值为30s,最大值为60s(当`format`为`parquet`时,最大间隔可以到600s)。
+!> 注1: 当一个文件导出到kodo之后,最多间隔`rotateInterval`之后将再次生成文件做导出。默认值30s,最小值为30s,最大值为60s(当`format`为`parquet`时,最大间隔可以到600s)。
 
-!> 注2: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
+!> 注2: 当从离线计算产生的repo导出数据时`rotateInterval`不再生效，每一批处理结果导出到一个文件。
 
-!> 注3: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
+!> 注3: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
+
+!> 注4: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
 
 * `year` 上传时的年份
 * `mon` 上传时的月份
@@ -748,57 +764,15 @@ DELETE /v2/repos/<RepoName>/exports/<ExportName>
 Authorization: Pandora <auth>
 ```
 
-### 创建kodo类型数据源
-
-```
-POST /v2/repos/kodo/<RepoName>
-Content-Type: application/json
-Authorization: Pandora <auth>
-{
-    "region": <Region>, 
-    "bucket": <BucketName>,
-    "keyPrefix": <KeyPrefix>,
-    "fileType":<FileType>,
-    "schema": [
-      {
-        "key": <Key>,
-        "valtype": <ValueType>
-      },
-      ...
-    ]
-}
-```
-
-
-|名称|类型|必填|描述|
-|:---|:---|:---|:---|
-|RepoName|string|是|数据源节点名称|
-|region|string|是|所属区域|
-|bucket|string|是|对象存储bucket名称|
-|keyPrefix|string|是|文件前缀|
-|fileType|string|是|文件类型，json、text、parquet三选一|
-|schema|array|是|字段信息|
-|schema.key|string|是|字段名称|
-|schema.valtype|string|是|字段类型，支持long、float、string、date|
-
-
 
 ### 提交离线计算任务
 
 ```
-POST /v2/jobs/<JobName>
+POST /v2/repos/<RepoName>jobs/<JobName>/to/<DestinationRepoName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-	"srcs":[
-		{
-			"name":<RepoName|JobName>,
-			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
-			"type":<Repo|Jobs>
-		},
-		...
-	],
-   "code": <SqlCode|JarName>,
+   "code": <SqlCode|DSL>,
    "container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
@@ -820,10 +794,6 @@ Authorization: Pandora <auth>
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-|srcs|array|是|数据来源|
-|srcs.name|string|是|数据源名称或离线任务名称|
-|srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量|
-|srcs.type|string|是|数据来源节点类型|
 |code|string|是|sql代码或jar包名称|
 |container|map|是|计算资源|
 |container.type|string|是|规格|
@@ -836,11 +806,15 @@ Authorization: Pandora <auth>
 |params.name|string|是|参数名称|
 |params.value|string|是|默认值|
 
+!> 注1: 每一个离线计算任务的输入都来自于一个离线数据源，或者上一个离线任务的目的repo。离线任务的计算结果也会放在一个repo中，这个repo的数据可以用于下一个离线任务的输入，也可以创建导出任务做导出。
+
+!> 注2: 离线计算生成的目的repo下面不能创建实时计算任务。
+
 
 ### 启动离线计算
 
 ```
-POST /v2/jobs/<JobName>/actions/start
+POST /v2/repos/<RepoNmae>/jobs/<JobName>/actions/start
 Authorization: Pandora <auth>
 {
 	"params":[
@@ -857,19 +831,10 @@ Authorization: Pandora <auth>
 ### 停止离线计算
 
 ```
-POST /v2/jobs/<JobName>/actions/stop
+POST /v2/repos/<RepoName>/jobs/<JobName>/actions/stop
 Authorization: Pandora <auth>
 ```
 
-
-### 上传Jar
-
-```
-POST /v2/jobs/plugin/<JarName>
-Content-Type: application/java-archive
-Content-MD5: <ContentMD5>
-Authorization: Pandora <auth>
-```
 
 ### 获取数据源schema
 
@@ -909,60 +874,11 @@ text return :
 
 ```
 
-### 离线计算导出数据至对象存储服务
-
-**请求语法**
-```POST /v2/jobs/<JobName>/exports/<ExportName>
-Content-Type: application/json
-Authorization: Pandora <auth>
-{
-    "type": <kodo>,
-    "spec": {
-         "bucket": <Bucket>,
-         "keyPrefix": <Prefix|Path>, 
-         "email": <Email>,  
-         "accessKey": <AccessKey>,    
-         "fields": {
-             "key1": <#value1>,
-             "key2": <#value2>,
-             ...
-          },   
-         "format": <ExportFormat>,
-         "compress": <true|false>,
-         "retention": <Retention>
-	}
-}
-```
-
-**请求内容**
-
-|参数|类型|必填|说明|
-|:---|:---|:---:|:---|
-|bucket|string|是|数据中心名称|
-|keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`once`的时候，就是文件名|
-|email|string|是|bucket所属用户的七牛账户名称|
-|accessKey|string|是|七牛账户的公钥|
-|fields|map|是|字段关系说明,`key`为`kodo-bucket`的字段名,`value`为离线任务的数据源中的字段名|
-|format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`parquet`|
-|compress|bool|否|是否开启文件压缩功能,默认为`false`|
-|retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
-
-!> 注1: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
-
-!> 注2: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
-
-* `year` 上传时的年份
-* `mon` 上传时的月份
-* `day` 上传时的日期
-* `hour` 上传时的小时
-* `min` 上传时的分钟
-* `sec` 上传时的秒钟
-
 
 ### 查看历史任务
 
 ```
-GET /v2/jobs/<jobName>/history?page=1&size=20
+GET /v2/repos/<RepoName>/jobs/<jobName>/history?page=1&size=20
 Content-Type: application/json
 Authorization: Pandora <auth>
 
@@ -1037,3 +953,5 @@ return
 |400	|E18303: 提交导出任务失败|
 |400	|E18304: 删除导出任务失败|
 |400   |E18305: 导出任务出现错误|
+
+
