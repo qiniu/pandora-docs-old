@@ -166,8 +166,14 @@ POST /v2/repos/<RepoName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-    "region": <Region>, 
+    "type": <Type>,
+    "region": <Region>,
     "group": <GroupName>,
+    "spec": {
+      "bucket": <BucketName>,
+      "keyPrefix": <KeyPrefix>,
+      "fileType": <FileType>,
+    },
     "schema": [
       {
         "key": <Key>,
@@ -186,8 +192,13 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 |RepoName|string|是|消息队列名称,用来标识该消息队列的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
+|type|string|否|指定该消息队列的类别，目前的合法值是"kodo"和"rt"，分别表示kodo数据源和实时消息队列。如果不填，那么默认创建一个实时消息队列。|
 |region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(代号`nb`)；</br>此参数是为了降低用户传输数据的成本；应当尽量选择离自己数据源较近的区域|
 |group|string|否|指定该消息队列所属的资源池,如果不填写,则说明独享消息队列资源|
+|spec|string|否|指定该消息队列自身属性相关的信息，在type为"kodo"的时候需要填这一项|
+|spec.bucket|string|是|对象存储bucket名称|
+|spec.keyPrefix|string|是|对象存储bucket中文件的前缀|
+|spec.fileType|string|是|对象存储bucket中文件类型，json、text、parquet三选一|
 |schema|array|是|相当于关系型数据库表中的`字段集`，当valtype取值为map时，该参数需要嵌套，且嵌套深度最大为5|
 | schema.key|string|是|相当于关系型数据库表的`字段`,</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 | schema.valtype|string|是|描述`key`字段的数据类型,目前仅支持`long`、`date`、`float`、`string`、`array`和`map`,</br>其中`float`的最大精度是`float64`；`array`表示数组类型，数组元素必须为同一类型；`map`表示嵌套类型，类似于json object|
@@ -257,9 +268,11 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
     "repos": [
       {
         "name": <RepoName>,
+        "type": <Type>,
         "region": <Region>,
         "derivedFrom": <TransformName>,
-        "group": <GroupName>
+        "group": <GroupName>，
+        "spec": <Spec>
       },
       ...
     ]
@@ -278,7 +291,23 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
 ```
 **响应报文** 
 
-```Content-Type: application/json{    "region": <Region>,    "group": <GroupName>,    "derivedFrom": <TransformName>,    "schema": [      {        "key": <Key>,        "valtype": <ValueType>,        "required": <Required>      },      ...    ]}
+```
+Content-Type: application/json
+{
+    "type": <Type>,
+    "region": <Region>,
+    "group": <GroupName>,
+    "derivedFrom": <TransformName>,
+    "spec": <Spec>,
+    "schema": [
+      {
+        "key": <Key>,
+        "valtype": <ValueType>,
+        "required": <Required>
+      },
+      ...
+   ]
+}
 ```
 ### 根据名称删除消息队列
 **请求语法**
@@ -748,40 +777,6 @@ DELETE /v2/repos/<RepoName>/exports/<ExportName>
 Authorization: Pandora <auth>
 ```
 
-### 创建kodo类型数据源
-
-```
-POST /v2/repos/kodo/<RepoName>
-Content-Type: application/json
-Authorization: Pandora <auth>
-{
-    "region": <Region>, 
-    "bucket": <BucketName>,
-    "keyPrefix": <KeyPrefix>,
-    "fileType":<FileType>,
-    "schema": [
-      {
-        "key": <Key>,
-        "valtype": <ValueType>
-      },
-      ...
-    ]
-}
-```
-
-
-|名称|类型|必填|描述|
-|:---|:---|:---|:---|
-|RepoName|string|是|数据源节点名称|
-|region|string|是|所属区域|
-|bucket|string|是|对象存储bucket名称|
-|keyPrefix|string|是|文件前缀|
-|fileType|string|是|文件类型，json、text、parquet三选一|
-|schema|array|是|字段信息|
-|schema.key|string|是|字段名称|
-|schema.valtype|string|是|字段类型，支持long、float、string、date|
-
-
 
 ### 创建离线计算任务
 
@@ -1073,7 +1068,6 @@ Authorization: Pandora <auth>
 ```
 
 
-
 ### 获取数据源schema
 
 **请求方法** 
@@ -1133,14 +1127,14 @@ text return :
 
 ```
 
-### 离线计算导出数据至对象存储服务
+### 创建离线计算导出任务
 
 **请求语法**
 ```POST /v2/jobs/<JobName>/exports/<ExportName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-    "type": <kodo>,
+    "type": <Type>,
     "spec": {
          "bucket": <Bucket>,
          "keyPrefix": <Prefix|Path>, 
@@ -1162,10 +1156,9 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|bucket|string|是|数据中心名称|
+|type|string|是|导出的类型，目前允许的值为"kodo"|
+|bucket|string|是|对象存储bucket名称|
 |keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`once`的时候，就是文件名|
-|email|string|是|bucket所属用户的七牛账户名称|
-|accessKey|string|是|七牛账户的公钥|
 |fields|map|是|字段关系说明,`key`为`kodo-bucket`的字段名,`value`为离线任务的数据源中的字段名|
 |format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`parquet`|
 |compress|bool|否|是否开启文件压缩功能,默认为`false`|
@@ -1182,6 +1175,98 @@ Authorization: Pandora <auth>
 * `min` 上传时的分钟
 * `sec` 上传时的秒钟
 
+
+### 更新离线计算导出任务
+
+**请求语法**
+
+```
+PUT /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "spec": <Spec>
+}
+```
+
+
+### 查看离线计算导出任务
+
+**请求语法**
+
+```
+POST /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+```
+
+**响应报文**
+
+```
+{
+    "type": <Type>,
+    "spec": {
+         "bucket": <Bucket>,
+         "keyPrefix": <Prefix|Path>,  
+         "fields": {
+             "key1": <#value1>,
+             "key2": <#value2>,
+             ...
+          },   
+         "format": <ExportFormat>,
+         "compress": <true|false>,
+         "retention": <Retention>
+	  }
+}
+```
+
+
+### 列举离线计算导出任务
+
+**请求语法**
+
+```
+GET /v2/jobs/<JobName>/exports
+Content-Type: application/json
+Authorization: Pandora <auth>
+```
+
+**响应报文**
+
+```
+Content-Type: application/json
+{
+  "exports": [
+    {
+      "name": <ExportName>,
+      "type": <Type>,
+      "spec": {
+         "bucket": <Bucket>,
+         "keyPrefix": <Prefix|Path>,
+         "fields": {
+             "key1": <#value1>,
+             "key2": <#value2>,
+             ...
+          },
+         "format": <ExportFormat>,
+         "compress": <true|false>,
+         "retention": <Retention>
+      }
+    },
+    ...
+  ]
+}
+```
+
+
+### 删除离线计算导出任务
+
+**请求语法**
+
+```
+DELETE /v2/jobs/<JobName>/exports/<ExportName>
+Authorization: Pandora <auth>
+```
 
 
 ### 查看历史任务
@@ -1290,3 +1375,5 @@ return
 |400	|E18303: 提交导出任务失败|
 |400	|E18304: 删除导出任务失败|
 |400   |E18305: 导出任务出现错误|
+
+
