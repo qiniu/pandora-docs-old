@@ -783,7 +783,9 @@ Authorization: Pandora <auth>
 
 
 
-### 提交离线计算任务
+### 创建离线计算任务
+
+**请求方法** 
 
 ```
 POST /v2/jobs/<JobName>
@@ -792,49 +794,216 @@ Authorization: Pandora <auth>
 {
 	"srcs":[
 		{
-			"name":<RepoName|JobName>,
+			"name":<DataSourceName|JobName>,
 			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
-			"type":<Repo|Jobs>
+			"type":<DataSource|Job>
 		},
 		...
 	],
-   "code": <SqlCode|JarName>,
+   "code": {
+       "code": <SqlCode>,
+       "type": <SQL>
+   }, 
+   "container": {
+       "type": <ContainerType>,
+       "count": <ContainerCount>
+   },  # type 为 depend的时候，container依赖上游的配置，该配置不填
+   "scheduler":{
+   		"type": <crontab|loop|once|depend>,
+   		"spec" : {
+	   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
+			"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
+   		} # type 为 once 和depend 的时候spec 可以不填
+   },
+   "params":[
+   		{
+   			"name":<ParamName>,
+   			"default":<ParamValue>
+   		},
+   		...
+   ]   # type 为 depend的时候，params依赖上游的配置，该配置不填
+}
+```
+ 
+
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+|srcs|array|是|数据来源，所有数据来源中最多包含一个离线任务，但可以包括多个离线数据源|
+|srcs.name|string|是|数据源名称或离线任务名称|
+|srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量|
+|srcs.type|string|是|数据来源节点类型|
+|code|object|是|代码|
+|code.code|string|是|代码|
+|code.type|string|是|代码类型。暂时支持SQL|
+|container|map|是|计算资源|
+|container.type|string|是|规格|
+|container.count|int|是|数量|
+|scheduler|map|是|调度|
+|scheduler.type|string|是|调度方式，定时、循环或单次执行三选一，下游任务是依赖模式|
+|scheduler.spec.crontab|string|否|定时执行|
+|scheduler.spec.loop|string|否|循环执行|
+|params|array|否|自定义参数|
+|params.name|string|是|参数名称|
+|params.default|string|是|默认值|
+
+注意：
+
+1. scheduler.type 如果是depend 模式，代表这个离线任务依赖某个上游的离线任务。首先srcs内有且仅有一个离线任务数据源。同时该任务不能指定调度的模式、魔法变量和容器规格。这些全部使用上游依赖的离线任务。
+
+
+### 更新离线计算任务
+
+**请求方法** 
+
+```
+PUT /v2/jobs/<JobName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+	"srcs":[
+		{
+			"name":<DataSourceName|JobName>,
+			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+			"type":<DataSource|Job>
+		},
+		...
+	],
+   "code": {
+       "code": <SqlCode>,
+       "type": <SQL>
+   },
    "container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
    },
    "scheduler":{
-   		"type": <crontab|loop|once>,
-   		"crontab": <0 0 0/1 * * ?>,
-   		"loop": <1h|2h|....>
+   		"type": <crontab|loop|once|depend>,
+   		"spec" : {
+	   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
+			"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
+   		} # type 为 once 和depend 的时候spec 可以不填
    },
    "params":[
    		{
    			"name":<ParamName>,
-   			"value":<ParamValue>
+   			"default":<ParamValue>
    		},
    		...
    ]
 }
 ```
 
+注意：
+1. 更新时候 srcs, code, container, scheduler, params 校验逻辑和创建的时候相同。下游计算任务不指定container, scheduler, params。更新逻辑为全量更新。需要提前获取所有信息。
+
+
+
+### 列举离线计算任务信息
+
+**请求方法** 
+
+```
+GET /v2/jobs?page=1&size=10&parentRepo=xx&parentJob=yy
+Authorization: Pandora <auth>
+
+```
+
+**响应报文** 
+
+```
+{
+	[
+		{
+			"srcs":[
+				{
+					"name":<DataSourceName|JobName>,
+					"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+					"type":<DataSource|Job>
+				},
+				...
+			],
+		   "scheduler":{
+		   		"type": <crontab|loop|once|depend>,
+   		   		"spec" : {
+			   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
+					"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
+		   		} # type 为 once 和depend 的时候spec 可以不填
+		   },
+		   "code": <SqlCode>,
+		   "container": {
+		       "type": <ContainerType>, 
+		       "count": <ContainerCount>
+		   },
+		   "params":[
+		   		{
+		   			"name":<ParamName>,
+		   			"default":<ParamValue>
+		   		},
+		   		...
+		   ]
+		}
+	]
+	
+}
+```
+
+**查询参数** 
+
+
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-|srcs|array|是|数据来源|
-|srcs.name|string|是|数据源名称或离线任务名称|
-|srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量|
-|srcs.type|string|是|数据来源节点类型|
-|code|string|是|sql代码或jar包名称|
-|container|map|是|计算资源|
-|container.type|string|是|规格|
-|container.count|int|是|数量|
-|scheduler|map|是|调度|
-|scheduler.type|string|是|调度方式，定时、循环或单次执行三选一|
-|scheduler.crontab|string|否|定时执行|
-|scheduler.loop|string|否|循环执行|
-|params|array|否|自定义参数|
-|params.name|string|是|参数名称|
-|params.value|string|是|默认值|
+|page|int|是|分页查询，第几页|
+|size|int|是|分页查询，每页多少条|
+|parentRepo|string|否|依赖离线数据源名字|
+|parentJob|string|是|依赖离线计算任务名字|
+
+
+
+### 获取单个离线计算任务信息
+
+**请求方法** 
+
+```
+GET /v2/jobs/<JobName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+
+```
+
+**响应报文** 
+
+```
+{
+	"srcs":[
+		{
+			"name":<DataSourceName|JobName>,
+			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+			"type":<DataSource|Job>
+		},
+		...
+	],
+   "scheduler":{
+   		"type": <crontab|loop|once|depend>,
+		"spec" : {
+			   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
+					"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
+		   		} # type 为 once 和depend 的时候spec 可以不填
+	},
+   "code": <SqlCode>,
+   "container": {
+       "type": <ContainerType>, 
+       "count": <ContainerCount>
+   },
+   "params":[
+   		{
+   			"name":<ParamName>,
+   			"default":<ParamValue>
+   		},
+   		...
+   ]
+}
+```
+
 
 
 ### 启动离线计算
@@ -853,6 +1022,13 @@ Authorization: Pandora <auth>
 }
 ```
 
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+| params |array|否|定义运行时的魔法参数值|
+| params.name |string|是|魔法变量名字|
+| params.value |string|是|运行时魔法变量值|
+
+
 
 ### 停止离线计算
 
@@ -862,29 +1038,77 @@ Authorization: Pandora <auth>
 ```
 
 
-### 上传Jar
+### 获取计算任务schema
+
+**请求方法** 
 
 ```
-POST /v2/jobs/plugin/<JarName>
-Content-Type: application/java-archive
-Content-MD5: <ContentMD5>
+GET /v2/jobs/<JobName>/schema
 Authorization: Pandora <auth>
 ```
 
-### 获取数据源schema
+**返回内容** 
 
 ```
-GET /v2/schemas
-Content-Type: application/json
-Authorization: Pandora <auth>
 {
-    "region": <Region>, 
-    "bucket": <BucketName>,
-    "keyPrefix": <KeyPrefix>,
-    "fileType":<FileType>
+	"schema": [
+      {
+        "key": <Key>,
+        "valtype": <ValueType>
+      },
+      ...
+    ]
 }
 
 
+```
+
+### 删除离线计算任务信息
+
+**请求方法** 
+
+```
+DELETE /v2/jobs/<JobName>
+Authorization: Pandora <auth>
+```
+
+
+
+### 获取数据源schema
+
+**请求方法** 
+
+```
+POST /v2/schemas
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+	"type": <Kodo|HDFS>, 
+	"spec": <Spec>
+}
+```
+
+**Type为Kodo Spec结构**
+
+
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+| spec.bucket |string|否|对象存储的存储空间|
+| spec.keyPrefix |string|是|一个或者多个文件前缀|
+| spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
+
+**Type为HDFS Spec结构**
+
+
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+| spec.paths |string|是|一个或者多个文件路径|
+| spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
+
+
+**返回内容** 
+
+```
 json or parquet return :
 {
 	"schema": [
@@ -959,25 +1183,54 @@ Authorization: Pandora <auth>
 * `sec` 上传时的秒钟
 
 
+
 ### 查看历史任务
 
 ```
-GET /v2/jobs/<jobName>/history?page=1&size=20
+GET /v2/jobs/<jobName>/history?page=1&size=20&sortBy=endTime&order=desc&status=xx&runid=-1
 Content-Type: application/json
 Authorization: Pandora <auth>
 
 
 return
 
-[
+{
+"total": <TotalCnt>, # 总共运行批次
+"history":[
 	{
+		"id" : <RunCnt>, # 运行批次
 		"startTime": <StartTime>,
 		"endTime": <EndTime>,
-		"status": <Success|Fail|Running|Cancel>,
+		"status": <Ready|Success|Fail|Running|Cancel>,
 		"message": <Message>
 	},
 ]
+}
 ```
+
+**查询参数**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|page|int|否|分页页数|
+| size |int|否|分页大小|
+| sortBy |string|否|根据哪个字段排序|
+| order |string|否|排序asc，desc|
+| status |string|否|<Ready|Success|Fail|Running|Cancel>|
+| runid |int|否|查询某个运行批次的状态，-1代表最近一次|
+
+
+**返回体**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|total|int|是|总运行批次次数|
+|history|array|是|运行历史|
+|history.id|int|是|运行批次|
+| history.startTime |string|否|启动时间|
+| history.endTime |string|否|终止事件，如果为Running，则为当前时间|
+| history.status |string|否|<Ready|Success|Fail|Running|Cancel>|
+| history.message |string|否|运行、出错信息，比如运行成功、内存溢出、数据损坏|
 
 
 
