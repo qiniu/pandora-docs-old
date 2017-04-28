@@ -924,7 +924,7 @@ Authorization: Pandora <auth>
 		},
 		...
 	],
-   "code": {
+   "computation": {
        "code": <SqlCode>,
        "type": <SQL>
    }, 
@@ -992,10 +992,10 @@ Authorization: Pandora <auth>
 		},
 		...
 	],
-   "code": {
+   "computation": {
        "code": <SqlCode>,
        "type": <SQL>
-   },
+   }, 
    "container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
@@ -1053,7 +1053,10 @@ Authorization: Pandora <auth>
 					"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
 		   		} # type 为 once 和depend 的时候spec 可以不填
 		   },
-		   "code": <SqlCode>,
+		   "computation": {
+		       "code": <SqlCode>,
+		       "type": <SQL>
+		   }, 
 		   "container": {
 		       "type": <ContainerType>, 
 		       "count": <ContainerCount>
@@ -1113,7 +1116,10 @@ Authorization: Pandora <auth>
 					"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
 		   		} # type 为 once 和depend 的时候spec 可以不填
 	},
-   "code": <SqlCode>,
+   "computation": {
+       "code": <SqlCode>,
+       "type": <SQL>
+   }, 
    "container": {
        "type": <ContainerType>, 
        "count": <ContainerCount>
@@ -1235,23 +1241,23 @@ Authorization: Pandora <auth>
 json or parquet return :
 {
 	"schema": [
-      {
-        "key": <Key>,
-        "valtype": <ValueType>
-      },
-      ...
-    ]
+		{
+			"key": <Key>,
+			"valtype": <ValueType>
+		},
+		...
+	]
 }
 
 text return :
 {
 	"schema": [
-      {
-        "key": <text>,
-        "valtype": <String>
-      },
-      ...
-    ]
+		{
+			"key": <text>,
+			"valtype": <String>
+		},
+		...
+	]
 }
 
 ```
