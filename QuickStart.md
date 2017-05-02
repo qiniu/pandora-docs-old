@@ -259,6 +259,8 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
 
 业务逻辑代码的编写在src/main/java/userWrite/customLogic/customlogic.java中的**parse**方法中。
 
+!>注意：customlogic.java 此类名称可自由更改。
+
 最终的返回必须是List<OutputData>。
 
 #### 打包上传
