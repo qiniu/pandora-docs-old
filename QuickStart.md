@@ -36,26 +36,26 @@
 ### 使用logkit工具推送数据
 
 
-简介
-------
+#### 简介
+
 
 logkit是Pandora开发的一个通用的日志收集工具，可以将不同数据源的数据方便的发送到Pandora进行数据分析，除了基本的数据发送功能，logkit还有容错、并发、监控、删除等功能。
 
-支持的数据源
-------
+#### 支持的数据源
+
 
 1. 文件(包括csv格式的文件，kafka-rest日志文件，nginx日志文件等)
 2. mysql数据表
 
-工作方式
------
+#### 工作方式
+
 logkit本身支持多种数据源，并且可以同时发送多个数据源的数据到Pandora，每个数据源对应一个逻辑上的runner，一个runner负责一个数据源的数据推送，工作原理如下图所示
 
 
 ![logkit 工作原理图](http://op26gaeek.bkt.clouddn.com/logkit%20arch.png)
 
-使用方式
-------
+#### 使用方式
+
 
 1. 下载&解压logkit工具
 ```
@@ -91,8 +91,8 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
 上面的配置指定了一个runner的配置文件夹，这个配置文件夹下面每个以.conf结尾的文件就代表了一个运行的runner，也就代表了一个logkit正在运行的推送数据的线程。
 
 
-配置详解
-------
+#### 配置详解
+
 
 典型的 csv Runner配置如下。
 
@@ -258,6 +258,8 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
 #### 编写业务逻辑代码
 
 业务逻辑代码的编写在src/main/java/userWrite/customLogic/customlogic.java中的**parse**方法中。
+
+!>注意：customlogic.java 此类名称可自由更改。
 
 最终的返回必须是List<OutputData>。
 
