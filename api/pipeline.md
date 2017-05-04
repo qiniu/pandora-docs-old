@@ -933,13 +933,13 @@ Authorization: Pandora <auth>
    "container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
-   },  # type 为 depend的时候，container依赖上游的配置，该配置不填
+   },  
    "scheduler":{
    		"type": <crontab|loop|once|depend>,
    		"spec" : {
-	   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
-			"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
-   		} # type 为 once 和depend 的时候spec 可以不填
+	   		"crontab": <0 0 0/1 * * ?>,  
+			"loop": <1h|3m|....> 
+   		} 
    },
    "params":[
    		{
@@ -947,10 +947,18 @@ Authorization: Pandora <auth>
    			"default":<ParamValue>
    		},
    		...
-   ]   # type 为 depend的时候，params依赖上游的配置，该配置不填
+   ]   
 }
 ```
  
+
+> scheduler.type 为 depend的时候，container依赖上游的配置，该配置不填
+> 
+> type 为 once 和depend 的时候spec 可以不填
+> 
+> type 为 loop时，不填该spec.loop或者该字段为0，则默认持续运行该任务
+> 
+> type 为 depend的时候，params依赖上游的配置，该配置不填
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
@@ -972,9 +980,7 @@ Authorization: Pandora <auth>
 |params.name|string|是|参数名称|
 |params.default|string|是|默认值|
 
-注意：
-
-1. scheduler.type 如果是depend 模式，代表这个离线任务依赖某个上游的离线任务。首先srcs内有且仅有一个离线任务数据源。同时该任务不能指定调度的模式、魔法变量和容器规格。这些全部使用上游依赖的离线任务。
+!> 注意：scheduler.type 如果是depend 模式，代表这个离线任务依赖某个上游的离线任务。首先srcs内有且仅有一个离线任务数据源。同时该任务不能指定调度的模式、魔法变量和容器规格。这些全部使用上游依赖的离线任务。
 
 
 ### 更新离线计算任务
@@ -1005,9 +1011,9 @@ Authorization: Pandora <auth>
    "scheduler":{
    		"type": <crontab|loop|once|depend>,
    		"spec" : {
-	   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
-			"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
-   		} # type 为 once 和depend 的时候spec 可以不填
+	   		"crontab": <0 0 0/1 * * ?>,
+			"loop": <1h|3m|....> 
+   		}
    },
    "params":[
    		{
@@ -1019,8 +1025,7 @@ Authorization: Pandora <auth>
 }
 ```
 
-注意：
-1. 更新时候 srcs, code, container, scheduler, params 校验逻辑和创建的时候相同。下游计算任务不指定container, scheduler, params。更新逻辑为全量更新。需要提前获取所有信息。
+!> 注意：更新时候 srcs, code, container, scheduler, params 校验逻辑和创建的时候相同。下游计算任务不指定container, scheduler, params。更新逻辑为全量更新。需要提前获取所有信息。
 
 
 
@@ -1051,9 +1056,9 @@ Authorization: Pandora <auth>
 		   "scheduler":{
 		   		"type": <crontab|loop|once|depend>,
    		   		"spec" : {
-			   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
-					"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
-		   		} # type 为 once 和depend 的时候spec 可以不填
+			   		"crontab": <0 0 0/1 * * ?>, 
+					"loop": <1h|3m|....> 
+		   		}
 		   },
 		   "computation": {
 		       "code": <SqlCode>,
@@ -1114,9 +1119,9 @@ Authorization: Pandora <auth>
    "scheduler":{
    		"type": <crontab|loop|once|depend>,
 		"spec" : {
-			   		"crontab": <0 0 0/1 * * ?>,  # type 为crontab
-					"loop": <1h|3m|....> # type 为 loop，但是不填该字段或者该字段为0，则默认持续运行该任务 
-		   		} # type 为 once 和depend 的时候spec 可以不填
+			   		"crontab": <0 0 0/1 * * ?>, 
+					"loop": <1h|3m|....> 
+		   		} 
 	},
    "computation": {
        "code": <SqlCode>,
