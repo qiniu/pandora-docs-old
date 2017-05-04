@@ -44,8 +44,9 @@ logkit是Pandora开发的一个通用的日志收集工具，可以将不同数�
 #### 支持的数据源
 
 
-1. 文件(包括csv格式的文件，kafka-rest日志文件，nginx日志文件等)
+1. 文件(包括csv格式的文件，kafka-rest日志文件，nginx日志文件等,并支持以[grok](https://www.elastic.co/blog/do-you-grok-grok)的方式解析日志)
 2. mysql数据表
+3. Microsoft SQL Server(MSSQL)
 
 #### 工作方式
 
@@ -94,7 +95,9 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
 #### 配置详解
 
 
-典型的 csv Runner配置如下。
+##### 典型的 CSV Runner配置如下。
+
+CSV Runner用来解析CSV文件，并发送解析后的字段到Pandora.
 
 ```
 {
@@ -123,6 +126,156 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
 ```
 
 对于csv文件的上传，只需要修改上述配置文件的`log_path`,`csv_schema`,`pandora_ak`,`pandora_sk`,`pandora_repo_name`就完成了一个基本的上传csv文件的logkit配置。
+
+* 举例说明
+
+日志如下
+
+```
+1493885313 GET /index.html 200
+
+```
+
+csv schema如下
+```
+"csv_schema":"timestamp long, method string, path string, httpcode long" 
+
+```
+
+得到的字段为:
+```
+timestamp: 1493885313
+method: GET
+path: /index.html
+httpcode: 200
+
+```
+
+##### 典型的RAW Runner配置如下。
+Raw Parser将日志文件的每一行解析为一条日志，解析后的日志由两个字段raw和timestamp组成，前者是日志，后者为解析该条日志的时间戳。
+
+```
+{
+    "name":"raw_runner", # 用来标识runner的名字,用以在logkit中区分不同runner的日志
+    "reader":{
+        "mode":"dir", # 是读取方式，支持`dir`和`file`两种
+        "log_path":"/home/user/app/log/dir/", # 需要收集的日志的文件（夹）路径
+        "meta_path":"./metapath", # 是reader的读取offset的记录路径，必须是文件夹
+    },
+    "parser":{
+        "name":"raw_parser", # parser的名字，用以在logkit中区分不同的parser
+        "type":"raw" # 这里raw是关键字
+    },
+    "senders":[{ # senders是
+        "name":"pandora_sender",
+        "sender_type":"pandora", # 如果数据要发送到Pandora，那么必须写pandora
+        "pandora_ak":"your_ak", # 账号的ak
+        "pandora_sk":"your_sk", # 账号的sk
+        "pandora_host":"https://pipeline.qiniu.com",
+        "pandora_repo_name":"your_repo_name", # 账号的repo name
+        "pandora_region":"nb",
+        "pandora_schema":"" # 留空表示将parse出来的字段全数发到pandora，即raw和timestamp
+}]
+}
+
+```
+
+
+* 举例说明
+比如一条日志为
+```
+[03-May-2017 10:16:13 Asia/Shanghai] PHP Warning: Redis::hGet() excepts parameter 2 to be string, array given in xxx
+```
+
+经过raw parser之后，日志会被解析为两个字段
+1. raw="[03-May-2017 10:16:13 Asia/Shanghai] PHP Warning: Redis::hGet() excepts parameter 2 to be string, array given in xxx"
+2. timestamp="<解析这条日志的当前时间>"
+
+raw parser通常用于以下几种情况
+1. 单个日志文件的格式是多种多样的，没有统一的规范；比如操作系统的kernel日志
+2. 对日志的检索需求低，只需要判断日志中是否存在某字段即可；比如检查程序运行中是否有core dump字样
+
+
+##### 简单的GROK Runner配置如下。
+Grok Parser是一个类似于Logstash Grok Parser一样的解析配置方式，其本质是按照正则表达式匹配解析日志。
+更多关于GROK的介绍请参见一下文档
+
+```
+1. https://www.elastic.co/blog/do-you-grok-grok
+2. https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html
+```
+
+假如日志如下：
+```
+55.3.244.1 GET /index.html 15824 0.043
+2016-09-19T18:19:00 [8.8.8.8:prd] DEBUG this is an example log message
+
+```
+
+
+```
+{
+    "name":"grok_runner", # 用来标识runner的名字,用以在logkit中区分不同runner的日志
+    "reader":{
+        "mode":"dir", # 是读取方式，支持`dir`和`file`两种
+        "log_path":"/home/user/app/log/dir/", # 需要收集的日志的文件（夹）路径
+        "meta_path":"./metapath", # 是reader的读取offset的记录路径，必须是文件夹
+    },
+    "parser":{
+        "name":"grok_parser",
+        "type":"grok",
+        "grok_patterns":"%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration},
+%{TIMESTAMP_ISO8601:timestamp} \[%{IPV4:ip};%{WORD:environment}\] %{LOGLEVEL:log_level} %{GREEDYDATA:message}" # 写两个pattern，以逗号分隔,每个pattern负责解析一种类型的日志格式 
+       "grok_custom_patterns":"", # 自定义pattern，可选
+    },
+    "senders":[{ # senders是
+        "name":"pandora_sender",
+        "sender_type":"pandora", # 如果数据要发送到Pandora，那么必须写pandora
+        "pandora_ak":"your_ak", # 账号的ak
+        "pandora_sk":"your_sk", # 账号的sk
+        "pandora_host":"https://pipeline.qiniu.com",
+        "pandora_repo_name":"your_repo_name", # 账号的repo name
+        "pandora_region":"nb",
+        "pandora_schema":"" # 留空表示将parse出来的字段全数发到pandora，即raw和timestamp
+}]
+}
+```
+
+* 举例说明
+假如日志如下：
+```
+55.3.244.1 GET /index.html 15824 0.043
+2016-09-19T18:19:00 [8.8.8.8:prd] DEBUG this is an example log message
+
+```
+
+logkit的grok pattern配置如下
+```
+"parser":{
+"name":"grok_parser",
+"type":"grok",
+"grok_patterns":"%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration},
+%{TIMESTAMP_ISO8601:timestamp} \[%{IPV4:ip};%{WORD:environment}\] %{LOGLEVEL:log_level} %{GREEDYDATA:message}" # 写两个pattern，以逗号分隔
+}
+```
+那么解析出来的字段如下
+第一行
+```
+client: 55.3.244.1
+method: GET
+request: /index.html
+bytes: 15824
+duration: 0.043
+```
+第二行
+```
+"timestamp": "2016-09-19T18:19:00",
+"ip": "8.8.8.8",
+"environment": "prd",
+"log_level": "DEBUG",
+"message": "this is an example log message"
+```
+
 
 ### 数据导出
 
