@@ -798,12 +798,14 @@ Authorization: Pandora <auth>
  |schema.required|bool|是|描述用户在传输数据时`key`字段是否必填|
 
  当type为`hdfs`的时候spec定义如下:
+ 
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
  |spec.path|array|是|包含一个或者多个hdfs文件路径|
  |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
 
  当type为`kodo`的时候spec定义如下:
+ 
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
  |spec.bucket|string|是|对象存储bucket名称|
