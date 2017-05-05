@@ -922,12 +922,13 @@ Authorization: Pandora <auth>
 		{
 			"name":<DataSourceName|JobName>,
 			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
-			"type":<DataSource|Job>
+			"type":<DataSource|Job>,
+			"tableName": <TableName>
 		},
 		...
 	],
    "computation": {
-       "code": <SqlCode>,
+       "code": <Code>,
        "type": <SQL>
    }, 
    "container": {
@@ -935,19 +936,19 @@ Authorization: Pandora <auth>
        "count": <ContainerCount>
    },  
    "scheduler":{
-   		"type": <crontab|loop|once|depend>,
-   		"spec" : {
-	   		"crontab": <0 0 0/1 * * ?>,  
-			"loop": <1h|3m|....> 
-   		} 
+       "type": <crontab|loop|manual|depend>,
+       "spec": {
+           "crontab": <0 0 0/1 * * ?>,
+           "loop": <1h|3m|....>
+       } 
    },
    "params":[
-   		{
-   			"name":<ParamName>,
-   			"default":<ParamValue>
-   		},
-   		...
-   ]   
+       {
+           "name":<ParamName>,
+           "default":<ParamValue>
+       },
+       ...
+   ]
 }
 ```
  
@@ -966,6 +967,7 @@ Authorization: Pandora <auth>
 |srcs.name|string|是|数据源名称或离线任务名称|
 |srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量|
 |srcs.type|string|是|数据来源节点类型|
+|srcs.tableName|string|是|数据来源表名称|
 |code|object|是|代码|
 |code.code|string|是|代码|
 |code.type|string|是|代码类型。暂时支持SQL|
@@ -980,7 +982,9 @@ Authorization: Pandora <auth>
 |params.name|string|是|参数名称|
 |params.default|string|是|默认值|
 
-!> 注意：scheduler.type 如果是depend 模式，代表这个离线任务依赖某个上游的离线任务。首先srcs内有且仅有一个离线任务数据源。同时该任务不能指定调度的模式、魔法变量和容器规格。这些全部使用上游依赖的离线任务。
+!> 注1：scheduler.type 如果是depend 模式，代表这个离线任务依赖某个上游的离线任务。首先srcs内有且仅有一个离线任务数据源。同时该任务不能指定调度的模式、魔法变量和容器规格。这些全部使用上游依赖的离线任务。
+
+!> 注2：srcs.tableName在此任务的srcs中以及依赖的所有上游任务的srcs中不能重复。
 
 
 ### 更新离线计算任务
@@ -996,12 +1000,13 @@ Authorization: Pandora <auth>
 		{
 			"name":<DataSourceName|JobName>,
 			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
-			"type":<DataSource|Job>
+			"type":<DataSource|Job>,
+			"tableName": <TableName>
 		},
 		...
 	],
    "computation": {
-       "code": <SqlCode>,
+       "code": <Code>,
        "type": <SQL>
    }, 
    "container": {
@@ -1009,18 +1014,18 @@ Authorization: Pandora <auth>
        "count": <ContainerCount>
    },
    "scheduler":{
-   		"type": <crontab|loop|once|depend>,
-   		"spec" : {
-	   		"crontab": <0 0 0/1 * * ?>,
-			"loop": <1h|3m|....> 
-   		}
+       "type": <crontab|loop|once|depend>,
+       "spec": {
+           "crontab": <0 0 0/1 * * ?>,
+           "loop": <1h|3m|....>
+       }
    },
    "params":[
-   		{
-   			"name":<ParamName>,
-   			"default":<ParamValue>
-   		},
-   		...
+       {
+           "name":<ParamName>,
+           "default":<ParamValue>
+       },
+       ...
    ]
 }
 ```
@@ -1043,25 +1048,27 @@ Authorization: Pandora <auth>
 
 ```
 {
-	[
+	"jobs":[
 		{
+		   "name": <JobName>
 			"srcs":[
 				{
 					"name":<DataSourceName|JobName>,
 					"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
-					"type":<DataSource|Job>
+					"type":<DataSource|Job>,
+					"tableName": <TableName>
 				},
 				...
 			],
 		   "scheduler":{
-		   		"type": <crontab|loop|once|depend>,
-   		   		"spec" : {
-			   		"crontab": <0 0 0/1 * * ?>, 
-					"loop": <1h|3m|....> 
-		   		}
+		       "type": <crontab|loop|manual|depend>,
+		       "spec": {
+		           "crontab": <0 0 0/1 * * ?>,
+		           "loop": <1h|3m|....>
+		       }
 		   },
 		   "computation": {
-		       "code": <SqlCode>,
+		       "code": <Code>,
 		       "type": <SQL>
 		   }, 
 		   "container": {
@@ -1069,15 +1076,22 @@ Authorization: Pandora <auth>
 		       "count": <ContainerCount>
 		   },
 		   "params":[
-		   		{
-		   			"name":<ParamName>,
-		   			"default":<ParamValue>
-		   		},
-		   		...
+		       {
+		           "name":<ParamName>,
+		           "default":<ParamValue>
+		       },
+		       ...
+		   ]，
+		   "schema": [
+		       {
+		           "key": <Key>,
+		           "valtype": <ValueType>
+		       },
+		       ...
 		   ]
-		}
+		},
+		...
 	]
-	
 }
 ```
 
@@ -1112,16 +1126,17 @@ Authorization: Pandora <auth>
 		{
 			"name":<DataSourceName|JobName>,
 			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
-			"type":<DataSource|Job>
+			"type":<DataSource|Job>,
+			"tableName": <TableName>
 		},
 		...
 	],
    "scheduler":{
-   		"type": <crontab|loop|once|depend>,
-		"spec" : {
-			   		"crontab": <0 0 0/1 * * ?>, 
-					"loop": <1h|3m|....> 
-		   		} 
+       "type": <crontab|loop|manual|depend>,
+       "spec": {
+           "crontab": <0 0 0/1 * * ?>,
+           "loop": <1h|3m|....> 
+		  } 
 	},
    "computation": {
        "code": <SqlCode>,
@@ -1137,7 +1152,14 @@ Authorization: Pandora <auth>
    			"default":<ParamValue>
    		},
    		...
-   ]
+   ]，
+   "schema": [
+      {
+        "key": <Key>,
+        "valtype": <ValueType>
+      },
+      ...
+    ]
 }
 ```
 
@@ -1174,31 +1196,6 @@ POST /v2/jobs/<JobName>/actions/stop
 Authorization: Pandora <auth>
 ```
 
-
-### 获取计算任务schema
-
-**请求方法** 
-
-```
-GET /v2/jobs/<JobName>/schema
-Authorization: Pandora <auth>
-```
-
-**返回内容** 
-
-```
-{
-	"schema": [
-      {
-        "key": <Key>,
-        "valtype": <ValueType>
-      },
-      ...
-    ]
-}
-
-
-```
 
 ### 删除离线计算任务信息
 
@@ -1445,7 +1442,7 @@ return
 
 | 错误码 | 错误描述 |
 | :---  | :----- |
-|500   |服务器内部错误 |
+|500	|服务器内部错误 |
 |411	|E18003: 缺少内容长度|
 |400	|E18004: 无效的内容长度|
 |413	|E18005: 请求实体过大|
@@ -1459,7 +1456,7 @@ return
 |400	|E18105: 仓库Schema为空|
 |400	|E18106: 无效的字段名称|
 |400	|E18107: 不支持的字段类型|
-|400	|E18108: 不正确的时间戳类型|
+|400	|E18108: 源仓库数量超过限制|
 |400	|E18109: 无效的仓库模式|
 |400	|E18110: 无效的字段格式|
 |404	|E18111: 字段不存在|
@@ -1496,6 +1493,6 @@ return
 |404	|E18302: 导出任务不存在|
 |400	|E18303: 提交导出任务失败|
 |400	|E18304: 删除导出任务失败|
-|400   |E18305: 导出任务出现错误|
+|400	|E18305: 导出任务出现错误|
 
 
