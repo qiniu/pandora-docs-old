@@ -25,8 +25,10 @@ HTTP/1.1 200 OK
 * 如果请求包含数据获取,则返回相应数据的JSON字符串；
 
 ### 创建资源池
-**请求语法**
-```
+
+**请求语法**
+
+```
 POST /v2/groups/<GroupName>
 Content-Type: application/json
 Authorization: Pandora <auth>
@@ -37,17 +39,23 @@ Authorization: Pandora <auth>
       "count": <ContainerCount>
     },
     "allocateOnStart": <AllocateOnStart>
-}```
-**请求内容**
-|参数|类型|必填|说明|
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 |GroupName|string|是|资源池名称,用来标识该资源池的唯一性；</br>命名规则:`^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(`nb`)；</br>此参数是为了降低用户传输数据的成本,应当尽量选择离自己数据源较近的区域|
 |container|map|是|计算资源的数量及类型|
 | container.type|string|是|资源类型,目前支持`M16C4`和`M32C8`分别代表`4核(CPU)16G(内存)`和`8核(CPU)32G(内存)`|
 | container.count|int|是|指资源`type`的数量,最小为1,最大为128|
-|allocateOnStart|bool|否|`true`代表在创建资源池的时候就分配资源,</br>`false`代表在该资源池中第一个计算任务启动时,再分配资源；</br>  默认为`false`|**示例**
-```
+|allocateOnStart|bool|否|`true`代表在创建资源池的时候就分配资源,</br>`false`代表在该资源池中第一个计算任务启动时,再分配资源；</br>  默认为`false`|
+
+**示例**
+
+```
 curl -X POST https://pipeline.qiniu.com/v2/groups/test_group \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
@@ -58,11 +66,14 @@ curl -X POST https://pipeline.qiniu.com/v2/groups/test_group \
        "count": 5
     },
     "allocateOnStart": true
-}' ```
+}' 
+```
+
 ### 修改资源池
 
 **请求语法**
-```
+
+```
 PUT /v2/groups/<GroupName>
 Content-Type: application/json
 Authorization: Pandora <auth>
@@ -71,8 +82,12 @@ Authorization: Pandora <auth>
       "type":  <ContainerType>,
       "count": <ContainerCount>
     }
-}```**示例**
-```
+}
+```
+
+**示例**
+
+```
 curl -X POST https://pipeline.qiniu.com/v2/groups/test_group \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \
@@ -81,11 +96,15 @@ curl -X POST https://pipeline.qiniu.com/v2/groups/test_group \
        "type":  "M16C4",
        "count": 5
     }
-}' ```### 启动/停止资源池
+}' 
+```
+
+### 启动/停止资源池
 
 **请求语法**
 
-```POST /v2/groups/<GroupName>/actions/start|stop
+```
+POST /v2/groups/<GroupName>/actions/start|stop
 Authorization: Pandora <auth>
 ```
 
@@ -105,11 +124,16 @@ curl -X POST https://pipeline.qiniu.com/v2/groups/test_group/actions/stop \
 
 ### 查询所有资源池
 
-**请求语法**```
+**请求语法**
+
+```
 GET /v2/groups 
-Authorization: Pandora <auth>```
-**响应报文** 
-```
+Authorization: Pandora <auth>
+```
+
+**响应报文** 
+
+```
 Content-Type: application/json
 {
     "groups": [
@@ -123,7 +147,9 @@ Content-Type: application/json
       },
       ...
     ]
-}```
+}
+```
+
 ### 根据名称查询资源池
 
 **请求语法**
@@ -145,7 +171,9 @@ Authorization: Pandora <auth>
     },
     "createTime": <CreateTime>,
     "updateTime": <UpdateTime>
-  }```
+  }
+```
+
 **响应内容**
 
 |参数|类型|必填|说明|
@@ -156,12 +184,18 @@ Authorization: Pandora <auth>
 
 ### 根据名称删除资源池
 
-**请求语法**```
+**请求语法**
+
+```
 DELETE /v2/groups/<GroupName>
-Authorization: Pandora <auth>```
-### 创建消息队列
-**请求语法**
-```
+Authorization: Pandora <auth>
+```
+
+### 创建消息队列
+
+**请求语法**
+
+```
 POST /v2/repos/<RepoName>
 Content-Type: application/json
 Authorization: Pandora <auth>
@@ -182,8 +216,10 @@ Authorization: Pandora <auth>
     ]
 }
 ```
-**请求内容**
-|参数|类型|必填|说明|
+
+**请求内容**
+
+|参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 |RepoName|string|是|消息队列名称,用来标识该消息队列的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(代号`nb`)；</br>此参数是为了降低用户传输数据的成本；应当尽量选择离自己数据源较近的区域|
@@ -246,14 +282,21 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
     ]
 }'
 ```
-### 查看所有消息队列
-**请求语法**
 
-```GET /v2/reposAuthorization: Pandora <auth>
+### 查看所有消息队列
+
+**请求语法**
+
 ```
-**响应报文** 
+GET /v2/repos
+Authorization: Pandora <auth>
+```
 
-```Content-Type: application/json{
+**响应报文** 
+
+```
+Content-Type: application/json
+{
     "repos": [
       {
         "name": <RepoName>,
@@ -263,7 +306,8 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
       },
       ...
     ]
-}```
+}
+```
 
 **响应内容**
 
@@ -271,12 +315,18 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
 |:---|:---|:---:|:---|
 |derivedFrom|string|-|表示这个repo是由哪个transform生成的,如果此项为空,说明该repo是由用户自行创建的|
 
-### 根据名称查询消息队列
-**请求语法**
 
-```GET /v2/repos/<RepoName>Authorization: Pandora <auth>
+
+### 根据名称查询消息队列
+
+**请求语法**
+
 ```
-**响应报文** 
+GET /v2/repos/<RepoName>
+Authorization: Pandora <auth>
+```
+
+**响应报文** 
 
 ```
 Content-Type: application/json
@@ -294,11 +344,17 @@ Content-Type: application/json
    ]
 }
 ```
-### 根据名称删除消息队列
-**请求语法**
 
-```DELETE /v2/repos/<RepoName>Authorization: Pandora <auth>
-```### 根据名称更新消息队列
+### 根据名称删除消息队列
+
+**请求语法**
+
+```
+DELETE /v2/repos/<RepoName>
+Authorization: Pandora <auth>
+```
+
+### 根据名称更新消息队列
 
 **请求语法**
 
@@ -318,8 +374,10 @@ Authorization: Pandora <auth>
 	]
 }
 ```
-**示例**
-```
+
+**示例**
+
+```
 curl -X PUT https://pipeline.qiniu.com/v2/repos/test_repo \
 	 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
 	 
@@ -332,23 +390,54 @@ curl -X PUT https://pipeline.qiniu.com/v2/repos/test_repo \
 	  },
 	  ...
 	]
-}```### 数据推送
-**请求语法**
-```POST /v2/repos/<RepoName>/dataContent-Type: application/textAuthorization: Pandora <auth>keyName=valName<TAB>keyName=valName ...keyName=valName<TAB>keyName=valName ......
+}
 ```
-**请求内容**|参数|类型|必填|说明|
+
+### 数据推送
+
+**请求语法**
+
+```
+POST /v2/repos/<RepoName>/data
+Content-Type: application/text
+Authorization: Pandora <auth>
+keyName=valName<TAB>keyName=valName ...
+keyName=valName<TAB>keyName=valName ...
+...
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
 |:---|:---|:---|:---|
 | RepoName |string|  是  |消息队列的名称|
 | keyName |string|是|消息队列的`schema`中`key`的值,即字段名称|
 | valName |string|是|对应key的数据内容<br/> 注意:如果是`string`类型,那么 `\t`、`\r`、`\n` `\` 需要用`\`转义,空格`' '` 可以不转义|
 
-!> 注意:对于`array`类型，打点格式为`[e1,e2,...,en]`，数组元素采用逗号分割，且所有元素使用`[]`包括，当元素类型为`string`时，需要加上双引号;对于`map`类型，打点格式为json字符串，比如`{"f1":123,"f2":"abc"}`，注意所有元素使用`{}`包括;另外，多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔,单次分隔的长度不超过100KB**示例**```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/data \-H 'Content-Type: application/text' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{
-	userName=小张		age=22   addresses=["beijing","shanghai"] profile={"position":"engineer",salary:15000} 	userName=小王		age=28   addresses=["hangzhou","shenzhen"] profile={"position":"engineer",salary:12000}
-	}'```
-### 创建计算任务
-**请求语法**
+!> 注意:对于`array`类型，打点格式为`[e1,e2,...,en]`，数组元素采用逗号分割，且所有元素使用`[]`包括，当元素类型为`string`时，需要加上双引号;对于`map`类型，打点格式为json字符串，比如`{"f1":123,"f2":"abc"}`，注意所有元素使用`{}`包括;另外，多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔,单次分隔的长度不超过100KB
 
-```POST /v2/repos/<RepoName>/transforms/<TransformName>/to/<DestinationRepoName>Content-Type: application/jsonAuthorization: Pandora <auth>{
+
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/data \
+-H 'Content-Type: application/text' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+	userName=小张		age=22   addresses=["beijing","shanghai"] profile={"position":"engineer",salary:15000} 
+	userName=小王		age=28   addresses=["hangzhou","shenzhen"] profile={"position":"engineer",salary:12000}
+	}'
+```
+
+### 创建计算任务
+
+**请求语法**
+
+```
+POST /v2/repos/<RepoName>/transforms/<TransformName>/to/<DestinationRepoName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
   "plugin": {
     "name": <PluginName>,
     "output": [
@@ -361,12 +450,20 @@ curl -X PUT https://pipeline.qiniu.com/v2/repos/test_repo \
       },
       ......
     ],
-  },  "mode": <Mode>,  "code": <Code>,  "interval": <Interval>,  "container": {
+  },
+  "mode": <Mode>,
+  "code": <Code>,
+  "interval": <Interval>,
+  "container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
-  }}
+  }
+}
 ```
-**请求内容**|参数|类型|必填|说明|
+
+**请求内容**
+
+|参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | RepoName |string|是|指定一个消息队列的名称|
 | TransformName |string|是|为这个计算任务取个名字,用来标识该消息队列的唯一性;</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
@@ -390,10 +487,18 @@ curl -X PUT https://pipeline.qiniu.com/v2/repos/test_repo \
 **示例**
 
 ```
-curl -X POST https://pipeline.qiniu.com/v2/repos/test_repo/transforms/transform_job/to/compute_repo \	 -H 'Content-Type: application/json' \	 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \	 -d {  		"mode": "sql",  		"code": "select count(*) from test_repo",  		"interval": "1m",  		"container": {
+curl -X POST https://pipeline.qiniu.com/v2/repos/test_repo/transforms/transform_job/to/compute_repo \
+	 -H 'Content-Type: application/json' \
+	 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+	 -d {
+  		"mode": "sql",
+  		"code": "select count(*) from test_repo",
+  		"interval": "1m",
+  		"container": {
        		"type": "M16C4",
        		"count": 5
-  			}		}
+  			}
+		}
 ```
 
 ### 编写自定义计算
@@ -485,7 +590,9 @@ Transform-Type: application/<TransformType>
 ```
 curl -G https://pipeline.qiniu.com/v2/repos/test_repo/transforms/test_transform \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
-```### 修改计算任务
+```
+
+### 修改计算任务
 
 **请求语法**
 
@@ -517,7 +624,8 @@ Authorization: Pandora <auth>
 ```
 
 **请求内容**
-|参数|类型|必填|说明|
+
+|参数|类型|必填|说明|
 |:---|:---|:---|:---|
 |plugin|json|否|自定义计算|
 |code|string|否|sql语句|
@@ -529,41 +637,94 @@ Authorization: Pandora <auth>
 >1.更新计算任务,可以同时更新`plugin`、`sql代码`、`运行时间间隔`和`配额`,也可以只更新其中一种,但不能一种都不指定。
 
 >2.在更新`sql`和`plugin的输出字段`时,只能添加新的字段,不能删除和更改已经存在的字段。
-### 删除计算任务
-**请求语法**
-```DELETE /v2/repos/<RepoName>/transforms/<TransformName>
+
+### 删除计算任务
+
+**请求语法**
+
+```
+DELETE /v2/repos/<RepoName>/transforms/<TransformName>
 Authorization: Pandora <auth>
 ```
-### 导出数据至HTTP地址
-**请求语法**```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <http>,  "whence": <ExportWhence>,  "spec": {
+
+### 导出数据至HTTP地址
+
+**请求语法**
+
+```
+POST /v2/repos/<RepoName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <http>,
+  "whence": <ExportWhence>,
+  "spec": {
 		"host": <Host>,      
 		"uri": <RequestURI>  
-	}}
+	}
+}
 ```
-**请求内容**
-|参数|类型|必填|说明|
+
+**请求内容**
+
+|参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | RepoName |string|是|需要导出数据的消息队列名称|
 | ExportName |string|是|为这个导出任务起一个名字,</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 | Type |string|是|导出方式,目前支持`http`、`logDB`、`mongoDB`、`tsdb`、`kodo`,</br>在这里我们选择`http`|
-|whence|string|否|导出数据的起始位置,目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出,默认值为oldest|| Spec |json|是|导出任务的参数主体,选择不同的`type`,`Spec`也需要填写不同的参数,将在下面分开讲解|| host |string|是|服务器地址（ip或域名）,例如:`https://pipeline.qiniu.com` 或 `127.0.0.1:7758`|
+|whence|string|否|导出数据的起始位置,目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出,默认值为oldest|
+| Spec |json|是|导出任务的参数主体,选择不同的`type`,`Spec`也需要填写不同的参数,将在下面分开讲解|
+| host |string|是|服务器地址（ip或域名）,例如:`https://pipeline.qiniu.com` 或 `127.0.0.1:7758`|
 | uri |string|是|请求资源路径（具体地址,不包含ip或域名）,例如:`/test/repos`|
 
-!> 注意: 导出数据格式和`推送数据`相同。**示例**
+!> 注意: 导出数据格式和`推送数据`相同。
 
-```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job1 \-H 'Content-Type: application/json' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{  "type": "http",  "spec": {
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job1 \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+  "type": "http",
+  "spec": {
 	"host": "www.qiniu.com",
-	"uri": "/test/repos"  }}'
+	"uri": "/test/repos"
+  }
+}'
 ```
 
 ### 导出数据至时序数据库
 
 **请求语法**
 
-```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <tsdb>,  "whence": <ExportWhence>,  "spec": {        "destRepoName": <DestRepoName>,        "series": <SeriesName>,        "tags": {            "tag1": <#key1>,            "tag2": <#key2>,            ...        },        "fields": {            "field1": <#key1>,            "field2": <#key2>,            ...        },        "timestamp": <#key1>,        }
-}```
+```
+POST /v2/repos/<RepoName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <tsdb>,
+  "whence": <ExportWhence>,
+  "spec": {
+        "destRepoName": <DestRepoName>,
+        "series": <SeriesName>,
+        "tags": {
+            "tag1": <#key1>,
+            "tag2": <#key2>,
+            ...
+        },
+        "fields": {
+            "field1": <#key1>,
+            "field2": <#key2>,
+            ...
+        },
+        "timestamp": <#key1>,   
+     }
+}
+```
 **请求内容**
-|参数|类型|必填|说明|
+
+|参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | destRepoName |string|是|数据库名称|
 | series |string|是|数据库序列名称|
@@ -576,21 +737,52 @@ Authorization: Pandora <auth>
 
 **示例**
 
-```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job4 \-H 'Content-Type: application/json' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{  "type": "tsdb",  "spec":{      	"destRepoName": "test_tsdb",
+```
+curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job4 \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+  "type": "tsdb",
+  "spec":{
+      	"destRepoName": "test_tsdb",
 		"series": "req_io",
 		"tags": {"type": "#type","src": "#src","zone": "#zone","time": "#time","bucket": "#bucket","domain": "#domain"
 		},
-		"fields": {"hits": "#hits","flow": "#flow"},            	}}'
+		"fields": {"hits": "#hits","flow": "#flow"},            
+	}
+}'
 ```
-### 导出数据至日志检索服务
-**请求语法**
-```POST /v2/repos/<RepoName>/exports/<ExportName>Content-Type: application/jsonAuthorization: Pandora <auth>{  "type": <logdb>,  "whence": <ExportWhence>,  "spec": {        "destRepoName": <DestRepoName>,                      "doc": {            "toRepoSchema1": <#fromRepoSchema1>,            "toRepoSchema2": {            	"toRepoSchema3": <#fromRepoSchema3>,            }            ......        }}```
+
+### 导出数据至日志检索服务
+
+**请求语法**
+
+```
+POST /v2/repos/<RepoName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <logdb>,
+  "whence": <ExportWhence>,
+  "spec": {
+        "destRepoName": <DestRepoName>,              
+        "doc": {
+            "toRepoSchema1": <#fromRepoSchema1>,
+            "toRepoSchema2": {
+            	"toRepoSchema3": <#fromRepoSchema3>,
+            }
+            ......
+        }
+}
+```
 
 **请求内容**
-|参数|类型|必填|说明|
+
+|参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | destRepoName |string|是|日志仓库名称,命名规则遵循消息队列名称,如果输入的名称不存在,系统将会自动创建一个|
-| doc |map|否|字段关系说明, `fromRepoSchema`表示源消息队列字段名称,`toRepoSchema`表示目标日志仓库字段名称,如果不填写该字段,则默认按照源消息队列字段信息录入|
+| doc |map|否|字段关系说明, `fromRepoSchema`表示源消息队列字段名称,`toRepoSchema`表示目标日志仓库字段名称,如果不填写该字段,则默认按照源消息队列字段信息录入|
+
 > 消息队列中,字段的类型与日志检索服务中的字段类型需要作出如下对应:
 > 
 > 消息队列类型:string 对应 日志检索服务:string / date
@@ -601,19 +793,34 @@ Authorization: Pandora <auth>
 > 
 > 消息队列类型:array、map 对应 日志检索服务:object
 > 
-> 消息队列类型:date 对应 日志检索服务:date **示例**
-```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job2 \-H 'Content-Type: application/json' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{  "type": "logDB",  "spec": {
-	  "destRepoName": "logDB_testRepo", 	  "doc":{
+> 消息队列类型:date 对应 日志检索服务:date 
+
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job2 \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+  "type": "logDB",
+  "spec": {
+	  "destRepoName": "logDB_testRepo", 
+	  "doc":{
 			"user":"userName",
 			"profile":{
 				"age":"age"
-			}	  }	}}'
+			}
+	  }
+	}
+}'
 ```
 
 ### 导出数据至对象存储服务
 
 **请求语法**
-```POST /v2/repos/<RepoName>/exports/<ExportName>
+
+```
+POST /v2/repos/<RepoName>/exports/<ExportName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
@@ -690,18 +897,33 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/repox/exports/export1 \
 		"compress": true
 }' 
 ```
-### 导出数据至MongoDB
-**请求语法**```POST /v2/repos/<RepoName>/exports/<ExportName>
+
+### 导出数据至MongoDB
+
+**请求语法**
+
+```
+POST /v2/repos/<RepoName>/exports/<ExportName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
     "type": <mongodb>,
     "whence": <ExportWhence>,
-    "spec": {        "host": <Host>,                                  "dbName": <DatabaseName>,                       "collName": <CollectionName>,                    "mode": [<INSERT>|<UPDATE>|<UPSERT>],                   "updateKey": <UpdateKey>,                       "doc": <Doc>,                                   "version": <MongoVersion>
-	}}   ```
+    "spec": {
+        "host": <Host>,                          
+        "dbName": <DatabaseName>,               
+        "collName": <CollectionName>,            
+        "mode": [<INSERT>|<UPDATE>|<UPSERT>],           
+        "updateKey": <UpdateKey>,               
+        "doc": <Doc>,                           
+        "version": <MongoVersion>
+	}
+}   
+```
 
 **请求内容**
-|参数|类型|必填|说明|
+
+|参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | host |string|是|数据库的host地址|
 | dbName |string|是|数据库名字|
@@ -709,10 +931,29 @@ Authorization: Pandora <auth>
 | Mode |string|是|插入方式,分为INSERT/UPDATE/UPSERT三种|
 | updateKey |string[]|否|假如插入方式是UPDATE或UPSERT,需要指定该参数|
 | doc |json|是|插入或者更新的内容,支持mongo的update `$set` `$inc`等语法,可以用`$#colum`,</br>如果不填写该字段,则默认按照源表信息录入|
-| version |int|否|mongo的版本号|**示例**
+| version |int|否|mongo的版本号|
 
-```curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job3 \-H 'Content-Type: application/json' \-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \-d '{  "type": "mongo",  "spec":{        "host": "192.168.61.31:37217",                                  "dbName": "test_mongo",                       "collName": "req_rs_5m",                    "mode": "UPDATE",                   "updateKey": ["uid","zone","time_5m","bucket"],                       "doc": {"$inc": {"hits": "#hits"}},                                   "version": "2.4.7"            	}}'
-```### 更新导出任务
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job3 \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+  "type": "mongo",
+  "spec":{
+        "host": "192.168.61.31:37217",                          
+        "dbName": "test_mongo",               
+        "collName": "req_rs_5m",            
+        "mode": "UPDATE",           
+        "updateKey": ["uid","zone","time_5m","bucket"],               
+        "doc": {"$inc": {"hits": "#hits"}},                           
+        "version": "2.4.7"            
+	}
+}'
+```
+
+### 更新导出任务
 
 **请求语法**
 
@@ -737,13 +978,15 @@ Authorization: Pandora <auth>
 
 **响应报文** 
 
-```Content-Type: application/json
+```
+Content-Type: application/json
 {
     "name": <ExportName>,
     "type": <ExportSchema>,
     "spec": <Spec>,
     "whence": <ExportWhence>
-}```
+}
+```
 
 ### 根据名称查看导出任务
 
@@ -755,7 +998,8 @@ Authorization: Pandora <auth>
 ```
 
 ### 根据名称删除导出任务
-**请求语法**
+
+**请求语法**
 
 ```
 DELETE /v2/repos/<RepoName>/exports/<ExportName>
@@ -968,9 +1212,9 @@ Authorization: Pandora <auth>
 |srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量|
 |srcs.type|string|是|数据来源节点类型|
 |srcs.tableName|string|是|数据来源表名称|
-|code|object|是|代码|
-|code.code|string|是|代码|
-|code.type|string|是|代码类型。暂时支持SQL|
+|computation|object|是|计算|
+|computation.code|string|是|代码片段|
+|computation.type|string|是|代码类型。暂时支持SQL|
 |container|map|是|计算资源|
 |container.type|string|是|规格|
 |container.count|int|是|数量|
@@ -1269,7 +1513,9 @@ text return :
 ### 创建离线计算导出任务
 
 **请求语法**
-```POST /v2/jobs/<JobName>/exports/<ExportName>
+
+```
+POST /v2/jobs/<JobName>/exports/<ExportName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
@@ -1277,11 +1523,6 @@ Authorization: Pandora <auth>
     "spec": {
          "bucket": <Bucket>,
          "keyPrefix": <Prefix|Path>,
-         "fields": {
-             "key1": <#key1>,
-             "key2": <#key2>,
-             ...
-          },   
          "format": <ExportFormat>,
          "compress": <true|false>,
          "retention": <Retention>,
@@ -1298,8 +1539,7 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 |type|string|是|导出的类型，目前允许的值为"kodo"|
 |bucket|string|是|对象存储bucket名称|
-|keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`once`的时候，就是文件名|
-|fields|map|是|字段关系说明,`key`为`kodo-bucket`的字段名,`value`为离线任务的数据源中的字段名|
+|keyPrefix|string|是|导出的文件名的前缀，当离线任务的`scheduler`是`manual`的时候，就是文件名|
 |format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`parquet`|
 |compress|bool|否|是否开启文件压缩功能,默认为`false`|
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
@@ -1493,6 +1733,11 @@ return
 |404	|E18302: 导出任务不存在|
 |400	|E18303: 提交导出任务失败|
 |400	|E18304: 删除导出任务失败|
-|400	|E18305: 导出任务出现错误|
+|400	|E18305: 导出任务出现错误|
+
+
+
+
+
 
 
