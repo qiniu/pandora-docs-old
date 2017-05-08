@@ -1165,7 +1165,7 @@ Authorization: Pandora <auth>
 	"srcs":[
 		{
 			"name":<DataSourceName|JobName>,
-			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+			"fileFilter":<fileFilter>,
 			"type":<DataSource|Job>,
 			"tableName": <TableName>
 		},
@@ -1243,7 +1243,7 @@ Authorization: Pandora <auth>
 	"srcs":[
 		{
 			"name":<DataSourceName|JobName>,
-			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+			"fileFilter":<fileFilter>,
 			"type":<DataSource|Job>,
 			"tableName": <TableName>
 		},
@@ -1298,7 +1298,7 @@ Authorization: Pandora <auth>
 			"srcs":[
 				{
 					"name":<DataSourceName|JobName>,
-					"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+					"fileFilter":<fileFilter>,
 					"type":<DataSource|Job>,
 					"tableName": <TableName>
 				},
@@ -1368,7 +1368,7 @@ Authorization: Pandora <auth>
 	"srcs":[
 		{
 			"name":<DataSourceName|JobName>,
-			"fileFilter":<KeyPrefix/$yyyy-$mm-$dd>,
+			"fileFilter":<fileFilter>,
 			"type":<DataSource|Job>,
 			"tableName": <TableName>
 		},
@@ -1470,7 +1470,7 @@ Authorization: Pandora <auth>
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
 | spec.bucket |string|否|对象存储的存储空间|
-| spec.keyPrefix |string|是|一个或者多个文件前缀|
+| spec.keyPrefix |array|是|一个或者多个文件前缀|
 | spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
 
 **Type为HDFS Spec结构**
@@ -1478,7 +1478,7 @@ Authorization: Pandora <auth>
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-| spec.paths |string|是|一个或者多个文件路径|
+| spec.paths |array|是|一个或者多个文件路径|
 | spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
 
 
