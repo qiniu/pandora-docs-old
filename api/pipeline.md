@@ -1283,7 +1283,7 @@ Authorization: Pandora <auth>
 **请求方法** 
 
 ```
-GET /v2/jobs?page=1&size=10&parentRepo=xx&parentJob=yy
+GET /v2/jobs?srcDatasource=[DataSourceName]&srcJob=[JobName]
 Authorization: Pandora <auth>
 
 ```
@@ -1294,7 +1294,7 @@ Authorization: Pandora <auth>
 {
 	"jobs":[
 		{
-		   "name": <JobName>
+		    "name": <JobName>,
 			"srcs":[
 				{
 					"name":<DataSourceName|JobName>,
@@ -1344,11 +1344,10 @@ Authorization: Pandora <auth>
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-|page|int|是|分页查询，第几页|
-|size|int|是|分页查询，每页多少条|
-|parentRepo|string|否|依赖离线数据源名字|
-|parentJob|string|是|依赖离线计算任务名字|
+|srcDatasource|string|否|依赖离线数据源名字|
+|srcJob|string|否|依赖离线计算任务名字|
 
+!> 注意: srcDataSource和srcJob不能同时存在。当两个参数都不指定的时候列举出所有的离线计算任务。
 
 
 ### 获取单个离线计算任务信息
