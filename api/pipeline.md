@@ -1523,7 +1523,7 @@ Authorization: Pandora <auth>
          "bucket": <Bucket>,
          "keyPrefix": <Prefix|Path>,
          "format": <ExportFormat>,
-         "compress": <true|false>,
+         "compression": <compression>,
          "retention": <Retention>,
          "partitionBy": <PartitionBy>，
          "fileCount": <FileCount>,
@@ -1540,13 +1540,13 @@ Authorization: Pandora <auth>
 |bucket|string|是|对象存储bucket名称|
 |keyPrefix|string|是|导出的文件名的前缀，当离线任务的`scheduler`是`manual`的时候，就是文件名|
 |format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`parquet`|
-|compress|bool|否|是否开启文件压缩功能,默认为`false`|
+|compression|string|否|压缩类型, 支持`none`、`bzip2`、`gzip`、`lz4`、`snappy` 和 `deflate`, 默认为`none`(不压缩)|
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
 |fileCount|int|是|计算结果导出的文件数量，应当大于0，小于1000|
 |overwrite|bool|否|是否对已经存在的文件覆盖写，默认为`true`|
 
-!> 注1: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
+!> 注1: 当用户指定`format`为`parquet`时, `compression`仅支持`none`、`snappy`、 `gzip` 和 `lzo`。
 
 !> 注2: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
 
