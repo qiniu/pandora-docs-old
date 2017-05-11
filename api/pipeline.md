@@ -1684,7 +1684,7 @@ Authorization: Pandora <auth>
 |history.id|int|是|运行批次|
 | history.startTime |string|否|启动时间|
 | history.endTime |string|否|终止事件，如果为Running，则为当前时间|
-| history.status |string|否|<Ready|Success|Fail|Running|Cancel>|
+| history.status |string|否|<Ready、Success、Fail、Running、Cancel>|
 | history.message |string|否|运行、出错信息，比如运行成功、内存溢出、数据损坏|
 
 
