@@ -47,6 +47,8 @@ logkit是Pandora开发的一个通用的日志收集工具，可以将不同数�
 1. 文件(包括csv格式的文件，kafka-rest日志文件，nginx日志文件等,并支持以[grok](https://www.elastic.co/blog/do-you-grok-grok)的方式解析日志)
 2. mysql数据表
 3. Microsoft SQL Server(MSSQL)
+4. elastic search
+5. mongodb
 
 #### 工作方式
 
@@ -102,14 +104,17 @@ CSV Runner用来解析CSV文件，并发送解析后的字段到Pandora.
 ```
 {
     "name":"csv_runner", # 用来标识runner的名字,用以在logkit中区分不同runner的日志
+    "batch_len": 1000,  # 批量发送，1000条一次，在单条数据小的情况下可以填2000~5000
     "reader":{
         "mode":"dir", # 是读取方式，支持`dir`和`file`两种
         "log_path":"/home/user/app/log/dir/", # 需要收集的日志的文件（夹）路径
         "meta_path":"./metapath", # 是reader的读取offset的记录路径，必须是文件夹
+        "encoding":"utf-8" #文件编码格式
     },
     "parser":{
         "name":"csv_parser", # parser的名字，用以在logkit中区分不同的parser
         "type":"csv",
+        "csv_splitter":",", # csv分隔符，默认是'\t'
         "csv_schema":"timestamp long, method string, path string, httpcode long" # 按照逗号分隔的字符串，每个部分格式按照`字段名 字段类型`构成，字段类型现在支持`string`, `long`, `jsonmap`, `float`
     },
     "senders":[{ # senders是
@@ -119,8 +124,7 @@ CSV Runner用来解析CSV文件，并发送解析后的字段到Pandora.
         "pandora_sk":"your_sk", # 账号的sk
         "pandora_host":"https://pipeline.qiniu.com",
         "pandora_repo_name":"your_repo_name", # 账号的repo name
-        "pandora_region":"nb",
-        "pandora_schema":"" # 留空表示将parse出来的字段全数发到pandora
+        "pandora_region":"nb"
 }]
 }
 ```
@@ -276,6 +280,7 @@ duration: 0.043
 "message": "this is an example log message"
 ```
 
+#### 更多logkit用法请参见logkit页面
 
 ### 数据导出
 
