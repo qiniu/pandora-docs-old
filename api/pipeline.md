@@ -1028,7 +1028,8 @@ Authorization: Pandora <auth>
      ]
  }
  ```
-
+ 
+**请求内容**
 
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
@@ -1155,7 +1156,7 @@ Authorization: Pandora <auth>
 
 ### 创建离线计算任务
 
-**请求方法** 
+**请求语法** 
 
 ```
 POST /v2/jobs/<JobName>
@@ -1205,6 +1206,8 @@ Authorization: Pandora <auth>
 > 
 > type 为 depend的时候，params依赖上游的配置，该配置不填
 
+**请求内容**
+
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
 |srcs|array|是|数据来源，所有数据来源中最多包含一个离线任务，但可以包括多个离线数据源|
@@ -1233,7 +1236,7 @@ Authorization: Pandora <auth>
 
 ### 更新离线计算任务
 
-**请求方法** 
+**请求语法** 
 
 ```
 PUT /v2/jobs/<JobName>
@@ -1280,7 +1283,7 @@ Authorization: Pandora <auth>
 
 ### 列举离线计算任务信息
 
-**请求方法** 
+**请求语法** 
 
 ```
 GET /v2/jobs?srcDatasource=[DataSourceName]&srcJob=[JobName]
@@ -1339,7 +1342,7 @@ Authorization: Pandora <auth>
 }
 ```
 
-**查询参数** 
+**请求内容** 
 
 
 |名称|类型|必填|描述|
@@ -1352,7 +1355,7 @@ Authorization: Pandora <auth>
 
 ### 获取单个离线计算任务信息
 
-**请求方法** 
+**请求语法** 
 
 ```
 GET /v2/jobs/<JobName>
@@ -1410,6 +1413,8 @@ Authorization: Pandora <auth>
 
 ### 启动离线计算
 
+**请求语法**
+
 ```
 POST /v2/jobs/<JobName>/actions/start
 Authorization: Pandora <auth>
@@ -1424,6 +1429,8 @@ Authorization: Pandora <auth>
 }
 ```
 
+**请求内容**
+
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
 | params |array|否|定义运行时的魔法参数值|
@@ -1434,6 +1441,8 @@ Authorization: Pandora <auth>
 
 ### 停止离线计算
 
+**请求语法**
+
 ```
 POST /v2/jobs/<JobName>/actions/stop
 Authorization: Pandora <auth>
@@ -1442,7 +1451,7 @@ Authorization: Pandora <auth>
 
 ### 删除离线计算任务信息
 
-**请求方法** 
+**请求语法** 
 
 ```
 DELETE /v2/jobs/<JobName>
@@ -1452,7 +1461,7 @@ Authorization: Pandora <auth>
 
 ### 获取数据源schema
 
-**请求方法** 
+**请求语法** 
 
 ```
 POST /v2/schemas
@@ -1464,8 +1473,9 @@ Authorization: Pandora <auth>
 }
 ```
 
-**Type为Kodo Spec结构**
+**请求内容**
 
+Type为Kodo时，Spec结构：
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
@@ -1473,8 +1483,7 @@ Authorization: Pandora <auth>
 | spec.keyPrefix |array|是|一个或者多个文件前缀|
 | spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
 
-**Type为HDFS Spec结构**
-
+Type为HDFS时，Spec结构：
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
@@ -1482,7 +1491,7 @@ Authorization: Pandora <auth>
 | spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
 
 
-**返回内容** 
+**响应内容** 
 
 ```
 json or parquet return :
@@ -1629,29 +1638,15 @@ Authorization: Pandora <auth>
 
 ### 查看历史任务
 
+**请求语法**
+
 ```
 GET /v2/jobs/<jobName>/history?page=1&size=20&sortBy=endTime&order=desc&status=xx&runid=-1
 Content-Type: application/json
 Authorization: Pandora <auth>
-
-
-return
-
-{
-"total": <TotalCnt>, # 总共运行批次
-"history":[
-	{
-		"id" : <RunCnt>, # 运行批次
-		"startTime": <StartTime>,
-		"endTime": <EndTime>,
-		"status": <Ready|Success|Fail|Running|Cancel>,
-		"message": <Message>
-	},
-]
-}
 ```
 
-**查询参数**
+**请求内容**
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
@@ -1659,11 +1654,28 @@ return
 | size |int|否|分页大小|
 | sortBy |string|否|根据哪个字段排序|
 | order |string|否|排序asc，desc|
-| status |string|否|<Ready|Success|Fail|Running|Cancel>|
+| status |string|否|<Ready、Success、Fail、Running、Cancel>|
 | runid |int|否|查询某个运行批次的状态，-1代表最近一次|
 
 
-**返回体**
+**响应报文**
+
+```
+{
+"total": <TotalCnt>, # 总共运行批次
+"history":[
+	{
+		"id" : <RunCnt>, # 运行批次
+		"startTime": <StartTime>,
+		"endTime": <EndTime>,
+		"status": <Ready、Success、Fail、Running、Cancel>,
+		"message": <Message>
+	},
+]
+}
+```
+
+**响应内容**
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
