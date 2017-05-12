@@ -54,18 +54,23 @@ logkit本身支持多种数据源，并且可以同时发送多个数据源的�
 
 
 1. 下载&解压logkit工具
+
 ```
 wget http://op26gaeek.bkt.clouddn.com/logkit.tar.gz && tar xvf logkit.tar.gz
 ```
 
 2. 修改runner的配置
+
 ```
 打开 _package/confs/default.conf
 ```
+
 按照图示进行修改
+
 ![需要修改的字段](http://op26gaeek.bkt.clouddn.com/logkit%20conf.png)
 
 3. 启动logkit工具
+
 ```
 cd _package && ./logkit -f logkit.conf
 ```
@@ -77,6 +82,7 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
 3. `confs_path` 是一个列表，列表中的每一项都是一个runner的配置文件夹，如果每一项中文件夹下配置发生增加、减少或者变更，logkit会相应的增加、减少或者变更runner，配置文件夹中的每个配置文件都代表了一个runner。
 
 典型的配置如下：
+
 ```
 {
     "max_procs": 8,
@@ -84,6 +90,7 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
     "confs_path": ["confs"]
 }
 ```
+
 上面的配置指定了一个runner的配置文件夹，这个配置文件夹下面每个以.conf结尾的文件就代表了一个运行的runner，也就代表了一个logkit正在运行的推送数据的线程。
 
 
@@ -134,12 +141,14 @@ CSV Runner用来解析CSV文件，并发送解析后的字段到Pandora.
 ```
 
 csv schema如下
+
 ```
 "csv_schema":"timestamp long, method string, path string, httpcode long" 
 
 ```
 
 得到的字段为:
+
 ```
 timestamp: 1493885313
 method: GET
@@ -152,6 +161,7 @@ httpcode: 200
 Raw Parser将日志文件的每一行解析为一条日志，解析后的日志由两个字段raw和timestamp组成，前者是日志，后者为解析该条日志的时间戳。
 
 ```
+
 {
     "name":"raw_runner", # 用来标识runner的名字,用以在logkit中区分不同runner的日志
     "reader":{
@@ -179,13 +189,15 @@ Raw Parser将日志文件的每一行解析为一条日志，解析后的日志�
 
 
 * 举例说明
+
 比如一条日志为
+
 ```
 [03-May-2017 10:16:13 Asia/Shanghai] PHP Warning: Redis::hGet() excepts parameter 2 to be string, array given in xxx
 ```
 
 经过raw parser之后，日志会被解析为两个字段
-1. raw="[03-May-2017 10:16:13 Asia/Shanghai] PHP Warning: Redis::hGet() excepts parameter 2 to be string, array given in xxx"
+1. raw="[03-May-2017 10：16：13 Asia/Shanghai] PHP Warning: Redis::hGet() excepts parameter 2 to be string, array given in xxx"
 2. timestamp="<解析这条日志的当前时间>"
 
 raw parser通常用于以下几种情况
@@ -203,9 +215,10 @@ Grok Parser是一个类似于Logstash Grok Parser一样的解析配置方式，�
 ```
 
 假如日志如下：
+
 ```
 55.3.244.1 GET /index.html 15824 0.043
-2016-09-19T18:19:00 [8.8.8.8:prd] DEBUG this is an example log message
+2016-09-19T18：19：00 [8.8.8.8:prd] DEBUG this is an example log message
 
 ```
 
@@ -240,6 +253,7 @@ Grok Parser是一个类似于Logstash Grok Parser一样的解析配置方式，�
 
 * 举例说明
 假如日志如下：
+
 ```
 55.3.244.1 GET /index.html 15824 0.043
 2016-09-19T18:19:00 [8.8.8.8:prd] DEBUG this is an example log message
@@ -247,6 +261,7 @@ Grok Parser是一个类似于Logstash Grok Parser一样的解析配置方式，�
 ```
 
 logkit的grok pattern配置如下
+
 ```
 "parser":{
 "name":"grok_parser",
@@ -254,9 +269,12 @@ logkit的grok pattern配置如下
 "grok_patterns":"%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration},
 %{TIMESTAMP_ISO8601:timestamp} \[%{IPV4:ip};%{WORD:environment}\] %{LOGLEVEL:log_level} %{GREEDYDATA:message}" # 写两个pattern，以逗号分隔
 }
+
 ```
+
 那么解析出来的字段如下
 第一行
+
 ```
 client: 55.3.244.1
 method: GET
@@ -264,7 +282,9 @@ request: /index.html
 bytes: 15824
 duration: 0.043
 ```
+
 第二行
+
 ```
 "timestamp": "2016-09-19T18:19:00",
 "ip": "8.8.8.8",
