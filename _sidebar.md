@@ -11,6 +11,7 @@
 - **API & SDK & 工具**
   - [制作签名](/api/apiReady)
   - [流式处理服务API](/api/pipeline)
+  - [离线处理服务API](/api/offline)
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
   - [数据推送工具-logkit](/util/logkit)
