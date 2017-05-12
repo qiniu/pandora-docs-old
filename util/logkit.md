@@ -1,14 +1,9 @@
 logkit
 ======
 
-Table of Contents
-=================
 
-  * [logkit](#logkit)
-  * [Production](#production)
-  * [Table of Contents](#table-of-contents)
-    * [简介](#简介)
-    * [服务配置](#服务配置)
+  * [简介](#简介)
+  * [服务配置](#服务配置)
   * [Runner配置](#runner配置)
   * [Reader](#reader)
     * [File Reader](#file-reader)
