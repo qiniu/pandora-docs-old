@@ -237,8 +237,8 @@ Authorization: Pandora <auth>
 |computation.code|string|是|代码片段|
 |computation.type|string|是|代码类型。暂时支持SQL|
 |container|map|是|计算资源|
-|container.type|string|是|规格|
-|container.count|int|是|数量|
+|container.type|string|是|规格，目前支持：1U2G ，1U4G，2U4G，4U8G，4U16G ，8U16G ，8U32G ，16U32G，16U64G|
+|container.count|int|是|数量，所选规格 * 数量 <= 100U|
 |scheduler|map|是|调度|
 |scheduler.type|string|是|调度方式，定时、循环或单次执行三选一，下游任务是依赖模式|
 |scheduler.spec.crontab|string|否|定时执行|
