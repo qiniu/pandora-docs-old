@@ -15,6 +15,5 @@
   - [日志检索服务API](/api/logdb)
   - [数据推送工具-logkit](/util/logkit)
 - [**下载中心**](/downloads/download)
-- **计量计费**
-- **Q & A**
+- [**Q & A**](/qa/qa)
 
