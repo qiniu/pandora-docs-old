@@ -280,7 +280,7 @@ duration: 0.043
 "message": "this is an example log message"
 ```
 
-#### 更多logkit用法请参见logkit页面
+>更多logkit用法请参见[logkit详解](/logkit)
 
 ### 数据导出
 
