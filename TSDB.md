@@ -50,10 +50,10 @@
 |字段名称|字段类型|属性|备注|
 |:----|:----|:----|:----|
 |createTime|date| timestamp |数据产生时间，注意，timestamp的内容为RFC 3339 时间戳|
-|id|long|fileds|设备唯一编号|
-|area|string|tags|设备所在区域|
-|reach|string|tags|设备所在河段|
-|waterLevel|float|fileds|目前水位，单位为米|
+|id|long|filed|设备唯一编号|
+|area|string|tag|设备所在区域|
+|reach|string|tag|设备所在河段|
+|waterLevel|float|filed|目前水位，单位为米|
 
 ##### 1.查询所有数据
 
@@ -63,7 +63,7 @@
 
 ##### 2.查询某个字段的数据
 
-只有属性为`fileds`的列才能作为查询主体，`tags`无法单独作为查询主体。
+只有属性为`filed`的列才能作为查询主体，`tag`无法单独作为查询主体。
 
 **正确的查询：**
 
@@ -86,7 +86,7 @@
 
 ##### 3.对查询主体做函数运算
 
-函数运算同样只能在`fileds`字段上，`tags`和`timestamp`只能作为分组和查询条件。
+函数运算同样只能在`filed`字段上，`tag`和`timestamp`只能作为分组和查询条件。
 
 目前时序数据库支持的聚合函数：
 
@@ -114,7 +114,7 @@ difference【不保证精确】
 
 ##### 4.条件语句
 
-条件语句根据tags、fields、timestamp来对数据进行筛选。
+条件语句根据tag、fields、timestamp来对数据进行筛选。
 
 **正确的查询：**
 
@@ -126,7 +126,7 @@ difference【不保证精确】
 
 !>select * from waterLevelInfo where area = beijing 
 
-当作为查询条件的schema属性为`fileds`时，支持以下运算符：
+当作为查询条件的schema属性为`filed`时，支持以下运算符：
 
 * `=` 等于
 * `<>` 不等于
@@ -136,7 +136,7 @@ difference【不保证精确】
 * `<` 小于
 * `<=` 小于等于
 
-当作为查询条件的schema属性为`tags`时，支持以下运算符：
+当作为查询条件的schema属性为`tag`时，支持以下运算符：
 
 * `=` 等于
 * `<>` 不等于
@@ -146,7 +146,7 @@ difference【不保证精确】
 
 ##### 5.分组
 
-Group By在时序数据库中可以对`tags`和`timestamp`使用。
+Group By在时序数据库中可以对`tag`和`timestamp`使用。
 
 Group By`timestamp`时，必须拥有where timestamp条件。
 
