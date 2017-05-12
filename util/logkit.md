@@ -369,6 +369,8 @@ cleaner的典型配置如下
 3. `reserve_file_number` 最大保留的已读取文件数，当超过这个数量时就会把多出的文件删除，默认为保留10个.
 4. `reserve_file_size` 最大保留已读文件总大小，当已读文件的总大小超过这个值时，会把最老的那部分删掉，默认保留10GB，单位为MB.
 
+*注意*
+
 * cleaner的主要功能是删除的控制，当日志只被一个runner读取时，建议配置cleaner来控制日志的删除。
 * 当同一个日志目录有多个runner在读取时，如果不启用cleaner，则表示该runner放弃控制日志的删除。
 * 一份日志目录被多个cleaner控制时，只有当所有的cleaner均通知mgr可以删除时，才执行删除日志。
@@ -484,33 +486,33 @@ Grok Parser 典型配置如下
        * `long` 整型
        * `float` 浮点型
        * `date` 时间类型，包括以下格式
-       	 - "2006/01/02 15:04:05",
-		 - "2006-01-02 15:04:05 -0700 MST",
-		 - "2006-01-02 15:04:05 -0700",
-		 - "2006-01-02 15:04:05",
-		 - "2006/01/02 15:04:05 -0700 MST",
-		 - "2006/01/02 15:04:05 -0700",
-		 - "2006-01-02 -0700 MST",
-		 - "2006-01-02 -0700",
-		 - "2006-01-02",
-		 - "2006/01/02 -0700 MST",
-		 - "2006/01/02 -0700",
-		 - "2006/01/02",
-		 - "Mon Jan _2 15:04:05 2006" ANSIC,
-		 - "Mon Jan _2 15:04:05 MST 2006" UnixDate,
-		 - "Mon Jan 02 15:04:05 -0700 2006" RubyDate,
-		 - "02 Jan 06 15:04 MST" RFC822,
-		 - "02 Jan 06 15:04 -0700" RFC822Z,
-		 - "Monday, 02-Jan-06 15:04:05 MST" RFC850,
-		 - "Mon, 02 Jan 2006 15:04:05 MST" RFC1123,
-		 - "Mon, 02 Jan 2006 15:04:05 -0700" RFC1123Z,
-		 - "2006-01-02T15:04:05Z07:00" RFC3339,
-		 - "2006-01-02T15:04:05.999999999Z07:00" RFC3339Nano,
-		 - "3:04PM" Kitchen,
-		 - "Jan _2 15:04:05" Stamp,
-		 - "Jan _2 15:04:05.000" StampMilli,
-		 - "Jan _2 15:04:05.000000" StampMicro,
-		 - "Jan _2 15:04:05.000000000" StampNano,
+       	 - `2006/01/02 15:04:05`,
+		 - `2006-01-02 15:04:05 -0700 MST`,
+		 - `2006-01-02 15:04:05 -0700`,
+		 - `2006-01-02 15:04:05`,
+		 - `2006/01/02 15:04:05 -0700 MST`,
+		 - `2006/01/02 15:04:05 -0700`,
+		 - `2006-01-02 -0700 MST`,
+		 - `2006-01-02 -0700`,
+		 - `2006-01-02`,
+		 - `2006/01/02 -0700 MST`,
+		 - `2006/01/02 -0700`,
+		 - `2006/01/02`,
+		 - `Mon Jan _2 15:04:05 2006` ANSIC,
+		 - `Mon Jan _2 15:04:05 MST 2006` UnixDate,
+		 - `Mon Jan 02 15:04:05 -0700 2006` RubyDate,
+		 - `02 Jan 06 15:04 MST` RFC822,
+		 - `02 Jan 06 15:04 -0700` RFC822Z,
+		 - `Monday, 02-Jan-06 15:04:05 MST` RFC850,
+		 - `Mon, 02 Jan 2006 15:04:05 MST` RFC1123,
+		 - `Mon, 02 Jan 2006 15:04:05 -0700` RFC1123Z,
+		 - `2006-01-02T15:04:05Z07:00` RFC3339,
+		 - `2006-01-02T15:04:05.999999999Z07:00` RFC3339Nano,
+		 - `3:04PM` Kitchen,
+		 - `Jan _2 15:04:05` Stamp,
+		 - `Jan _2 15:04:05.000` StampMilli,
+		 - `Jan _2 15:04:05.000000` StampMicro,
+		 - `Jan _2 15:04:05.000000000` StampNano,
        * `drop` 表示扔掉该字段
     - `验证自定义pattern的正确性`：[http://grokdebug.herokuapp.com](http://grokdebug.herokuapp.com), 这个网站可以debug你的grok pattern
 
@@ -977,15 +979,14 @@ rs.Stop()
         "labels":"machine {{.node}}"
     },
     "senders":[{
-        "name":"influxdb_sender",
-        "sender_type":"influxdb",
-        #"fault_tolerant":"false",
-        "influxdb_host":"{influxDB_HOST}",
-        "influxdb_db":"{db}",
-        "influxdb_measurement":"{measurement}",
-        "influxdb_fields":"{fields}",
-        "influxdb_tags":"{tag}",
-        "influxdb_timestamp_precision":"100"
+        "name":"pandora_sender",
+        "sender_type":"pandora",
+        "pandora_ak":"<your qiniu access key>",
+        "pandora_sk":"<your qiniu secret key>",
+        "pandora_host":"https://pipeline.qiniu.com",
+        "pandora_repo_name":"<your pandora repo(工作流名称)>",
+        "pandora_region":"nb",
+	    "pandora_auto_create":"member_id l,video_id l,video_name s,game_id l,game_game s"
     }]
 }
 ```
