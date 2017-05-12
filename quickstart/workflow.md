@@ -29,15 +29,8 @@
 
 ![](_media/workflow.gif)
 
-### 向工作流中推送数据
 
-敬请期待...
-
-### 使用logkit工具推送数据
-
-
-#### 简介
-
+### 使用logkit向工作流中推送数据
 
 logkit是Pandora开发的一个通用的日志收集工具，可以将不同数据源的数据方便的发送到Pandora进行数据分析，除了基本的数据发送功能，logkit还有容错、并发、监控、删除等功能。
 
@@ -45,7 +38,7 @@ logkit是Pandora开发的一个通用的日志收集工具，可以将不同数�
 
 
 1. 文件(包括csv格式的文件，kafka-rest日志文件，nginx日志文件等,并支持以[grok](https://www.elastic.co/blog/do-you-grok-grok)的方式解析日志)
-2. mysql数据表
+2. MySQL
 3. Microsoft SQL Server(MSSQL)
 4. elastic search
 5. mongodb
@@ -55,7 +48,7 @@ logkit是Pandora开发的一个通用的日志收集工具，可以将不同数�
 logkit本身支持多种数据源，并且可以同时发送多个数据源的数据到Pandora，每个数据源对应一个逻辑上的runner，一个runner负责一个数据源的数据推送，工作原理如下图所示
 
 
-![logkit 工作原理图](http://op26gaeek.bkt.clouddn.com/logkit%20arch.png)
+![logkit 工作原理图](_media/logkit.png)
 
 #### 使用方式
 
