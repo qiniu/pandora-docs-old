@@ -64,7 +64,7 @@ HTTP/1.1 200 OK
  
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
- |spec.path|array|是|包含一个或者多个hdfs文件路径|
+ |spec.paths|array|是|包含一个或者多个hdfs文件路径|
  |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
 
  当type为`kodo`的时候spec定义如下:
@@ -72,7 +72,7 @@ HTTP/1.1 200 OK
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
  |spec.bucket|string|是|对象存储bucket名称|
- |spec.keyPrefix|array|是|包含一个或者多个文件前缀|
+ |spec.keyPrefixes|array|否|包含一个或者多个文件前缀|
  |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
 
 
@@ -218,7 +218,7 @@ Authorization: Pandora <auth>
 
 > scheduler.type 为 depend的时候，container依赖上游的配置，该配置不填
 > 
-> type 为 once 和depend 的时候spec 可以不填
+> type 为 manual 和depend 的时候spec 可以不填
 > 
 > type 为 loop时，不填该spec.loop或者该字段为0，则默认持续运行该任务
 > 
@@ -279,7 +279,7 @@ Authorization: Pandora <auth>
        "count": <ContainerCount>
    },
    "scheduler":{
-       "type": <crontab|loop|once|depend>,
+       "type": <crontab|loop|manual|depend>,
        "spec": {
            "crontab": <0 0 0/1 * * ?>,
            "loop": <1h|3m|....>
@@ -497,8 +497,8 @@ Type为Kodo时，Spec结构：
 
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-| spec.bucket |string|否|对象存储的存储空间|
-| spec.keyPrefix |array|是|一个或者多个文件前缀|
+| spec.bucket |string|是|对象存储的存储空间|
+| spec.keyPrefixes |array|否|一个或者多个文件前缀|
 | spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
 
 Type为HDFS时，Spec结构：
@@ -659,7 +659,7 @@ Authorization: Pandora <auth>
 **请求语法**
 
 ```
-GET /v2/jobs/<jobName>/history?page=1&size=20&sortBy=endTime&order=desc&status=xx&runid=-1
+GET /v2/jobs/<jobName>/history?page=1&size=20&sortBy=endTime&order=desc&status=xx&runId=-1
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -669,11 +669,11 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 |page|int|否|分页页数|
-| size |int|否|分页大小|
-| sortBy |string|否|根据哪个字段排序|
-| order |string|否|排序asc，desc|
-| status |string|否|<Ready、Success、Fail、Running、Cancel>|
-| runid |int|否|查询某个运行批次的状态，-1代表最近一次|
+|size |int|否|分页大小|
+|sortBy |string|否|根据哪个字段排序|
+|order |string|否|排序asc，desc|
+|status |string|否|<Ready、Successful、Failed、Running、Canceled>|
+|runId |int|否|查询某个运行批次的状态，-1代表最近一次|
 
 
 **响应报文**
@@ -683,13 +683,13 @@ Authorization: Pandora <auth>
 "total": <TotalCnt>, # 总共运行批次
 "history":[
 	{
-		"id" : <RunCnt>, # 运行批次
+		"runId" : <RunId>, # 运行批次
 		"startTime": <StartTime>,
 		"endTime": <EndTime>,
-		"status": <Ready、Success、Fail、Running、Cancel>,
+		"status": <Ready、Successful、Failed、Running、Canceled>,
 		"message": <Message>
 	},
-]
+  ]
 }
 ```
 
@@ -699,11 +699,11 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 |total|int|是|总运行批次次数|
 |history|array|是|运行历史|
-|history.id|int|是|运行批次|
-| history.startTime |string|否|启动时间|
-| history.endTime |string|否|终止事件，如果为Running，则为当前时间|
-| history.status |string|否|<Ready、Success、Fail、Running、Cancel>|
-| history.message |string|否|运行、出错信息，比如运行成功、内存溢出、数据损坏|
+|history.runId|int|是|运行批次|
+|history.startTime |string|否|启动时间|
+|history.endTime |string|否|终止事件，如果为Running，则为当前时间|
+|history.status |string|否|<Ready、Successful、Failed、Running、Canceled>|
+|history.message |string|否|运行、出错信息，比如运行成功、内存溢出、数据损坏|
 
 
 
