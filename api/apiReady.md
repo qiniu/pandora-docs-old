@@ -188,6 +188,8 @@ auth = "<AccessKey>:<encodedSign>"
 
 !> 注意：签名字符串中的`content-md5`和`content-type`为空那么相应的位置用空字符串来占位。`Date`参数与服务器时间的偏差不得超过15分钟，用户需要同步校准自己的时钟。频繁返回`401`状态码时请先检查`Date`相关的代码逻辑。
 
+Pandora本身支持[SDK-Go](https://github.com/qiniu/pandora-go-sdk),[SDK-PHP](https://github.com/qiniu/pandora-php-sdk),[SDK-Java](https://github.com/qiniu/pandora-java-sdk)，支持的语言还在增加，使用这些sdk可以有效减少鉴权的工作量；
+对于还没有支持的语言，Pandora提供[签名辅助生成器](http://lestnakz.nq.cloudappl.com)来辅助验证生签名的正确生成方式。
 
 ##### token签名包含的内容
 
