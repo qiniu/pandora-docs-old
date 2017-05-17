@@ -1,3 +1,141 @@
+### 使用命令行工具发送API请求
+
+Pandora服务使用七牛统一的签名鉴权服务，所以需要使用AK/SK(公钥/私钥)来发送访问请求。
+
+### 安装命令行工具
+
+我们针对开源的[httpie](https://github.com/jakubroztocil/httpie)服务，增加了七牛的签名认证功能，修改后的httpie工具的github地址: https://github.com/kirk-enterprise/httpie
+
+使用 `pip` 统一安装:
+
+```
+pip install --upgrade https://github.com/kirk-enterprise/httpie/tarball/master
+```
+
+安装后的工具命令为 `http`。
+
+### 使用httpie工具
+
+#### 以创建数据源为例，发送POST请求的方法如下
+
+1. 发送POST请求需要先将请求的body写在文件中
+
+```
+echo '{
+    "region": "nb",
+    "schema": [
+        {
+            "key": "userName",
+            "valtype": "string"
+        },
+        {
+            "key": "age",
+            "valtype": "float"
+        },
+        {
+            "elemtype": "long",
+            "key": "addresses",
+            "valtype": "array"
+        },
+        {
+            "key": "profile",
+            "schema": [
+                {
+                    "key": "position",
+                    "valtype": "string"
+                },
+                {
+                    "key": "salary",
+                    "valtype": "float"
+                },
+                {
+                    "elemtype": "string",
+                    "key": "education",
+                    "valtype": "array"
+                }
+            ],
+            "valtype": "map"
+        }
+    ]
+}' > body.json
+
+```
+
+2. 假设创建的repo名称为 `testdemo` 
+
+```
+http --verbose --ak=<qiniu_ak> --sk=<qiniu_sk> --auth-qiniu-type=pandora/mac POST https://pipeline.qiniu.com/v2/repos/testdemo < body.json
+```
+
+此时创建repo的过程就完成了。
+
+得到返回:
+
+```
+HTTP/1.1 200 OK
+
+{}
+```
+
+#### 以获取数据源的请求为例，发送GET请求的命令如下
+
+```
+http --ak=<qiniu_ak> --sk=<qiniu_sk> --auth-qiniu-type=pandora/mac GET https://pipeline.qiniu.com/v2/repos/testdemo
+```
+
+得到返回
+
+```
+HTTP/1.1 200 OK
+
+{
+    "derivedFrom": "",
+    "group": "",
+    "region": "nb",
+    "schema": [
+        {
+            "key": "userName",
+            "required": false,
+            "valtype": "string"
+        },
+        {
+            "key": "age",
+            "required": false,
+            "valtype": "float"
+        },
+        {
+            "elemtype": "long",
+            "key": "addresses",
+            "required": false,
+            "valtype": "array"
+        },
+        {
+            "key": "profile",
+            "required": false,
+            "schema": [
+                {
+                    "key": "position",
+                    "required": false,
+                    "valtype": "string"
+                },
+                {
+                    "key": "salary",
+                    "required": false,
+                    "valtype": "float"
+                },
+                {
+                    "elemtype": "string",
+                    "key": "education",
+                    "required": false,
+                    "valtype": "array"
+                }
+            ],
+            "valtype": "map"
+        }
+    ]
+}
+```
+
 ### 什么是签名
 签名是七牛服务器用来识别用户身份与权限的凭证，我们采用AK/SK(公钥/私钥)、token两种方式来对用户进行身份验证。
 ### 设计目的
