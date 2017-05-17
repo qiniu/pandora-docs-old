@@ -169,7 +169,7 @@ Raw Parser将日志文件的每一行解析为一条日志，解析后的日志�
     "reader":{
         "mode":"dir", # 是读取方式，支持`dir`和`file`两种
         "log_path":"/home/user/app/log/dir/", # 需要收集的日志的文件（夹）路径
-        "meta_path":"./metapath", # 是reader的读取offset的记录路径，必须是文件夹
+        "meta_path":"./metapath" # 是reader的读取offset的记录路径，必须是文件夹
     },
     "parser":{
         "name":"raw_parser", # parser的名字，用以在logkit中区分不同的parser
@@ -231,14 +231,14 @@ Grok Parser是一个类似于Logstash Grok Parser一样的解析配置方式，�
     "reader":{
         "mode":"dir", # 是读取方式，支持`dir`和`file`两种
         "log_path":"/home/user/app/log/dir/", # 需要收集的日志的文件（夹）路径
-        "meta_path":"./metapath", # 是reader的读取offset的记录路径，必须是文件夹
+        "meta_path":"./metapath" # 是reader的读取offset的记录路径，必须是文件夹
     },
     "parser":{
         "name":"grok_parser",
         "type":"grok",
         "grok_patterns":"%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration},
 %{TIMESTAMP_ISO8601:timestamp} \[%{IPV4:ip};%{WORD:environment}\] %{LOGLEVEL:log_level} %{GREEDYDATA:message}" # 写两个pattern，以逗号分隔,每个pattern负责解析一种类型的日志格式 
-       "grok_custom_patterns":"", # 自定义pattern，可选
+       "grok_custom_patterns":"" # 自定义pattern，可选
     },
     "senders":[{ # senders是
         "name":"pandora_sender",
