@@ -9,7 +9,7 @@
   - [XSpark](/quickstart/xspark)
   - [报表工作室](/quickstart/report)
 - **API & SDK & 工具**
-  - [API发送工具](/api/apiReady)
+  - [API发送工具](/api/httpie)
   - [流式处理服务API](/api/pipeline)
   - [离线处理服务API](/api/offline)
   - [时序数据库API](/api/tsdb)
