@@ -241,8 +241,8 @@ Authorization: Pandora <auth>
 |container.count|int|是|数量，所选规格 * 数量 <= 100U|
 |scheduler|map|是|调度|
 |scheduler.type|string|是|调度方式，定时、循环或单次执行三选一，下游任务是依赖模式|
-|scheduler.spec.crontab|string|否|定时执行|
-|scheduler.spec.loop|string|否|循环执行|
+|scheduler.spec.crontab|string|否|定时执行，当调度方式选择为'定时'，此项必填|
+|scheduler.spec.loop|string|否|循环执行，当调度方式选择为'循环'，此项必填|
 |params|array|否|自定义参数|
 |params.name|string|是|参数名称|
 |params.default|string|是|默认值|
