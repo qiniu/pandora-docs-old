@@ -51,12 +51,12 @@ HTTP/1.1 200 OK
 
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
- |DataSourceName|string|是|数据源节点名称|
- |region|string|是|所属区域|
+ |DataSourceName|string|是|数据源节点名称；</br>命名规则:`^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
+ |region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(`nb`)；</br>此参数是为了降低用户传输数据的成本,应当尽量选择离自己数据源较近的区域|
  |type|string|是|数据源类型，可选值为`kodo`和`hdfs`|
  |spec|json|是|指定该数据源自身属性相关的信息|
  |schema|array|是|字段信息|
- |schema.key|string|是|字段名称|
+ |schema.key|string|是|字段名称；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
  |schema.valtype|string|是|字段类型，支持`long`、`float`、`string`、`date`|
  |schema.required|bool|是|描述用户在传输数据时`key`字段是否必填|
 
@@ -71,8 +71,8 @@ HTTP/1.1 200 OK
  
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
- |spec.bucket|string|是|对象存储bucket名称|
- |spec.keyPrefixes|array|否|包含一个或者多个文件前缀|
+ |spec.bucket|string|是|对象存储bucket名称，</br>命名规则：4-63个字符，支持字母、数字、中划线|
+ |spec.keyPrefixes|array|否|包含一个或者多个文件前缀；</br>命名规则：0-128个字符，不包含英文 `:` 符号|
  |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
 
 
@@ -230,9 +230,9 @@ Authorization: Pandora <auth>
 |:---|:---|:---|:---|
 |srcs|array|是|数据来源，所有数据来源中最多包含一个离线任务，但可以包括多个离线数据源|
 |srcs.name|string|是|数据源名称或离线任务名称|
-|srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量|
+|srcs.fileFilter|string|否|文件过滤规则，可使用魔法变量，</br>命名规则：0-64个字符|
 |srcs.type|string|是|数据来源节点类型|
-|srcs.tableName|string|是|数据来源表名称|
+|srcs.tableName|string|是|数据来源表名称，</br>命名规则：1-128个字符，支持字母、数字、下划线，必须以字母开头|
 |computation|object|是|计算|
 |computation.code|string|是|代码片段|
 |computation.type|string|是|代码类型。暂时支持SQL|
@@ -241,11 +241,11 @@ Authorization: Pandora <auth>
 |container.count|int|是|数量，所选规格 * 数量 <= 100U|
 |scheduler|map|是|调度|
 |scheduler.type|string|是|调度方式，定时、循环或单次执行三选一，下游任务是依赖模式|
-|scheduler.spec.crontab|string|否|定时执行，当调度方式选择为'定时'，此项必填|
-|scheduler.spec.loop|string|否|循环执行，当调度方式选择为'循环'，此项必填|
+|scheduler.spec.crontab|string|否|定时执行，当调度方式选择为'定时'，此项必填；必须为crontab类型|
+|scheduler.spec.loop|string|否|循环执行，当调度方式选择为'循环'，此项必填；</br>其值以`m`(分钟)和`h`(小时)为单位，由数字与单位组成，例如:`5m`|
 |params|array|否|自定义参数|
-|params.name|string|是|参数名称|
-|params.default|string|是|默认值|
+|params.name|string|是|参数名称,命名规则：1-64个字符，支持大小写字母、数字、下划线，大小写字母或下划线开头|
+|params.default|string|是|默认值，命名规则：0-64个字符|
 
 !> 注1：scheduler.type 如果是depend 模式，代表这个离线任务依赖某个上游的离线任务。首先srcs内有且仅有一个离线任务数据源。同时该任务不能指定调度的模式、魔法变量和容器规格。这些全部使用上游依赖的离线任务。
 
