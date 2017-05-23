@@ -42,8 +42,8 @@ logkit是Pandora开发的一个通用的日志收集工具，可以将不同数�
 1. 文件(包括csv格式的文件，kafka-rest日志文件，nginx日志文件等,并支持以[grok](https://www.elastic.co/blog/do-you-grok-grok)的方式解析日志)
 2. MySQL
 3. Microsoft SQL Server(MSSQL)
-4. elastic search
-5. mongodb
+4. ElasticSearch
+5. MongoDB
 
 #### 工作方式
 
@@ -80,8 +80,9 @@ cd _package && ./logkit -f logkit.conf
 logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行时需要的资源和各个runner配置文件的具体路径。
 
 1. `max_procs` logkit运行过程中最多用到多少个核
-2. `debug_level` 日志输出级别，0为debug，数字越高级别越高
-3. `confs_path` 是一个列表，列表中的每一项都是一个runner的配置文件夹，如果每一项中文件夹下配置发生增加、减少或者变更，logkit会相应的增加、减少或者变更runner，配置文件夹中的每个配置文件都代表了一个runner。
+1. `debug_level` 日志输出级别，0为debug，数字越高级别越高
+1. `bind_host` 绑定的IP和端口，默认会选择4000以上的可用端口
+1. `confs_path` 是一个列表，列表中的每一项都是一个runner的配置文件夹，如果每一项中文件夹下配置发生增加、减少或者变更，logkit会相应的增加、减少或者变更runner，配置文件夹中的每个配置文件都代表了一个runner。
 
 典型的配置如下：
 
@@ -89,6 +90,7 @@ logkit.conf是logkit工具本身的配置文件，主要用于指定logkit运行
 {
     "max_procs": 8,
     "debug_level": 1,
+    "bind_host":"127.0.0.1:4000",
     "confs_path": ["confs"]
 }
 ```
