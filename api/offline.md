@@ -234,8 +234,8 @@ Authorization: Pandora <auth>
 |srcs.type|string|是|数据来源节点类型|
 |srcs.tableName|string|是|数据来源表名称，</br>命名规则：1-128个字符，支持字母、数字、下划线，必须以字母开头|
 |computation|object|是|计算|
-|computation.code|string|是|代码片段|
-|computation.type|string|是|代码类型。暂时支持SQL|
+|computation.code|string|是|代码片段，可以使用魔法变量|
+|computation.type|string|是|代码类型，支持SQL|
 |container|map|是|计算资源|
 |container.type|string|是|规格，目前支持：1U2G ，1U4G，2U4G，4U8G，4U16G ，8U16G ，8U32G ，16U32G，16U64G|
 |container.count|int|是|数量，所选规格 * 数量 <= 100U|
@@ -243,8 +243,8 @@ Authorization: Pandora <auth>
 |scheduler.type|string|是|调度方式，定时、循环或单次执行三选一，下游任务是依赖模式|
 |scheduler.spec.crontab|string|否|定时执行，当调度方式选择为'定时'，此项必填；必须为crontab类型|
 |scheduler.spec.loop|string|否|循环执行，当调度方式选择为'循环'，此项必填；</br>其值以`m`(分钟)和`h`(小时)为单位，由数字与单位组成，例如:`5m`|
-|params|array|否|自定义参数|
-|params.name|string|是|参数名称,命名规则：1-64个字符，支持大小写字母、数字、下划线，大小写字母或下划线开头|
+|params|array|否|魔法变量，系统默认自带6个魔法变量：`$(year)=当前年份`、`$(mon)=当前月份`、`$(day)=当前日期`、`$(hour)=当前小时`、`$(min)=当前分钟`、`$(sec)=当前秒数`；用户也可以自行定义魔法变量|
+|params.name|string|是|变量名称,命名规则：1-64个字符，支持大小写字母、数字、下划线，大小写字母或下划线开头|
 |params.default|string|是|默认值，命名规则：0-64个字符|
 
 !> 注1：scheduler.type 如果是depend 模式，代表这个离线任务依赖某个上游的离线任务。首先srcs内有且仅有一个离线任务数据源。同时该任务不能指定调度的模式、魔法变量和容器规格。这些全部使用上游依赖的离线任务。
