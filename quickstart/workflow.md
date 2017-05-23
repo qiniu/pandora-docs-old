@@ -297,7 +297,7 @@ duration: 0.043
 "message": "this is an example log message"
 ```
 
->更多logkit用法请参见[logkit详解](/util/logkit)
+>更多logkit用法请参见[logkit详解](https://github.com/qiniu/logkit/wiki)
 
 ### 数据导出
 
