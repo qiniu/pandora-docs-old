@@ -14,7 +14,6 @@
   - [大数据处理平台-离线计算API](/api/offline)
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
-  - [数据推送工具-logkit](/util/logkit)
 - [**下载中心**](/downloads/download)
 - [**Q & A**](/qa/qa)
 

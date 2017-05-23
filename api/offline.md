@@ -72,7 +72,7 @@ HTTP/1.1 200 OK
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
  |spec.bucket|string|是|对象存储bucket名称，</br>命名规则：4-63个字符，支持字母、数字、中划线|
- |spec.keyPrefixes|array|否|包含一个或者多个文件前缀；</br>命名规则：0-128个字符，不包含英文 `:` 符号|
+ |spec.keyPrefixes|array|否|包含一个或者多个文件前缀；</br>命名规则：0-128个字符，不支持英文 `:` 、`\`、`<`、`>`符号|
  |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
 
 
