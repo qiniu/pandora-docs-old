@@ -3,15 +3,15 @@
   - [产品介绍](/getstarted/concept)
   - [产品架构](/getstarted/architecture)
 - **快速开始**
-  - [流式处理服务](/quickstart/workflow)
+  - [大数据处理平台](/quickstart/workflow)
   - [时序数据库](/quickstart/tsdb)
   - [日志检索服务](/quickstart/logdb)
   - [XSpark](/quickstart/xspark)
   - [报表工作室](/quickstart/report)
 - **API & SDK & 工具**
   - [API发送工具](/api/httpie)
-  - [流式处理服务API](/api/pipeline)
-  - [离线处理服务API](/api/offline)
+  - [大数据处理平台-流式计算API](/api/pipeline)
+  - [大数据处理平台-离线计算API](/api/offline)
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
   - [数据推送工具-logkit](/util/logkit)
