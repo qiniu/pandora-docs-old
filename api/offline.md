@@ -565,7 +565,7 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 |type|string|是|导出的类型，目前允许的值为"kodo"|
 |bucket|string|是|对象存储bucket名称|
-|keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`manual`的时候，就是文件名|
+|keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`manual`的时候，就是文件名</br>命名规则：0-128个字符，不支持英文 `:` 、`\`、`<`、`>`符号|
 |format|string|否|文件导出格式,支持`json`、`csv`、`text`、`orc`、`parquet`五种类型|
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
