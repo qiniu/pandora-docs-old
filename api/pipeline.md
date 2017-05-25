@@ -674,7 +674,7 @@ Authorization: Pandora <auth>
 | Type |string|是|导出方式,目前支持`http`、`logDB`、`mongoDB`、`tsdb`、`kodo`,</br>在这里我们选择`http`|
 |whence|string|否|导出数据的起始位置,目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出,默认值为oldest|
 | Spec |json|是|导出任务的参数主体,选择不同的`type`,`Spec`也需要填写不同的参数,将在下面分开讲解|
-| host |string|是|服务器地址（域名）,例如:`https://pipeline.qiniu.com` |
+| host |string|是|服务器地址（ip或域名）,例如:`https://pipeline.qiniu.com` 或 `127.0.0.1:7758`|
 | uri |string|是|请求资源路径（具体地址,不包含ip或域名）,例如:`/test/repos`|
 
 !> 注意: 导出数据格式和`推送数据`相同。
