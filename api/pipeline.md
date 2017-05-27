@@ -660,7 +660,8 @@ Authorization: Pandora <auth>
   "whence": <ExportWhence>,
   "spec": {
 		"host": <Host>,      
-		"uri": <RequestURI>  
+		"uri": <RequestURI>,
+		"format": <ExportFormat>  
 	}
 }
 ```
@@ -676,6 +677,7 @@ Authorization: Pandora <auth>
 | Spec |json|是|导出任务的参数主体,选择不同的`type`,`Spec`也需要填写不同的参数,将在下面分开讲解|
 | host |string|是|服务器地址（ip或域名）,例如:`https://pipeline.qiniu.com` 或 `127.0.0.1:7758`|
 | uri |string|是|请求资源路径（具体地址,不包含ip或域名）,例如:`/test/repos`|
+| format |string|否|导出方式，支持`text`和`json`，如果没有填写此项，默认为`text`|
 
 !> 注意: 导出数据格式和`推送数据`相同。
 
