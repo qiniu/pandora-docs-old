@@ -215,7 +215,7 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 * `$JOBSERVER_REST_URL` 替换为你获取的地址
 
 
-> 注：上面使用到的http命令是httpie的工具。![httpie](https://github.com/kirk-enterprise/httpie)是一个 HTTP 的命令行客户端。其目标是让 CLI 和 web 服务之间的交互尽可能的人性化。
+> 注：上面使用到的http命令是httpie的工具。[httpie](https://github.com/kirk-enterprise/httpie)是一个 HTTP 的命令行客户端。其目标是让 CLI 和 web 服务之间的交互尽可能的人性化。
 安装方式：
 ```pip install --upgrade https://github.com/kirk-enterprise/httpie/tarball/master```
 
@@ -390,4 +390,4 @@ object SampleJob extends NewSparkJob {
 }
 ```
 
-更多详情可以参考 ![Spark-JobServer](https://github.com/spark-jobserver/spark-jobserver/tree/v0.7.0#new-sparkjob-api)
+更多详情可以参考 [Spark-JobServer](https://github.com/spark-jobserver/spark-jobserver/tree/v0.7.0#new-sparkjob-api)
