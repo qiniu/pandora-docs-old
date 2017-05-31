@@ -848,6 +848,382 @@ Authorization: Pandora <auth>
 
 
 
+## UDF
+
+### 上传UDF jar包
+
+**请求语法**：
+
+```
+POST /v2/udf/jars/<JarName>
+Content-Type: application/java-archive
+Content-MD5: <ContentMD5>
+Authorization: Pandora <auth>
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|JarName |string|是|jar包名称唯一标识一个jar文件，命名规则: `^[a-zA-Z][a-zA-Z0-9_\\.]{0,127}[a-zA-Z0-9_]$`,1-128个字符,支持小写字母、数字、下划线；必须以大小写字母开头|
+|Content-MD5 |string|是|jar包的MD5码|
+
+**UDF Jar包说明:**
+
++ 上传的UDF Jar包最大为100MB。
+
++ Content-MD5头部是可选的。如果上传UDF Jar包的时候带上该头部服务器会校验上传数据的校验和,如果两者不一致服务器将拒绝上传。如果不带该头部,服务器不做任何校验和的检查。
+
++ 先计算UDF Jar内容的MD5,再对MD5做一次base64编码转化为字符串。例如qiniu这个字符串的Content-MD5是gLL29S04bTCxYd2kCqsEIQ==而不是7b9d6b4d89f6825a196d4cc50fdbedc5
+
+
+**响应报文**
+
+```
+200 OK
+Content-Type: application/json
+{
+    "jarName":"UdfCollection",
+    "jarFile":"udf-agg-1.0-SNAPSHOT.jar",
+    "uploadTime": "2017-06-06 15:15:03"
+}
+```
+
+**响应内容**
+
+|参数|类型|说明|
+|:---|:---|:---|
+|jarName|string|jar包名称|
+|jarFile|string|jar包文件名|
+|uploadTime |string|jar包的上传时间|
+
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/udf/jars/UdfAggCollection \
+-H 'Content-Type: application/java-archive' \
+-H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-T /path/to/udf-agg-1.0-SNAPSHOT.jar
+```
+
+### 删除UDF jar包
+
+**请求语法**：
+
+```
+DELETE /v2/udf/jars/<JarName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|jarName |string|是|jar包名称,如果UdfAggCollection|
+
+**示例**
+
+```
+curl -X DELETE https://pipeline.qiniu.com/v2/jars/UdfAggCollection \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' 
+```
+
+**响应报文**
+
+```
+200 OK
+Content-Type: application/json
+```
+
+or
+
+```
+400 BadRequest
+Content-Type: application/json
+{
+    "error":"invalid jar name"
+}
+```
+
+or
+
+```
+404 NotFound
+Content-Type: application/json
+{
+    "error":"jar file does not exist"
+}
+```
+
+### 获取UDF jar包列表
+
+**请求语法**：
+
+```
+GET /v2/udf/jars?page=1&size=5&sortBy=uploadTime&order=desc
+Content-Type: application/json
+Authorization: Pandora <auth>
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|jar |string|是|jar包名称|
+|descrption|string|是|jar包描述|
+|uploadTime |string|是|jar包上传时间|
+
+**示例**
+
+```
+curl -X GET https://pipeline.qiniu.com/v2/udf/jars?page=1&size=2&sortBy=uploadTime&order=desc \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
+```
+
+**响应报文**
+
+```
+200 OK
+Content-Type: application/json
+[
+    {
+        "jar":"udf-agg.jar",
+        "descrption":"聚合类UDF集合",
+        "uploadTime": "2017-06-01 15:00:00"
+    },
+    {
+        "jar":"udf-sort.jar",
+        "descrption":"排序类UDF集合",
+        "uploadTime": "2017-06-01 14:00:00"
+    }
+]
+```
+
+### UDF函数注册
+
+**请求语法**：
+
+```
+POST /v2/udf/register
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "funcName": "<UDF function name>",
+    "className": "<Full path class name>",
+    "jar": "<JarFileName>",
+    "signature": "<UDF Signature>",
+    "description": "<UDF description>",
+    "category": "<UDF category>"
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|funcName|string|是|udf的自定义函数名称（主键），如sum,avg|
+|className |string|是|自定义udf的全路径名称com.company.biz.udf.SUM|
+|jar|string|是|udf包名称，从中解析出UDF类|
+|signature |string|是|函数的签名，如：DOUBLE abs(DOUBLE a) |
+|description|string|否|自定义的函数描述|
+|category |string|否|函数分类，如日期函数，数学函数等。默认支持：match（数学函数），collection（集合函数），type_conversion（类型转换函数），date（日期函数），condition（条件函数）, string（字符串函数），udaf（聚合函数），udtf(表格函数)|
+
+
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/udf/register \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+    "funcName": "str_len",
+    "className": "com.qiniu.udf.StrLength",
+    "jar":"udf-common.jar",
+    "signature": "int str_len(string A)",
+    "description": "计算字符串长度",
+    "category": "string"
+}'
+```
+
+**响应报文**
+
+```
+200 OK
+Content-Type: application/json
+```
+
+or
+
+```
+400 BadRequest
+Content-Type: application/json
+{
+    "error":"funcName already exists"
+}
+```
+
+### UDF函数注册删除
+
+**请求语法**：
+
+```
+POST /v2/udf/deregister
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "funcName":<UDF Function Name>
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|funcName|string|是|udf的自定义函数名称（主键），如sum,avg|
+
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/udf/deregister \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+    "funcName": "str_len"
+}'
+```
+
+**响应报文**
+
+```
+200 OK
+Content-Type: application/json
+```
+
+or
+
+```
+400 BadRequest
+Content-Type: application/json
+{
+    "error":"funcName does not exist"
+}
+```
+
+### UDF调试
+
+**请求语法**：
+
+```
+POST /v2/udf/debug
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "funcName":<UDF function name>,
+    "udfExpression": "<UDF debug expression>"
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|funcName|string|是|udf的自定义函数名称（主键），如sum,avg|
+|udfExpression |string|是|要调试的UDF的表达式，来验证udf的输出是否符合预期，如str_lenth("debug_udf"）|
+
+**示例**
+
+```
+curl -X POST https://pipeline.qiniu.com/v2/udf/debug \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{
+    "funcName": "str_len",
+    "udfExpression": "str_len("abcd") as a1, str_len("ab") as a2"
+}'
+```
+
+**响应报文**
+
+```
+200 OK
+Content-Type: application/json
+{
+    result:[
+        {"a1":4, "a2": 2}
+    ]
+}
+```
+
+or
+
+```
+400 BadRequest
+Content-Type: application/json
+{
+    "error":"invalid udf debug expression"
+}
+```
+
+**说明**
+
+UDF调试调试表达式必须符合 `udf1(param...) as column2, udf2(param...) as column2` 格式
+
+
+
+### UDF内置函数展示
+
+**请求语法**：
+
+```
+GET /v2/udf/builtins?page=1&size=2&sortBy=funcName&order=desc
+Content-Type: application/json
+Authorization: Pandora <auth>
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|funcName|string|是|udf的内置函数名称(主键)，如sum, avg|
+|signature |string|是|内置函数的签名，如：DOUBLE abs(DOUBLE a)|
+|description|string|否|内置的函数描述|
+|category |string|否|函数分类，如日期函数，数学函数等。默认支持：match（数学函数），collection（集合函数），type_conversion（类型转换函数），date（日期函数），condition（条件函数）, string（字符串函数），udaf（聚合函数），udtf(表格函数)|
+
+
+**示例**
+
+```
+curl -X GET https://pipeline.qiniu.com/v2/udf/builtins?page=1&size=2&sortBy=funcName&order=desc&category=math \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+```
+
+**响应报文**
+
+```
+200 OK
+Content-Type: application/json
+[
+    {
+        "funcName": "abs",
+        "signature": "DOUBLE abs(DOUBLE a)",
+        "description": "绝对值计算",
+        "category": "math"
+    },
+    {
+        "funcName":"cos",
+        "signature": "DOUBLE cos(DOUBLE a)",
+        "description": "余弦值计算DOUBLE cos(DOUBLE a)",
+        "category": "math"
+    }
+    ...
+]
+```
+
+
 
 ### 错误代码及相关说明
 
