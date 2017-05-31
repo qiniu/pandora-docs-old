@@ -705,6 +705,96 @@ Authorization: Pandora <auth>
 |history.status |string|否|<Ready、Successful、Failed、Running、Canceled>|
 |history.message |string|否|运行、出错信息，比如运行成功、内存溢出、数据损坏|
 
+### 停止批次任务
+
+**请求语法**
+
+```
+POST /v2/batch/actions/stop
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "jobName": "<jobName>",
+    "runId": "<runId>"
+}
+
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|jobName|string|是|job名称|
+|runId|string|是|待操作的运行批次ID|
+
+
+**响应报文**
+
+```
+{
+  "jobName": "jobName",
+  "runId": "runId",
+  "preStatus": "Running",
+  "postStatus": "Cancelled"
+}
+```
+
+**响应内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|jobName|string|是|job名称|
+|runId|string|是|操作job的RunId|
+|preStatus|string|是|停止前状态|
+|postStatus|string|是|停止后状态|
+
+
+### 重跑批次任务
+
+**请求语法**
+
+```
+POST /v2/batch/actions/rerun
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "jobName": "<jobName>",
+    "runId": "<runId>"
+}
+
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|jobName|string|是|job名称|
+|runId|string|是|待操作的运行批次ID|
+
+
+**响应报文**
+
+```
+{
+  "jobName": "jobName",
+  "runId": "runId",
+  "preStatus": "Failed",
+  "postStatus": "Running",
+  "rerunCount": 2
+}
+```
+
+**响应内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|jobName|string|是|job名称|
+|runId|string|是|操作job的RunId|
+|preStatus|string|是|重跑前状态|
+|postStatus|string|是|重跑后状态|
+|rerunCount|int|是|重跑次数|
+
+
 
 
 ### 错误代码及相关说明
