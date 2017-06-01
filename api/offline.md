@@ -64,6 +64,7 @@ HTTP/1.1 200 OK
  
  |名称|类型|必填|描述|
  |:---|:---|:---|:---|
+ |spec.namespace|string|是|hdfs的uri，如hdfs://localhost:9000|
  |spec.paths|array|是|包含一个或者多个hdfs文件路径|
  |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
 
@@ -536,7 +537,7 @@ text return :
 
 ```
 
-### 创建离线计算导出任务
+### 创建离线计算导出任务-云存储
 
 **请求语法**
 
@@ -545,7 +546,7 @@ POST /v2/jobs/<JobName>/exports/<ExportName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-    "type": <Type>,
+    "type": <kodo>,
     "spec": {
          "bucket": <Bucket>,
          "keyPrefix": <Prefix|Path>,
@@ -570,7 +571,54 @@ Authorization: Pandora <auth>
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
-|fileCount|int|是|计算结果导出的文件数量，应当大于0，小于1000|
+|fileCount|int|是|计算结果导出的文件数量，应当大于0，小于等于1000|
+|overwrite|bool|否|是否对已经存在的文件覆盖写，默认为`true`|
+
+!> 注1: 当用户指定`format`为`json`、`csv`或`text`时, `compression`仅支持`none`(不压缩)、`bzip2`, `gzip`, `lz4`, `snappy`和`deflate`; 当用户指定`format`为`orc`时, `compression`仅支持`none`(不压缩)、`snappy`, `zlib`和`lzo`; 当用户指定`format`为`parquet`时, `compression`仅支持`none`(不压缩)、`snappy`, `gzip`和`lzo`。
+
+!> 注2: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
+
+* `year` 上传时的年份
+* `mon` 上传时的月份
+* `day` 上传时的日期
+* `hour` 上传时的小时
+* `min` 上传时的分钟
+* `sec` 上传时的秒钟
+
+
+### 创建离线计算导出任务-HDFS
+
+**请求语法**
+
+```
+POST /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+    "type": <hdfs>,
+    "spec": {
+         "namespace": <hdfs_uri>,
+         "path": <path_to_write>,
+         "format": <ExportFormat>,
+         "compression": <compression>,
+         "partitionBy": <PartitionBy>，
+         "fileCount": <FileCount>,
+         "overwrite": <Overwrite>
+	}
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|type|string|是|导出的类型，目前允许的值为"kodo"|
+|namespace|string|是|hdfs的uri，如：hdfs://host:9000|
+|path|string|是|导出的路径。命名规则：0-128个字符，不支持英文 `:` 、`\`、`<`、`>`符号|
+|format|string|否|文件导出格式,支持,`json`、`csv`、`text`、`orc`、`parquet`五种类型|
+|compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
+|partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
+|fileCount|int|是|计算结果导出的文件数量，应当大于0，小于等于1000|
 |overwrite|bool|否|是否对已经存在的文件覆盖写，默认为`true`|
 
 !> 注1: 当用户指定`format`为`json`、`csv`或`text`时, `compression`仅支持`none`(不压缩)、`bzip2`, `gzip`, `lz4`, `snappy`和`deflate`; 当用户指定`format`为`orc`时, `compression`仅支持`none`(不压缩)、`snappy`, `zlib`和`lzo`; 当用户指定`format`为`parquet`时, `compression`仅支持`none`(不压缩)、`snappy`, `gzip`和`lzo`。
