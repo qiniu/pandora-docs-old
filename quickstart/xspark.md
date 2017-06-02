@@ -195,7 +195,7 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 ![](_media/spark-job-server-get.gif)
 
-**api使用方式：**
+**API使用方式：**
 
 ```http --auth-qiniu=~/.qiniu/your_ak_sk.conf GET $JOBSERVER_REST_URL```
 
@@ -219,7 +219,7 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 安装方式：
 ```pip install --upgrade https://github.com/kirk-enterprise/httpie/tarball/master```
 
-#### RestApi 介绍
+#### Rest API 介绍
 大体上我们提供了下面几个用于操作Spark任务的api。
 
 #### 1. Binaries
