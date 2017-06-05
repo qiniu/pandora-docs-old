@@ -279,6 +279,7 @@ Authorization: Pandora <auth>
 |from|int|否|日志开始的位置|
 |size|int|否|返回数据数量|
 |fields|string|否|选择返回的数据中只展示部分字段。比如 fields=k1,k2，则返回的结果中只有k1,和k2字段|
+|highlight|bool|否|返回结果是否高亮。详情见示例
 
 **查询语法**
 
@@ -301,7 +302,7 @@ Authorization: Pandora <auth>
 * 字段field包括a,b的log：field:a OR field:b
 * 字段field包含a或者b,不包含c：(field:a OR field:b) AND (NOT field:c)
 * 字段field1包括a,b同时域field2包括c的log：(field1:a OR field1:b) AND (field2:c)
-* 2016-1-1到2016-1-2的数据：date:[2016-01-01 TO 2016-01-02]
+* 2017-1-1 12点到2016-1-2 12点的数据：date:[2017-01-01T12:00:27.87+08:00 TO 2017-02-01T12:00:27.87+08:00]
 * 在数字1-5之间的log： count:[1 TO 5]
 * 大于5的log： count:>5 
 * 包含hello,world，同时二者之间有5个单词相隔：field:"hello world"~5
@@ -359,6 +360,56 @@ Content-Type: application/json
     ]
 }
 ```
+
+**搜索结果高亮示例**
+
+Highlight是指用户可以在搜索中自定义高亮的标签。
+
+参数 `highlight=true`
+
+请求示例：
+		
+	curl -G https://logdb.qiniu.com/v5/repos/search?q="count:>=10 AND <20"&sort="userName:asc"&from=1&size=100&highlight=true \
+	-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \
+	-d	'{
+	      "pre_tags":[
+				 "<em>"
+	      ],
+	      "post_tags":[
+		 		"</em>"
+	      ],
+	      "fields":{
+	      	"name":{}    # name表示字段名称，value为{}即可
+	      }
+	    }'
+返回示例：
+
+		'{
+			"total":1,
+			"partialSuccess":false,
+			"data": [
+				{
+					"name":"exampleName",
+					"timestamp":"2006-01-02T15:04:05.999999999+08:00",
+					"work":"es3",
+					"highlight":{
+						"name": [
+						    "<em> exampleName </em>"
+						]
+					}
+				}
+			]
+		}'
+				
+
+必选字段解释：
+
+
+* `fields` 是指需要高亮的字段.
+
+可选字段解释：
+
+* `pre\_tags`和`post\_tags` 是指包着被高亮文本的标签。默认是  `<em>` 和 `</em>`
 
 ### 根据时间聚合日志
 
