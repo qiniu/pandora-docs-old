@@ -375,6 +375,9 @@ Authorization: Pandora <auth>
 }
 ```
 
+> 注意： 更新schema时，如果需要保留已有的schema信息，也需要填写上去，这是一次全量更新。
+
+
 **示例**
 
 ```
@@ -523,7 +526,7 @@ Authorization: Pandora <auth>
 
 **Plugin说明:**
 
-* 上传的Plugin Jar包最大为20MB。
+* 上传的Plugin Jar包最大为100MB。
 * Content-MD5头部是可选的。如果上传plugin的时候带上该头部服务器会校验上传数据的校验和,如果两者不一致服务器将拒绝上传。如果不带该头部,服务器不做任何校验和的检查。
 * <ContentMD5>是先计算plugin内容的MD5,再对MD5做一次base64编码转化为字符串。例如qiniu这个字符串的Content-MD5是gLL29S04bTCxYd2kCqsEIQ==而不是7b9d6b4d89f6825a196d4cc50fdbedc5
 * PluginName必须与用户所编写的Parser类的全限定名保持一致,否则transform执行plugin会失败。 例如NginxLogParser位于com.qiniu包,PluginName须写为com.qiniu.NginxLogParser。
