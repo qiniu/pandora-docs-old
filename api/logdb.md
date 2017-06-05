@@ -78,9 +78,21 @@ Authorization: Pandora <auth>
 |schema|json|是|字段信息|
 |key|string|是|字段名称，用来标识该字段的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`，1-128个字符，支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |valtype|string|是|字段类型，目前支持`string`、`float`、`long`、`boolean`,`date`，`ip`,`geo_point`和`object`共8种类型；</br>其中`date`支持`RFC3339Nano`和`RFC3339Nano(Numeric time zone offsets format)`，</br>例：`2006-01-02T15:04:05.999999999Z07:00`和`2006-01-02T15:04:05.999999999+08:00`;`geo_point`为经纬度坐标，如 `[ -71.34, 41.12 ]`|
-| schema.analyzer |string|否|文本分词方式，支持`standard`,`simple`,`whitespace`,`stop`,`index_ansj`(中文分词),`keyword`,`no`7种内置分词方式；同时支持`pattern`类型的自定义分词器，见`analyzers`定义。其中`no`分词器表示不索引。
+| schema.analyzer |string|否|文本分词方式，支持`standard`,`whitespace`,`index_ansj`(中文分词),`keyword`,`no`5种内置分词方式；同时支持`pattern`类型的自定义分词器，见`analyzers`定义。其中`no`分词器表示不索引。
 | analyzers |json|否|自定义分词器，解释见详解。
 | children|json|否| 定义子repo，详情见children详解。
+
+**分词方式详解:**
+
+`standard`: 以unicode字符作为词表，详见http://unicode.org/reports/tr29/
+
+`whitespace`:  以空白符来切词
+
+`index_ansj`: 中文分词器
+
+`keyword`:  不分词
+
+`no`: 不分词不索引
 
 **自定义分词方式analyzers 详解:**
 
