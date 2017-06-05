@@ -554,7 +554,7 @@ Authorization: Pandora <auth>
          "retention": <Retention>,
          "partitionBy": <PartitionBy>，
          "fileCount": <FileCount>,
-         "overwrite": <Overwrite>
+         "saveMode": <SaveMode>
 	}
 }
 ```
@@ -571,7 +571,7 @@ Authorization: Pandora <auth>
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
 |fileCount|int|是|计算结果导出的文件数量，应当大于0，小于等于1000|
-|overwrite|bool|否|是否对已经存在的文件覆盖写，默认为`true`|
+|saveMode|string|否|计算结果的保存模式：overwrite(默认) 文件已经存在则覆盖掉， append 在已有的文件上追加，errorIfExists 文件已经存在的时候报错误，ignore 文件已经存在 则认为跑成功了，不报错|
 
 !> 注1: 当用户指定`format`为`json`、`csv`或`text`时, `compression`仅支持`none`(不压缩)、`bzip2`, `gzip`, `lz4`, `snappy`和`deflate`; 当用户指定`format`为`orc`时, `compression`仅支持`none`(不压缩)、`snappy`, `zlib`和`lzo`; 当用户指定`format`为`parquet`时, `compression`仅支持`none`(不压缩)、`snappy`, `gzip`和`lzo`。
 
@@ -596,13 +596,12 @@ Authorization: Pandora <auth>
 {
     "type": <hdfs>,
     "spec": {
-         "namespace": <hdfs_uri>,
          "path": <path_to_write>,
          "format": <ExportFormat>,
          "compression": <compression>,
          "partitionBy": <PartitionBy>，
          "fileCount": <FileCount>,
-         "overwrite": <Overwrite>
+         "saveMode": <SaveMode>
 	}
 }
 ```
@@ -618,7 +617,7 @@ Authorization: Pandora <auth>
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
 |fileCount|int|是|计算结果导出的文件数量，应当大于0，小于等于1000|
-|overwrite|bool|否|是否对已经存在的文件覆盖写，默认为`true`|
+|saveMode|string|否|计算结果的保存模式：overwrite(默认) 文件已经存在则覆盖掉， append 在已有的文件上追加，errorIfExists 文件已经存在的时候报错误，ignore 文件已经存在 则认为跑成功了，不报错|
 
 !> 注1: 当用户指定`format`为`json`、`csv`或`text`时, `compression`仅支持`none`(不压缩)、`bzip2`, `gzip`, `lz4`, `snappy`和`deflate`; 当用户指定`format`为`orc`时, `compression`仅支持`none`(不压缩)、`snappy`, `zlib`和`lzo`; 当用户指定`format`为`parquet`时, `compression`仅支持`none`(不压缩)、`snappy`, `gzip`和`lzo`。
 
