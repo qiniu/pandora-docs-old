@@ -37,7 +37,6 @@ Authorization: Pandora <auth>
     {
       "key": <Key>,
       "valtype": <ValueType>,
-      "searchWay":<SearchWay>,
       "analyzer":<AnalyzerName>
     },
     "analyzers":[
@@ -79,24 +78,9 @@ Authorization: Pandora <auth>
 |schema|json|是|字段信息|
 |key|string|是|字段名称，用来标识该字段的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`，1-128个字符，支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |valtype|string|是|字段类型，目前支持`string`、`float`、`long`、`boolean`,`date`，`ip`,`geo_point`和`object`共8种类型；</br>其中`date`支持`RFC3339Nano`和`RFC3339Nano(Numeric time zone offsets format)`，</br>例：`2006-01-02T15:04:05.999999999Z07:00`和`2006-01-02T15:04:05.999999999+08:00`;`geo_point`为经纬度坐标，如 `[ -71.34, 41.12 ]`|
-| searchWay |string|否|检索方式，支持`keyword`（单词检索）和`full_text`（全文检索）两种方式；</br>当`valtype`为`string`类型时，指定这个参数才有效，其他类型无需关注，</br>如果没有传递该参数，默认为'full_text'方式|
-| schema.analyzer |string|否|文本分词方式，支持`standard`,`simple`,`whitespace`,`stop`,`index_ansj`(中文分词)5种标准分词方式，同时支持自定义分词器，见`analyzers`定义。
+| schema.analyzer |string|否|文本分词方式，支持`standard`,`simple`,`whitespace`,`stop`,`index_ansj`(中文分词),`keyword`,`no`7种内置分词方式；同时支持`pattern`类型的自定义分词器，见`analyzers`定义。其中`no`分词器表示不索引。
 | analyzers |json|否|自定义分词器，解释见详解。
 | children|json|否| 定义子repo，详情见children详解。
-
-**searchWay 详解:**
-
-假设目前用户有一条数据的key为`name`，value为 `"zhang xiaoming"`；
-
-另一条数据的key为`city`，value为 `"shanghai"`；
-
-那么使用`keyword`方式查询第一条时，查询条件为`q=name:zhang`或`q=name:xiaoming`，则无法查询到该条数据；
-
-而使用`full_text`方式查询第一条时，查询条件为`q=name:zhang`或`q=name:xiaoming`，则可以正常查询到该条数据；
-
-使用`keyword`方式查询第二条时，查询条件为`q=city:shanghai`，则可以正常查询到该条数据；
-
-也就是说，`keyword`方式只能查询整个字段内容为一个完整单词时使用；
 
 **自定义分词方式analyzers 详解:**
 
@@ -250,7 +234,6 @@ curl -X POST https://logdb.qiniu.com/v5/repos/test_repo \
     {
       "key": "userName",
       "valtype": "string",
-      "searchWay":"keyword"
     },
     {
       "key": "createDate",
@@ -445,8 +428,7 @@ Authorization: Pandora <auth>
   "schema": [
     {
       "key": <Key>,
-      "valtype": <ValueType>,
-      "searchWay":<SearchWay>
+      "valtype": <ValueType>
     },
     ...
   ]
