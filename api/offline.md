@@ -732,8 +732,10 @@ Authorization: Pandora <auth>
 "history":[
 	{
 		"runId" : <RunId>, # 运行批次
+		"schedTime": "<SchedTime>",
 		"startTime": <StartTime>,
 		"endTime": <EndTime>,
+		"duration": <Duration>,
 		"status": <Ready、Successful、Failed、Running、Canceled>,
 		"message": <Message>
 	},
@@ -748,8 +750,10 @@ Authorization: Pandora <auth>
 |total|int|是|总运行批次次数|
 |history|array|是|运行历史|
 |history.runId|int|是|运行批次|
+|history.schedTime|string|是|调度时间|
 |history.startTime |string|否|启动时间|
 |history.endTime |string|否|终止事件，如果为Running，则为当前时间|
+|history.duration |int|否|批次运行时间，单位秒|
 |history.status |string|否|<Ready、Successful、Failed、Running、Canceled>|
 |history.message |string|否|运行、出错信息，比如运行成功、内存溢出、数据损坏|
 
