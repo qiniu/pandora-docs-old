@@ -298,14 +298,14 @@ Authorization: Pandora <auth>
 
 **查询举例**
 
-* 字段field包括a的log：field:a
-* 字段field包括a,b的log：field:a OR field:b
-* 字段field包含a或者b,不包含c：(field:a OR field:b) AND (NOT field:c)
-* 字段field1包括a,b同时域field2包括c的log：(field1:a OR field1:b) AND (field2:c)
-* 2017-1-1 12点到2016-1-2 12点的数据：date:[2017-01-01T12:00:27.87+08:00 TO 2017-02-01T12:00:27.87+08:00]
-* 在数字1-5之间的log： count:[1 TO 5]
-* 大于5的log： count:>5 
-* 包含hello,world，同时二者之间有5个单词相隔：field:"hello world"~5
+* 字段field包括a的log：`field:a`
+* 字段field包括a,b的log：`field:a OR field:b`
+* 字段field包含a或者b,不包含c：`(field:a OR field:b) AND (NOT field:c)`
+* 字段field1包括a,b同时域field2包括c的log：`(field1:a OR field1:b) AND (field2:c)`
+* 2017-1-1 12:00到2016-1-2 12:00的数据：`date:[2017-01-01T12:00:27.87+08:00 TO 2017-02-01T12:00:27.87+08:00]`
+* 在数字1-5之间的log： `count:[1 TO 5]`
+* 大于5的log： `count:>5 `
+* 包含hello,world，同时二者之间有5个单词相隔：`field:"hello world"~5`
 
 **响应报文**
 
