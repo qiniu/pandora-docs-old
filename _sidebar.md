@@ -16,5 +16,7 @@
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
 - [**下载中心**](/downloads/download)
+- **最佳实践**
+  - [日志分析](/demo/log)
 - [**Q & A**](/qa/qa)
 
