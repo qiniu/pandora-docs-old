@@ -257,14 +257,14 @@ curl -X POST https://logdb.qiniu.com/v5/repos/test_repo \
 
 ### 查询日志
 
-**请求语法**
+**GET请求语法**
 
 ```
-GET /v5/repos/<RepoName>/search?q=<QueryString>&sort=<fieldName:asc>&from=<from>&size=<size>
+GET /v5/repos/<RepoName>/search?q=<QueryString>&sort=<fieldName:asc>&from=<from>&size=<size>&fields=<fields>&scroll=<scrolltime>
 Authorization: Pandora <auth>
 ```
 
-**请求内容**
+**GET请求参数说明**
 
 |参数|类型|必填|说明|
 |:---|:---|:---|:---|
@@ -274,7 +274,54 @@ Authorization: Pandora <auth>
 |from|int|否|日志开始的位置|
 |size|int|否|返回数据数量|
 |fields|string|否|选择返回的数据中只展示部分字段。比如 fields=k1,k2，则返回的结果中只有k1,和k2字段|
-|highlight|bool|否|返回结果是否高亮。详情见示例
+|scroll|string|否|scroll查询时ScrollID保存时间|
+
+**POST请求语法**
+
+```
+POST /v5/repos/<RepoName>/search
+Authorization: Pandora <auth>
+{  
+   "size":<size>,
+   "query":"<QueryString>",
+   "scroll":"3m",
+   "sort":"userName:asc",
+   "from":1,
+   "highlight":{  
+      "pre_tags":[  
+         "<tag1>"
+      ],
+      "post_tags":[  
+         "</tag1>"
+      ],
+      "fields":{  
+         "<高亮的字段>":{  
+
+         }
+      },
+      "require_field_match":false,
+      "fragment_size":100
+   }
+}
+```
+
+**POST请求说明**
+
+|字段|类型|必填|说明|
+|:---|:---|:---|:---|
+|RepoName|string|是|日志仓库名称|
+|query|string|否|查询表达式，参照查询语法|
+|sort|string|否|排序，`field1:asc,field2:desc, … `。field 是实际字段名，asc代表升序，desc 代表降序。用逗号进行分隔。|
+|from|int|否|日志开始的位置|
+|size|int|否|返回数据数量|
+|scroll|string|否|scroll查询时ScrollID保存时间|
+|fields|string|否|选择返回的数据中只展示部分字段。比如 fields=k1,k2，则返回的结果中只有k1,和k2字段|
+|highlight|map|否|返回结果高亮配置|
+|pre_tags|string数组|是|表示高亮元素的前置标签，通常为`<em>`|
+|post_tags|string数组|是|表示高亮元素的后置标签，通常为`</em>`|
+|fields|map|是|表示要高亮的字段，以及其高亮设置，比如设置高亮的窗口大小|
+|require_field_match|bool|否|表示是否必须要强制匹配搜索符合的结果高亮，默认为false|
+|fragment_size|int|是|高亮的最大字符窗口大小|
 
 **查询语法**
 
@@ -362,8 +409,9 @@ Highlight是指用户可以在搜索中自定义高亮的标签。
 
 参数 `highlight=true`
 
-请求示例：
+GET请求示例：
 		
+```
 	curl -G https://logdb.qiniu.com/v5/repos/search?q="count:>=10 AND <20"&sort="userName:asc"&from=1&size=100&highlight=true \
 	-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \
 	-d	'{
@@ -377,8 +425,40 @@ Highlight是指用户可以在搜索中自定义高亮的标签。
 	      	"name":{}    # name表示字段名称，value为{}即可
 	      }
 	    }'
+```
+
+POST请求示例：
+
+```
+    curl -XPOST https://logdb.qiniu.com/v5/repos/search \
+      -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \
+    -d '{  
+      "size":2,
+      "query":"count:>=10 AND <20",
+      "scroll":"3m",
+      "from":1,
+      "sort":"userName:asc",
+      "highlight":{  
+          "pre_tags":[  
+            "<em>"
+          ],
+          "post_tags":[  
+            "</em>"
+          ],
+          "fields":{  
+            "a":{  
+
+            }
+          },
+          "require_field_match":false,
+          "fragment_size":100
+      }
+    }'
+```
+
 返回示例：
 
+```
 		'{
 			"total":1,
 			"partialSuccess":false,
@@ -395,7 +475,7 @@ Highlight是指用户可以在搜索中自定义高亮的标签。
 				}
 			]
 		}'
-				
+```				
 
 必选字段解释：
 
