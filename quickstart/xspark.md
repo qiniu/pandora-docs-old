@@ -228,9 +228,28 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/binaries/$JAR_NAME @job-server-tests/target/scala-2.10/job-server-tests_$VER.jar
 ```
 其中：`$JAR_NAME` 替换成自行定义的jar名字即可
+
+返回值：
+
+```
+200 OK
+{
+    "result": "Jar uploaded",
+    "status": "SUCCESS"
+}
+```
+
 ##### 1.2 查询Jar
 ```
  http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/binaries
+```
+返回值：
+
+```
+200 OK
+{
+    "test": "2017-06-07T15:18:58.581+08:00",
+}
 ```
 
 #### 2. Contexts
@@ -244,9 +263,27 @@ http --auth-qiniu=~/.qiniu/your_ak_sk.conf POST '$JOBSERVER_REST_URL/contexts/$C
 * `num-cpu-cores` 配置SparkContext使用cpu核心数
 * `memory-per-node` 配置每个节点使用的内存大小
 
+返回值：
+
+```
+200 OK
+{
+    "result": "Context created",
+    "status": "SUCCESS"
+}
+```
+
 ##### 2.2 查看Context
 ```
 http --auth-qiniu=~/.qiniu/your_ak_sk.conf GET $JOBSERVER_REST_URL/contexts
+```
+返回值：
+
+```
+200 OK
+[
+    "test-context"
+]
 ```
 
 ##### 2.3 删除Context
@@ -254,6 +291,16 @@ http --auth-qiniu=~/.qiniu/your_ak_sk.conf GET $JOBSERVER_REST_URL/contexts
 http --auth-qiniu=~/.qiniu/your_ak_sk.conf DELETE '$JOBSERVER_REST_URL/contexts/$CONTEXT_NAME'
 ```
 其中：`$CONTEXT_NAME`为你要删除的Context名称
+
+返回值：
+
+```
+200 OK
+{
+    "result": "",
+    "status": "Success"
+}
+```
 
 #### 3. Jobs
 ##### 3.1 提交Job
@@ -274,10 +321,46 @@ http --auth-qiniu=~/.qiniu/your_ak_sk.conf POST '$JOBSERVER_REST_URL/jobs?appNam
 }
 ```
 
+返回值：
+
+```
+200 OK
+同步：
+{
+    "jobId": "58da6978-3c22-43f0-89d6-31e14268f03c",
+    "result": ...
+}
+
+异步：
+{
+    "classPath": "spark.jobserver.WordCountExample",
+    "context": "test-context",
+    "duration": "Job not done yet",
+    "jobId": "58da6978-3c22-43f0-89d6-31e14268f03c",
+    "startTime": "2017-06-07T15:25:06.171+08:00",
+    "status": "STARTED"
+}
+```
 ##### 3.2 获取Jobs
 
 ```
 http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/jobs
+```
+返回值：
+
+```
+200 OK
+[
+    {
+        "classPath": "spark.jobserver.WordCountExample",
+        "context": "test-context",
+        "duration": "0.049 secs",
+        "jobId": "58da6978-3c22-43f0-89d6-31e14268f03c",
+        "startTime": "2017-06-07T15:25:06.171+08:00",
+        "status": "FINISHED"
+    },
+    ...
+]
 ```
 
 ##### 3.3 获取Job结果
@@ -287,6 +370,15 @@ http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/jobs/$JOB_ID
 ```
 其中：`$JOB_ID`是任务Id，可以从提交的任务返回的信息，及获取所有Jobs时获取。
 
+返回值：
+
+```
+200 OK
+{
+    "jobId": "58da6978-3c22-43f0-89d6-31e14268f03c",
+    "result": ...
+}
+```
 ##### 例子：
 
 (1). 同步提交，等待结果返回
