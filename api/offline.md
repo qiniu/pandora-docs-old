@@ -798,6 +798,16 @@ Authorization: Pandora <auth>
 |preStatus|string|是|停止前状态|
 |postStatus|string|是|停止后状态|
 
+**说明**
+
+|状态|说明|
+|:---|:---|
+|Ready| 不允许重跑操作，允许停止|
+|Success| 不允许停止操作，允许重跑|
+|Failed| 不允许停止操作，允许重跑|
+|Running| 允许重跑及停止操作（需先停止后重跑）|
+|Cancelld| 不允许停止操作，允许重跑|
+
 
 ### 重跑批次任务
 
@@ -844,6 +854,15 @@ Authorization: Pandora <auth>
 |postStatus|string|是|重跑后状态|
 |rerunCount|int|是|重跑次数|
 
+**说明**
+
+|状态|说明|
+|:---|:---|
+|Ready| 不允许重跑操作，允许停止|
+|Success| 不允许停止操作，允许重跑|
+|Failed| 不允许停止操作，允许重跑|
+|Running| 允许重跑及停止操作（需先停止后重跑）|
+|Cancelld| 不允许停止操作，允许重跑|
 
 
 ## UDF
