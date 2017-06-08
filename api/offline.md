@@ -611,7 +611,6 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 |type|string|是|导出的类型，目前允许的值为"kodo"|
-|namespace|string|是|hdfs的uri，如：hdfs://host:9000|
 |path|string|是|导出的路径。命名规则：0-128个字符，不支持英文 `:` 、`\`、`<`、`>`符号|
 |format|string|否|文件导出格式,支持,`json`、`csv`、`text`、`orc`、`parquet`五种类型|
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
@@ -718,7 +717,7 @@ Authorization: Pandora <auth>
 |size |int|否|分页大小|
 |sortBy |string|否|根据哪个字段排序|
 |order |string|否|排序asc，desc|
-|status |string|否|<Ready、Successful、Failed、Running、Canceled>|
+|status |string|否|<Ready、Successful、Failed、Running、Canceled, Restarting, Cancelling>|
 |runId |int|否|查询某个运行批次的状态，-1代表最近一次|
 
 
@@ -730,7 +729,7 @@ Authorization: Pandora <auth>
 "history":[
 	{
 		"runId" : <RunId>, # 运行批次
-		"schedTime": "<SchedTime>",
+		"batchTime": "<batchTime>", #批次时间，每个批次第一次被调度的时间，是不可变的。
 		"startTime": <StartTime>,
 		"endTime": <EndTime>,
 		"duration": <Duration>,
@@ -748,7 +747,7 @@ Authorization: Pandora <auth>
 |total|int|是|总运行批次次数|
 |history|array|是|运行历史|
 |history.runId|int|是|运行批次|
-|history.schedTime|string|是|调度时间|
+|history.batchTime|string|是|批次时间|
 |history.startTime |string|否|启动时间|
 |history.endTime |string|否|终止事件，如果为Running，则为当前时间|
 |history.duration |int|否|批次运行时间，单位秒|
@@ -782,10 +781,8 @@ Authorization: Pandora <auth>
 
 ```
 {
-  "jobName": "jobName",
-  "runId": "runId",
   "preStatus": "Running",
-  "postStatus": "Cancelled"
+  "postStatus": "Canceled"
 }
 ```
 
@@ -793,20 +790,21 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|jobName|string|是|job名称|
-|runId|string|是|操作job的RunId|
 |preStatus|string|是|停止前状态|
 |postStatus|string|是|停止后状态|
 
 **说明**
 
-|状态|说明|
+|状态|说明|备注|
 |:---|:---|
-|Ready| 不允许重跑操作，允许停止|
-|Success| 不允许停止操作，允许重跑|
-|Failed| 不允许停止操作，允许重跑|
-|Running| 允许重跑及停止操作（需先停止后重跑）|
-|Cancelld| 不允许停止操作，允许重跑|
+|Ready|就绪|不允许重跑操作，允许停止|
+|Successful|成功|不允许停止操作，允许重跑|
+|Failed|失败|不允许停止操作，允许重跑|
+|Running|运行中|允许重跑及停止操作（需先停止后重跑）|
+|Canceled|取消停止|不允许停止操作，允许重跑|
+|Restarting|重启中|用于重启中间状态，不允许任何操作|
+|Cancelling|停止中|用于停止中间状态，不允许任何操作|
+
 
 
 ### 重跑批次任务
@@ -836,8 +834,6 @@ Authorization: Pandora <auth>
 
 ```
 {
-  "jobName": "jobName",
-  "runId": "runId",
   "preStatus": "Failed",
   "postStatus": "Running",
   "rerunCount": 2
@@ -848,22 +844,21 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|jobName|string|是|job名称|
-|runId|string|是|操作job的RunId|
 |preStatus|string|是|重跑前状态|
 |postStatus|string|是|重跑后状态|
 |rerunCount|int|是|重跑次数|
 
 **说明**
 
-|状态|说明|
+|状态|说明|备注|
 |:---|:---|
-|Ready| 不允许重跑操作，允许停止|
-|Success| 不允许停止操作，允许重跑|
-|Failed| 不允许停止操作，允许重跑|
-|Running| 允许重跑及停止操作（需先停止后重跑）|
-|Cancelld| 不允许停止操作，允许重跑|
-
+|Ready|就绪|不允许重跑操作，允许停止|
+|Successful|成功|不允许停止操作，允许重跑|
+|Failed|失败|不允许停止操作，允许重跑|
+|Running|运行中|允许重跑及停止操作（需先停止后重跑）|
+|Canceled|取消停止|不允许停止操作，允许重跑|
+|Restarting|重启中|用于重启中间状态，不允许任何操作|
+|Cancelling|停止中|用于停止中间状态，不允许任何操作|
 
 ## UDF
 
@@ -1158,7 +1153,7 @@ curl -X POST https://pipeline.qiniu.com/v2/udf/debug \
 -H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{
     "funcName": "str_len",
-    "udfExpression": "str_len("abcd") as a1, str_len("ab") as a2"
+    "udfExpression": "select str_len("abcd") as a1, str_len("ab") as a2"
 }'
 ```
 
@@ -1186,7 +1181,7 @@ Content-Type: application/json
 
 **说明**
 
-UDF调试调试表达式必须符合 `udf1(param...) as column2, udf2(param...) as column2` 格式
+UDF调试调试表达式必须符合 `select udf1(param...) as column2, udf2(param...) as column2` 格式
 
 
 
@@ -1242,7 +1237,7 @@ Content-Type: application/json
 
 
 
-### 错误代码及相关说明
+## 错误代码及相关说明
 
 | 错误码 | 错误描述 |
 | :---  | :----- |
