@@ -611,7 +611,7 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 |type|string|是|导出的类型，目前允许的值为"kodo"|
-|path|string|是|导出的路径。命名规则：0-128个字符，不支持英文 `:` 、`\`、`<`、`>`符号|
+|path|string|是|导出的路径。例如：`hdfs://192.168.1.1:9000/usr/local`；命名规则：0-128个字符，不支持英文 `\`、`<`、`>`符号|
 |format|string|否|文件导出格式,支持,`json`、`csv`、`text`、`orc`、`parquet`五种类型|
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
