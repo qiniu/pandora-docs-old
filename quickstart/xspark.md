@@ -222,10 +222,10 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 #### Rest API 介绍
 大体上我们提供了下面几个用于操作Spark任务的api。
 
-#### 1. Binaries
+#### 1. Jars
 ##### 1.1 提交Jar
 ```
-http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/binaries/$JAR_NAME @job-server-tests/target/scala-2.10/job-server-tests_$VER.jar
+http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/jars/$JAR_NAME @job-server-tests/target/scala-2.10/job-server-tests_$VER.jar
 ```
 其中：`$JAR_NAME` 替换成自行定义的jar名字即可
 
@@ -241,7 +241,7 @@ http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/binaries/$JAR_NAM
 
 ##### 1.2 查询Jar
 ```
- http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/binaries
+ http --auth-qiniu=~/.qiniu/your_ak_sk.conf $JOBSERVER_REST_URL/jars
 ```
 返回值：
 
