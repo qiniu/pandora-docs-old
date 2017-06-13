@@ -802,7 +802,7 @@ Authorization: Pandora <auth>
 |Successful|成功|不允许停止操作|
 |Failed|失败|不允许停止操作|
 |Running|运行中|允许停止操作|
-|Canceled|取消停止|不允许停止操作|
+|Canceled|已停止|不允许停止操作|
 |Restarting|重启中|用于重启中间状态，不允许任何操作|
 |Cancelling|停止中|用于停止中间状态，不允许任何操作|
 
@@ -857,7 +857,7 @@ Authorization: Pandora <auth>
 |Successful|成功|允许重跑|
 |Failed|失败|允许重跑|
 |Running|运行中|不允许重跑（请先停止）|
-|Canceled|取消停止|允许重跑|
+|Canceled|已停止|允许重跑|
 |Restarting|重启中|用于重启中间状态，不允许任何操作|
 |Cancelling|停止中|用于停止中间状态，不允许任何操作|
 
