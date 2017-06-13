@@ -57,7 +57,7 @@ HTTP/1.1 200 OK
 |spec|json|是|指定该数据源自身属性相关的信息|
 |schema|array|是|字段信息|
 |schema.key|string|是|字段名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符,支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
-|schema.valtype|string|是|字段类型</br>目前仅支持：</br>`boolean`：布尔类型</br>`long`：整型</br>`date`：RFC3339日期格式</br>`float`：64位精度浮点型</br>`string`：字符串</br>`array`：数组</br>`map`：嵌套类型，可嵌套，最多5层，类似于json object|
+|schema.valtype|string|是|字段类型</br>目前仅支持：</br>`boolean`：布尔类型</br>`long`：整型</br>`date`：RFC3339日期格式</br>`float`：64位精度浮点型</br>`string`：字符串|
 |schema.required|bool|是|是否必填</br>用户在传输数据时`key`字段是否必填|
 
  当type为`hdfs`的时候spec定义如下:
