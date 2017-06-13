@@ -24,174 +24,9 @@ HTTP/1.1 200 OK
 
 * 如果请求包含数据获取,则返回相应数据的JSON字符串；
 
-### 创建资源池
 
-**请求语法**
+### 创建消息队列(数据源)
 
-```
-POST /v2/groups/<GroupName>
-Content-Type: application/json
-Authorization: Pandora <auth>
-{
-    "region": <Region>, 
-    "container": {
-      "type":  <ContainerType>,
-      "count": <ContainerCount>
-    },
-    "allocateOnStart": <AllocateOnStart>
-}
-```
-
-**请求内容**
-
-|参数|类型|必填|说明|
-|:---|:---|:---:|:---|
-|GroupName|string|是|资源池名称,用来标识该资源池的唯一性；</br>命名规则:`^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
-|region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(`nb`)；</br>此参数是为了降低用户传输数据的成本,应当尽量选择离自己数据源较近的区域|
-|container|map|是|计算资源的数量及类型|
-| container.type|string|是|资源类型,目前支持`M16C4`和`M32C8`分别代表`4核(CPU)16G(内存)`和`8核(CPU)32G(内存)`|
-| container.count|int|是|指资源`type`的数量,最小为1,最大为128|
-|allocateOnStart|bool|否|`true`代表在创建资源池的时候就分配资源,</br>`false`代表在该资源池中第一个计算任务启动时,再分配资源；</br>  默认为`false`|
-
-**示例**
-
-```
-curl -X POST https://pipeline.qiniu.com/v2/groups/test_group \
--H 'Content-Type: application/json' \
--H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
--d '{
-    "region": "nb", 
-    "container": {
-       "type":  "M16C4",
-       "count": 5
-    },
-    "allocateOnStart": true
-}' 
-```
-
-### 修改资源池
-
-**请求语法**
-
-```
-PUT /v2/groups/<GroupName>
-Content-Type: application/json
-Authorization: Pandora <auth>
-{
-    "container": {
-      "type":  <ContainerType>,
-      "count": <ContainerCount>
-    }
-}
-```
-
-**示例**
-
-```
-curl -X POST https://pipeline.qiniu.com/v2/groups/test_group \
--H 'Content-Type: application/json' \
--H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \
--d '{
-    "container": {
-       "type":  "M16C4",
-       "count": 5
-    }
-}' 
-```
-
-### 启动/停止资源池
-
-**请求语法**
-
-```
-POST /v2/groups/<GroupName>/actions/start|stop
-Authorization: Pandora <auth>
-```
-
-**启动资源池示例**
-
-```
-curl -X POST https://pipeline.qiniu.com/v2/groups/test_group/actions/start \
--H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
-```
-
-**停止资源池示例**
-
-```
-curl -X POST https://pipeline.qiniu.com/v2/groups/test_group/actions/stop \
--H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
-```
-
-### 查询所有资源池
-
-**请求语法**
-
-```
-GET /v2/groups 
-Authorization: Pandora <auth>
-```
-
-**响应报文** 
-
-```
-Content-Type: application/json
-{
-    "groups": [
-      {
-        "name": <GroupName>,
-        "region": <Region>,
-        "container": {
-          "type": <ContainerType>,
-          "count": <ContainerCount>
-        }
-      },
-      ...
-    ]
-}
-```
-
-### 根据名称查询资源池
-
-**请求语法**
-
-```
-GET /v2/groups/<GroupName>
-Authorization: Pandora <auth>
-```
-
-**响应报文** 
-
-```
-{
-    "region": <Region>,
-    "container": {
-      "type": <ContainerType>,
-      "count": <ContainerCount>,
-      "status": <ContainerStatus>
-    },
-    "createTime": <CreateTime>,
-    "updateTime": <UpdateTime>
-  }
-```
-
-**响应内容**
-
-|参数|类型|必填|说明|
-|:---|:---|:---:|:---|
-| container.status|string|-|运行状态,目前有`running`,`idle`两种,表示运行中和空闲|
-|createTime|string|-|创建时间|
-|updateTime|string|-|更新时间|
-
-### 根据名称删除资源池
-
-**请求语法**
-
-```
-DELETE /v2/groups/<GroupName>
-Authorization: Pandora <auth>
-```
-
-### 创建消息队列
 
 **请求语法**
 
@@ -201,7 +36,6 @@ Content-Type: application/json
 Authorization: Pandora <auth>
 {
     "region": <Region>,
-    "group": <GroupName>,
     "schema": [
       {
         "key": <Key>,
@@ -221,14 +55,15 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|RepoName|string|是|消息队列名称,用来标识该消息队列的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
-|region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东(代号`nb`)；</br>此参数是为了降低用户传输数据的成本；应当尽量选择离自己数据源较近的区域|
-|group|string|否|指定该消息队列所属的资源池,如果不填写,则说明独享消息队列资源|
-|schema|array|是|相当于关系型数据库表中的`字段集`，当valtype取值为map时，该参数需要嵌套，且嵌套深度最大为5|
-| schema.key|string|是|相当于关系型数据库表的`字段`,</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
-| schema.valtype|string|是|描述`key`字段的数据类型,目前仅支持`boolean`、`long`、`date`、`float`、`string`、`array`和`map`,</br>其中`boolean`表示布尔类型，默认值为`false`；`float`的最大精度是`float64`；`array`表示数组类型，数组元素必须为同一类型；`map`表示嵌套类型，类似于json object|
-| schema.elemtype|string|否|当数据类型为`array`时，该参数必填，否则将其忽略。该参数表示`array`的元素类型，目前仅支持`long`、`float`、`string`|
-| schema.required|bool|否|描述用户在传输数据时`key`字段是否必填|
+|RepoName|string|是|消息队列名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
+|region|string|是|计算与存储所使用的物理资源所在区域</br>目前仅支持“nb”(华东区域)|
+|schema|array|是|数据的字段信息</br>由‘字段名称’、‘字段类型’、‘数组类型’、‘是否必填’组成</br>|
+| schema.key|string|是|字段名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符,支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
+| schema.valtype|string|是|字段类型</br>目前仅支持：</br>`boolean`：布尔类型</br>`long`：整型</br>`date`：RFC3339日期格式</br>`float`：64位精度浮点型</br>`string`：字符串</br>`array`：数组</br>`map`：嵌套类型，可嵌套，最多5层，类似于json object|
+| schema.elemtype|string|否|数组类型</br>当`schema.valtype:"array"`时必填</br>目前仅支持`long`、`float`、`string`|
+| schema.required|bool|否|是否必填</br>用户在传输数据时`key`字段是否必填|
+
+!> 注意：`region`参数是为了降低用户传输数据的成本，请尽量选择离自己数据源较近的区域。
 
 **示例**
 
@@ -238,7 +73,6 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/Test_Repo \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='  \
 -d '{
     "region": "nb", 
-    "group":"test_group",
     "schema": [
         {
             "key": "userName",
@@ -301,8 +135,7 @@ Content-Type: application/json
       {
         "name": <RepoName>,
         "region": <Region>,
-        "derivedFrom": <TransformName>,
-        "group": <GroupName>
+        "derivedFrom": <TransformName>
       },
       ...
     ]
@@ -313,7 +146,7 @@ Content-Type: application/json
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|derivedFrom|string|-|表示这个repo是由哪个transform生成的,如果此项为空,说明该repo是由用户自行创建的|
+|derivedFrom|string|-|表示这个消息队列是由哪个transform生成的</br>如果此项为空,说明该消息队列是由用户自行创建的|
 
 
 
@@ -332,16 +165,19 @@ Authorization: Pandora <auth>
 Content-Type: application/json
 {
     "region": <Region>,
-    "group": <GroupName>,
     "derivedFrom": <TransformName>,
     "schema": [
       {
         "key": <Key>,
         "valtype": <ValueType>,
-        "required": <Required>
+        "elemtype": <ElemType>,
+        "required": <Required>,
+        "schema": [
+            ...
+        ]
       },
       ...
-   ]
+    ]
 }
 ```
 
@@ -365,36 +201,21 @@ Authorization: Pandora <auth>
 
 {
 	"schema": [
-	  {
-	    "key": <Key>,
-	    "valtype": <ValueType>,
-	    "required": <Required>
-	  },
-	  ...
-	]
+      {
+        "key": <Key>,
+        "valtype": <ValueType>,
+        "elemtype": <ElemType>,
+        "required": <Required>,
+        "schema": [
+            ...
+        ]
+      },
+      ...
+    ]
 }
 ```
 
-> 注意： 更新schema时，如果需要保留已有的schema信息，也需要填写上去，这是一次全量更新。
-
-
-**示例**
-
-```
-curl -X PUT https://pipeline.qiniu.com/v2/repos/test_repo \
-	 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
-	 
-{
-	"schema": [
-	  {
-	    "key": "ip",
-	    "valtype": "String",
-	    "required": flase
-	  },
-	  ...
-	]
-}
-```
+!> 注意： 更新字段信息时，如果需要保留已有的字段信息，也需要填写上去，这是一次全量更新。
 
 ### 数据推送
 
@@ -413,11 +234,17 @@ keyName=valName<TAB>keyName=valName ...
 
 |参数|类型|必填|说明|
 |:---|:---|:---|:---|
-| RepoName |string|  是  |消息队列的名称|
-| keyName |string|是|消息队列的`schema`中`key`的值,即字段名称|
-| valName |string|是|对应key的数据内容<br/> 注意:如果是`string`类型,那么 `\t`、`\r`、`\n` `\` 需要用`\`转义,空格`' '` 可以不转义|
+|RepoName |string|  是  |消息队列名称|
+|keyName |string|是|字段名称|
+|valName |string|是|对应字段名称的数据内容<br/> 注意：如果是`string`类型</br>那么 `\t`、`\r`、`\n` `\` 需要用`\`转义</br>空格`' '` 可以不转义|
 
-!> 注意:对于`array`类型，打点格式为`[e1,e2,...,en]`，数组元素采用逗号分割，且所有元素使用`[]`包括，当元素类型为`string`时，需要加上双引号;对于`map`类型，打点格式为json字符串，比如`{"f1":123,"f2":"abc"}`，注意所有元素使用`{}`包括;另外，多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔,单次分隔的长度不超过100KB
+> 对于`array`类型：
+> 
+> 打点格式为`[e1,e2,...,en]`，数组元素采用逗号分割，且所有元素使用`[]`包括，当元素类型为`string`时，需要加上双引号;
+> 
+> 对于`map`类型：
+> 
+> 打点格式为json字符串，比如`{"f1":123,"f2":"abc"}`，注意所有元素使用`{}`包括;另外，多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔，单次分隔的长度不超过100KB。
 
 
 **示例**
@@ -469,18 +296,18 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | RepoName |string|是|指定一个消息队列的名称|
-| TransformName |string|是|为这个计算任务取个名字,用来标识该消息队列的唯一性;</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
-| DestinationRepoName |string|是|计算结果目标消息队列,如果该消息队列不存在,将自动创建一个|
+| TransformName |string|是|计算任务名称</br>用来标识该消息队列的唯一性</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
+| DestinationRepoName |string|是|计算结果输出消息队列</br>如果该消息队列不存在</br>将自动创建一个|
 | plugin |json|否|自定义计算|
 | name |string|是|plugin名称|
-| output |json|是|输出数组,即这个plugin计算完成后,输出的数据结果的结构和类型,</br>也可以理解为一张表,包含字段名称和字段类型|
-|output.name|string|是|输出字段名称,</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
-|output.type|string|否|输出字段类型,支持`string`、`long`和`float`三种,</br>时间类型使用`long`类型,默认为`string`类型|
-| mode |string|否|该计算任务使用的语言类型,目前仅支持`sql`|
+| output |json|是|输出数组</br>即这个plugin计算完成后，输出的数据结果的结构和类型</br>也可以理解为一张表,包含字段名称和字段类型|
+|output.name|string|是|输出字段名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符,支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
+|output.type|string|否|输出字段类型</br>支持`string`、`long`和`float`三种</br>时间类型使用`long`类型</br>默认为`string`类型|
+| mode |string|否|该计算任务使用的语言类型</br>目前仅支持`sql`|
 | code |string|否|`sql`语句代码|
-| interval |string|否|计算任务的运行时间间隔,目前支持`5s`、`10s`、`20s`、`30s`、`1m`、`5m`和`10m`的粒度,如果不指定,系统默认使用`1m`|
+| interval |string|否|计算任务的运行时间间隔</br>目前支持`5s`、`10s`、`20s`、`30s`、</br>`1m`、`5m`和`10m`的粒度</br>如果不指定，系统默认使用`1m`|
 |container|map|否|计算资源的数量及类型|
-|type|string|否|目前支持`M16C4`和`M32C8`分别代表`4核(CPU)16G(内存)`和`8核(CPU)32G(内存)`|
+|type|string|否|目前支持`M16C4`和`M32C8`</br>分别代表</br>`4核(CPU)16G(内存)`、`8核(CPU)32G(内存)`|
 |count|int|否|指资源`type`的数量,最小为1,没有上限|
 
 !> 注意:`mode`加`code`是基础的数据计算方式,自定义计算(plugin)是更为高级的数据计算方式,要注意`mode/code`和自定义计算两种计算方式可以共存,但不可以一种都不指定。当自定义计算和`mode/code`共存时,系统优先执行自定义计算,后执行mode/code。
@@ -521,11 +348,12 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---|:---|
-|PluginName|string|是|plugin名称,注:该名称必须与待上传jar包中对应Parser类的全限定名保持一致,用来标识该消息队列的唯一性;命名规则: `^[a-zA-Z][a-zA-Z0-9_\\.]{0,127}[a-zA-Z0-9_]$`,1-128个字符,支持小写字母、数字、下划线；必须以大小写字母开头|
-|ContentMD5|string|是|MD5码|
+|PluginName|string|是|plugin名称</br>命名规则: `^[a-zA-Z][a-zA-Z0-9_\\.]{0,127}[a-zA-Z0-9_]$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母开头|
+|ContentMD5|string|是|jar包的MD5码|
 
 **Plugin说明:**
 
+* Jar包的命名必须和包含代码方法的类名一致
 * 上传的Plugin Jar包最大为100MB。
 * Content-MD5头部是可选的。如果上传plugin的时候带上该头部服务器会校验上传数据的校验和,如果两者不一致服务器将拒绝上传。如果不带该头部,服务器不做任何校验和的检查。
 * <ContentMD5>是先计算plugin内容的MD5,再对MD5做一次base64编码转化为字符串。例如qiniu这个字符串的Content-MD5是gLL29S04bTCxYd2kCqsEIQ==而不是7b9d6b4d89f6825a196d4cc50fdbedc5
@@ -538,7 +366,7 @@ curl -X POST https://pipeline.qiniu.com/v2/plugins/ComputeSumDataParser \
 -H 'Content-Type: application/java-archive'  \
 -H 'Content-MD5: 900150983cd24fb0d6963f7d28e17f72'  \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
--T ./plugins-1.0-SNAPSHOT.jar \  
+-T ./TestPlugin.jar \  
 ```
 
 ### 查看所有计算任务
@@ -588,12 +416,6 @@ Transform-Type: application/<TransformType>
 }
 ```
 
-**示例**
-
-```
-curl -G https://pipeline.qiniu.com/v2/repos/test_repo/transforms/test_transform \
--H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
-```
 
 ### 修改计算任务
 
@@ -626,14 +448,7 @@ Authorization: Pandora <auth>
 }
 ```
 
-**请求内容**
 
-|参数|类型|必填|说明|
-|:---|:---|:---|:---|
-|plugin|json|否|自定义计算|
-|code|string|否|sql语句|
-|interval|string|否|更改计算任务运行时间间隔,目前支持`1m`、`5m`和`10m`|
-|container|json|否|更改计算任务配额的类型和个数,类型支持`M16C4`（4核16G内存）、`M32C8`（8核32G内存）,数量最小为1,没有上限|
 
 >**注意:** 
 >
@@ -674,13 +489,13 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | RepoName |string|是|需要导出数据的消息队列名称|
-| ExportName |string|是|为这个导出任务起一个名字,</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`,1-128个字符,支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
-| Type |string|是|导出方式,目前支持`http`、`logDB`、`mongoDB`、`tsdb`、`kodo`,</br>在这里我们选择`http`|
-|whence|string|否|导出数据的起始位置,目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出,默认值为oldest|
-| Spec |json|是|导出任务的参数主体,选择不同的`type`,`Spec`也需要填写不同的参数,将在下面分开讲解|
-| host |string|是|服务器地址（ip或域名）,例如:`https://pipeline.qiniu.com` 或 `127.0.0.1:7758`|
-| uri |string|是|请求资源路径（具体地址,不包含ip或域名）,例如:`/test/repos`|
-| format |string|否|导出方式，支持`text`和`json`，如果没有填写此项，默认为`text`|
+| ExportName |string|是|导出任务名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
+| Type |string|是|导出方式</br>目前支持`http`、`logDB`、`mongoDB`、`tsdb`、`kodo`</br>在这里我们选择`http`|
+|whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出</br>默认值为oldest|
+| Spec |json|是|导出任务的参数主体</br>选择不同的`type`</br>`Spec`也需要填写不同的参数</br>将在下面分开讲解|
+| host |string|是|服务器地址（ip或域名）</br>例如:`https://pipeline.qiniu.com` </br>或 `127.0.0.1:7758`|
+| uri |string|是|请求资源路径（具体地址,不包含ip或域名）</br>例如:`/test/repos`|
+| format |string|否|导出方式</br>支持`text`和`json`</br>如果没有填写此项，默认为`text`|
 
 !> 注意: 导出数据格式和`推送数据`相同。
 
@@ -732,10 +547,10 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | destRepoName |string|是|数据库名称|
-| series |string|是|数据库序列名称|
-| tags |map|是|标签字段,也就是tsdb序列中的列名,以map形式展示,出现在tags中的列名可以group by,而没有出现的则不可以|
-| fields |map|是|列名字段,以map形式展示,出现在fields中的列不可group by|
-| timestamp |string|否|会用rfc3339日期格式进行解析,如果格式不正确则会抛弃这一条数据,如果此项为空,则默认使用当前时间。|
+| series |string|是|序列名称|
+| tags |map|是|索引字段|
+| fields |map|是|普通字段|
+| timestamp |string|否|时间戳字段</br>会用rfc3339日期格式进行解析</br>如果格式不正确则会抛弃这一条数据</br>如果此项为空，则默认使用当前时间|
 
 > 时序数据库中的timestamp字段的类型必须为 date；
 > 消息队列中字段类型为:Long/String/Date 的字段都可以导出至时序数据库中的 timestamp 字段
@@ -785,8 +600,8 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-| destRepoName |string|是|日志仓库名称,命名规则遵循消息队列名称,如果输入的名称不存在,系统将会报错|
-| doc |map|是|字段关系说明, `fromRepoSchema`表示源消息队列字段名称,`toRepoSchema`表示目标日志仓库字段名称|
+| destRepoName |string|是|日志仓库名称|
+| doc |map|是|字段关系说明</br> `fromRepoSchema`表示源消息队列字段名称</br>`toRepoSchema`表示目标日志仓库字段名称|
 
 > 消息队列中,字段的类型与日志检索服务中的字段类型需要作出如下对应:
 > 
@@ -855,13 +670,13 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 |bucket|string|是|数据中心名称|
 |keyPrefix|string|否|导出的文件名的前缀|
-|email|string|是|bucket所属用户的七牛账户名称|
+|email|string|是|数据中心名称所属用户的七牛账户名称|
 |accessKey|string|是|七牛账户的公钥|
-|fields|map|是|字段关系说明,`key`为`kodo-bucket`的字段名,`value`为导出数据的消息队列的字段名|
+|fields|map|是|字段关系说明</br>`key`为`kodo-bucket`的字段名</br>`value`为导出数据的消息队列的字段名|
 |rotateInterval|int|否|切分文件的时长,单位为秒(`s`)|
-|format|string|否|文件导出格式,支持`json`、`text`、`parquet`三种形式,默认为`json`|
-|compress|bool|否|是否开启文件压缩功能,默认为`false`|
-| retention |int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
+|format|string|否|文件导出格式</br>支持`json`、`text`、`parquet`三种形式</br>默认为`json`|
+|compress|bool|否|是否开启文件压缩功能</br>默认为`false`|
+| retention |int|否|数据储存时限</br>以天为单位</br>当不大于0或该字段为空时，则永久储存|
 
 !> 注1:当一个文件导出到kodo之后,最多间隔`rotateInterval`之后将再次生成文件做导出。默认值30s,最小值为30s,最大值为60s(当`format`为`parquet`时,最大间隔可以到600s)。
 
