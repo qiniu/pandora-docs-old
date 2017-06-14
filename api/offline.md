@@ -64,7 +64,7 @@ HTTP/1.1 200 OK
  
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-|spec.paths|array|是|包含一个或者多个hdfs文件路径</br>例如：`hdfs://192.168.1.1:9000/usr/local`|
+|spec.paths|array|是|包含一个或者多个hdfs文件路径</br>例如：`hdfs://192.168.1.1:9000/usr/local`</br>可以使用系统默认魔法变量，下文中详解|
 |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
 
  当type为`kodo`的时候spec定义如下:
