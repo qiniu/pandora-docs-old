@@ -29,11 +29,33 @@
 			executeScript: true,
 			auto2top: true,
 			search: {
+				maxAge: 86400000, // 过期时间，单位毫秒，默认一天
 				noData: {
 					'/zh-cn/': '没有结果!',
 					'/': '没有结果!'
 				},
-				paths: 'auto',
+				paths: [
+					'/', 
+					'/api/httpie', 
+					'/api/logdb', 
+					'/api/offline', 
+					'/api/pipeline', 
+					'/api/tsdb', 
+					'/demo/log', 
+					'/downloads/download', 
+					'/getstarted/architecture', 
+					'/getstarted/concept', 
+					'/getstarted/ready', 
+					'/qa/qa',
+					'/quickstart/logdb',
+					'/quickstart/offline',
+					'/quickstart/report',
+					'/quickstart/tsdb',
+					'/quickstart/workflow',
+					'/quickstart/xspark',
+					'/sdk/sdk-java',
+					'/util/logkit'
+				],
 				placeholder: {
 					'/zh-cn/': '搜索',
 					'/': '搜索'
