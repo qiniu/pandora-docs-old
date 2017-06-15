@@ -231,7 +231,7 @@ Authorization: Pandora <auth>
 |:---|:---|:---|:---|
 |srcs|array|是|数据来源</br>所有数据来源中最多包含一个离线任务</br>但可以包括多个离线数据源|
 |srcs.name|string|是|数据源名称或离线任务名称|
-|srcs.fileFilter|string|否|文件过滤规则</br>命名规则：0-64个字符|
+|srcs.fileFilter|string|否|文件过滤规则</br>命名规则：0-64个字符</br>最终的文件地址是'文件前缀+文件过滤规则'</br>请注意过滤规则不要和文件前缀有重复|
 |srcs.type|string|是|数据来源节点类型|
 |srcs.tableName|string|是|数据来源表名称</br>命名规则：1-128个字符，支持字母、数字、下划线，必须以字母开头|
 |computation|object|是|计算方式|
@@ -252,6 +252,13 @@ Authorization: Pandora <auth>
 
 !> 注2：srcs.tableName在此任务的srcs中以及依赖的所有上游任务的srcs中不能重复。
 
+> 文件前缀+文件过滤规则举例说明：
+> 
+> 文件前缀：`audit-log/xxx-log-`
+> 
+> 文件过滤规则： `$(year)-$(mon)-$(day)`
+> 
+> 最终的文件地址为： `audit-log/xxx-log-2017-06-01`
 
 ### 更新离线计算任务
 
@@ -621,7 +628,7 @@ Authorization: Pandora <auth>
 
 !> 注1: 当用户指定`format`为`json`、`csv`或`text`时, `compression`仅支持`none`(不压缩)、`bzip2`, `gzip`, `lz4`, `snappy`和`deflate`; 当用户指定`format`为`orc`时, `compression`仅支持`none`(不压缩)、`snappy`, `zlib`和`lzo`; 当用户指定`format`为`parquet`时, `compression`仅支持`none`(不压缩)、`snappy`, `gzip`和`lzo`。
 
-!> 注2: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
+!> 注2: `path`字段支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
 
 * `year` 上传时的年份
 * `mon` 上传时的月份
