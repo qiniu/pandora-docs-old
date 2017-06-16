@@ -10,6 +10,7 @@
   - [XSpark](/quickstart/xspark)
   - [报表工作室](/quickstart/report)
 - **API & SDK & 工具**
+  - [签名生成工具](/api/akutil)
   - [API发送工具](/api/httpie)
   - [大数据工作流引擎-实时计算API](/api/pipeline)
   - [大数据工作流引擎-离线计算API](/api/offline)
