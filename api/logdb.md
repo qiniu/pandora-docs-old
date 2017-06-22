@@ -307,7 +307,7 @@ Authorization: Pandora <auth>
 **示例**
 
 ```
-curl -X POST https://https://logdb.qiniu.com/v5/repos/test_Repo/search \
+curl -X POST https://logdb.qiniu.com/v5/repos/test_Repo/search \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{"size":1,"query":"content:test","sort":"userName:asc","from":1,"highlight":{"pre_tags":["<tag1>"],"post_tags":["</tag1>"],"fields":{"<高亮的字段>":{}},"require_field_match":false,"fragment_size":100}}'
@@ -353,7 +353,7 @@ Content-Type: text/plain
 **示例**
 
 ```
-curl -X POST https://https://logdb.qiniu.com/v5/logdbkibana/msearch \
+curl -X POST https://logdb.qiniu.com/v5/logdbkibana/msearch \
 -H 'Content-Type: text/plain' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{"index":["repo0"]}\n{"size":1,"sort":[{"timestamp":{"order":"desc"}}],"query":{"query_string":{"query":"*"}}}'
@@ -416,7 +416,7 @@ Authorization: Pandora <auth>
 **示例**
 
 ```
-curl -X POST https://https://logdb.qiniu.com/v5/test_Repo/s \
+curl -X POST https://logdb.qiniu.com/v5/test_Repo/s \
 -H 'Content-Type: text/plain' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{"query_string":"*","sort":"time","size":10,"startTime":1483203661000,"endTime":1483203663000,"searchType":1}'
@@ -445,7 +445,7 @@ curl -X POST https://https://logdb.qiniu.com/v5/test_Repo/s \
 }
 ```
 ```
-curl -X POST https://https://logdb.qiniu.com/v5/test_Repo/s \
+curl -X POST https://logdb.qiniu.com/v5/test_Repo/s \
 -H 'Content-Type: text/plain' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{"query_string":"*","sort":"time","size":10,"startTime":1483203661000,"endTime":1483203663000,"searchType":1}'
@@ -499,7 +499,7 @@ Authorization: Pandora <auth>
 **示例**
 
 ```
-curl -X POST https://https://logdb.qiniu.com/v5/repos/test_Repo/search \
+curl -X POST https://logdb.qiniu.com/v5/repos/test_Repo/search \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{"size":1,"query":"content:test","scroll":"3m","sort":"userName:asc","from":1}'
@@ -523,7 +523,7 @@ curl -X POST https://https://logdb.qiniu.com/v5/repos/test_Repo/search \
 }
 ```
 ```
-curl -X POST https://https://logdb.qiniu.com/v5/scroll \
+curl -X POST https://logdb.qiniu.com/v5/scroll \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{"scroll":"3m","scroll_id":"scroll_id1"}'
@@ -547,7 +547,7 @@ curl -X POST https://https://logdb.qiniu.com/v5/scroll \
 }
 ```
 ```
-curl -X POST https://https://logdb.qiniu.com/v5/scroll \
+curl -X POST https://logdb.qiniu.com/v5/scroll \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{"scroll":"3m","scroll_id":"scroll_id2"}'
