@@ -712,7 +712,7 @@ Authorization: Pandora <auth>
 **请求语法**
 
 ```
-GET /v2/jobs/<jobName>/history?page=1&size=20&sortBy=endTime&order=desc&status=xx&runId=-1
+GET /v2/jobs/<jobName>/history?page=1&size=20&sortBy=endTime&status=xx&runId=-1
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -723,8 +723,7 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 |page|int|否|分页页数|
 |size |int|否|分页大小|
-|sortBy |string|否|根据哪个字段排序|
-|order |string|否|排序asc，desc|
+|sortBy |string|否|根据哪个字段排序, endTime代表按照字段升序排列，-endTime按照逆序排列|
 |status |string|否|<Ready、Successful、Failed、Running、Canceled, Restarting, Cancelling>|
 |runId |int|否|查询某个运行批次的状态，-1代表最近一次|
 
@@ -987,7 +986,7 @@ Content-Type: application/json
 **请求语法**：
 
 ```
-GET /v2/udf/jars?page=1&size=5&sortBy=uploadTime&order=desc
+GET /v2/udf/jars?page=1&size=5&sortBy=-uploadTime
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -996,7 +995,7 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|jar |string|是|jar包名称|
+|jarName |string|是|jar包名称|
 |description|string|是|jar包描述|
 |uploadTime |string|是|jar包上传时间|
 
@@ -1013,20 +1012,20 @@ curl -X GET https://pipeline.qiniu.com/v2/udf/jars?page=1&size=2&sortBy=uploadTi
 ```
 200 OK
 Content-Type: application/json
-[
-    {
-        "jarName": "UdfAggCollection",
-        "fileName":"udf-agg.jar",
-        "description":"聚合类UDF集合",
-        "uploadTime": "2017-06-01 15:00:00"
-    },
-    {
-        "jarName": "UdfSortCollection",
-        "fileName":"udf-sort.jar",
-        "description":"排序类UDF集合",
-        "uploadTime": "2017-06-01 14:00:00"
-    }
-]
+{
+    "result": [
+        {
+            "jarName": "UdfAggCollection",
+            "description":"聚合类UDF集合",
+            "uploadTime": "2017-06-01 15:00:00"
+        },
+        {
+            "jarName": "UdfSortCollection",
+            "description":"排序类UDF集合",
+            "uploadTime": "2017-06-01 14:00:00"
+        }
+    ]
+}
 ```
 
 ### UDF函数注册
@@ -1122,7 +1121,7 @@ Content-Type: application/json
 **请求语法**：
 
 ```
-GET /v2/udf/funcs?page=1&size=2&sortBy=uploadTime&order=desc&jarName=xxx
+GET /v2/udf/funcs?page=1&size=2&sortBy=-uploadTime&jarName=xxx
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -1236,7 +1235,7 @@ Authorization: Pandora <auth>
 **示例**
 
 ```
-curl -X GET https://pipeline.qiniu.com/v2/udf/builtins?page=1&size=2&sortBy=funcName&order=desc&category=math \
+curl -X GET https://pipeline.qiniu.com/v2/udf/builtins?page=1&size=2&sortBy=funcName \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 ```
