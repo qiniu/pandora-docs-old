@@ -257,26 +257,7 @@ curl -X POST https://logdb.qiniu.com/v5/repos/test_repo \
 
 ### 查询日志
 
-**GET请求语法**
-
-```
-GET /v5/repos/<RepoName>/search?q=<QueryString>&sort=<fieldName:asc>&from=<from>&size=<size>&fields=<fields>&scroll=<scrolltime>
-Authorization: Pandora <auth>
-```
-
-**GET请求参数说明**
-
-|参数|类型|必填|说明|
-|:---|:---|:---|:---|
-|RepoName|string|是|日志仓库名称|
-|q|string|否|查询表达式，参照查询语法|
-|sort|string|否|排序，`field1:asc,field2:desc, … `。field 是实际字段名，asc代表升序，desc 代表降序。用逗号进行分隔。|
-|from|int|否|日志开始的位置|
-|size|int|否|返回数据数量|
-|fields|string|否|选择返回的数据中只展示部分字段。比如 fields=k1,k2，则返回的结果中只有k1,和k2字段|
-|scroll|string|否|scroll查询时ScrollID保存时间|
-
-**POST请求语法**
+**查询接口请求语法**
 
 ```
 POST /v5/repos/<RepoName>/search
@@ -305,7 +286,7 @@ Authorization: Pandora <auth>
 }
 ```
 
-**POST请求说明**
+**查询接口请求说明**
 
 |字段|类型|必填|说明|
 |:---|:---|:---|:---|
@@ -314,7 +295,7 @@ Authorization: Pandora <auth>
 |sort|string|否|排序，`field1:asc,field2:desc, … `。field 是实际字段名，asc代表升序，desc 代表降序。用逗号进行分隔。|
 |from|int|否|日志开始的位置|
 |size|int|否|返回数据数量|
-|scroll|string|否|scroll查询时ScrollID保存时间|
+|scroll|string|否|scroll查询时ScrollID保存时间,如果不需要通过游标的方式拉取大量数据，可不填|
 |fields|string|否|选择返回的数据中只展示部分字段。比如 fields=k1,k2，则返回的结果中只有k1,和k2字段|
 |highlight|map|否|返回结果高亮配置|
 |pre_tags|string数组|是|表示高亮元素的前置标签，通常为`<em>`|
@@ -322,6 +303,81 @@ Authorization: Pandora <auth>
 |fields|map|是|表示要高亮的字段，以及其高亮设置，比如设置高亮的窗口大小|
 |require_field_match|bool|否|表示是否必须要强制匹配搜索符合的结果高亮，默认为false|
 |fragment_size|int|是|高亮的最大字符窗口大小|
+
+**MSearch请求语法**
+
+和elasticsearch msearch接口一样，可以对多个repo进行搜索、分析。细节移步https://www.elastic.co/guide/en/elasticsearch/reference/2.3/search-multi-search.html
+
+```
+POST /v5/logdbkibana/msearch
+Authorization: Pandora <auth>
+Content-Type: text/plain
+{"index":["repo0"]}
+{"size":1,"sort":[{"timestamp":{"order":"desc"}}],"query":{"query_string":{"query":"*"}}}
+{"index":["repo1"]}
+{"size":1,"sort":[{"timestamp":{"order":"desc"}}],"query":{"query_string":{"query":"*"}}}
+```
+
+**MSearch请求说明**
+
+|字段|类型|必填|说明|
+|:---|:---|:---|:---|
+|index|string|是|日志仓库名称|
+
+**PartialSearch请求语法**
+
+```
+POST /v5/repos/<RepoName>/s
+Authorization: Pandora <auth>
+{
+    "query_string": <query_string>,
+    "sort": <timestamp>,
+    "size": <size>,
+    "startTime": <timestamp>,
+    "endTime": <timestamp>,
+    "searchType": <searchType>,
+    "highlight": {
+        "pre_tag": "<pre_tag>",
+        "post_tag": "<post_tag>"
+    }
+}
+```
+
+**PartialSearch请求说明**
+
+适用于非永久存储的repo且具有时间字段的repo查询
+
+|字段|类型|必填|说明|
+|:---|:---|:---|:---|
+|RepoName|string|是|日志仓库名称|
+|query_string|string|是|查询表达式，参照查询语法|
+|sort|string|是|时间排序字段，比如`sort:fieldName`|
+|size|int|是|返回数据数量|
+|pre_tags|string|是|表示高亮元素的前置标签，通常为`<em>`|
+|post_tags|string|是|表示高亮元素的后置标签，通常为`</em>`|
+|startTime|int|是|开始时间，毫秒时间戳|
+|endTime|int|是|结束时间，毫秒时间戳|
+|searchType|int|是|搜索模式：混合模式:0，searching模式:1，直方图模式:2|
+
+**Scroll请求语法**
+
+scroll接口用于啦取大规模数据，需要配合搜素日志查询接口来使用。
+
+```
+POST /v5/scroll
+Authorization: Pandora <auth>
+{
+    "scroll_id": <scroll_id>,
+    "scroll": <scroll>
+}
+```
+
+**Scroll请求说明**
+
+|字段|类型|必填|说明|
+|:---|:---|:---|:---|
+|scroll_id|string|是|使用上一次返回到的ID,用户抽取下一批结果|
+|scroll|string|否|维护这个批量拉取上下文的时间，比如1m，1h等|
 
 **查询语法**
 
