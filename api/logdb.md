@@ -304,6 +304,33 @@ Authorization: Pandora <auth>
 |require_field_match|bool|否|表示是否必须要强制匹配搜索符合的结果高亮，默认为false|
 |fragment_size|int|是|高亮的最大字符窗口大小|
 
+**示例**
+
+```
+curl -X POST https://https://logdb.qiniu.com/v5/repos/test_Repo/search \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{"size":1,"query":"content:test","sort":"userName:asc","from":1,"highlight":{"pre_tags":["<tag1>"],"post_tags":["</tag1>"],"fields":{"<高亮的字段>":{}},"require_field_match":false,"fragment_size":100}}'
+```
+
+```
+{
+    "total": 10,
+    "partialSuccess": false,
+    "data": [
+        {
+            "content": "test",
+            "highlight": {
+                "content": [
+                    "<tag>test<tag/>"
+                ]
+            }
+        }
+    ]
+}
+```
+
+
 **MSearch请求语法**
 
 和elasticsearch msearch接口一样，可以对多个repo进行搜索、分析。细节移步https://www.elastic.co/guide/en/elasticsearch/reference/2.3/search-multi-search.html
@@ -317,12 +344,40 @@ Content-Type: text/plain
 {"index":["repo1"]}
 {"size":1,"sort":[{"timestamp":{"order":"desc"}}],"query":{"query_string":{"query":"*"}}}
 ```
-
 **MSearch请求说明**
 
 |字段|类型|必填|说明|
 |:---|:---|:---|:---|
 |index|string|是|日志仓库名称|
+
+**示例**
+
+```
+curl -X POST https://https://logdb.qiniu.com/v5/logdbkibana/msearch \
+-H 'Content-Type: text/plain' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{"index":["repo0"]}\n{"size":1,"sort":[{"timestamp":{"order":"desc"}}],"query":{"query_string":{"query":"*"}}}'
+```
+```
+{
+    "responses": [
+        {
+            "took": 166,
+            "hits": {
+                "total": 10,
+                "max_score": 1,
+                "hits": [
+                    {
+                        "_source": {
+                            "content": "test"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
 
 **PartialSearch请求语法**
 
@@ -345,7 +400,7 @@ Authorization: Pandora <auth>
 
 **PartialSearch请求说明**
 
-适用于非永久存储的repo且具有时间字段的repo查询
+适用于非永久存储的repo且具有时间字段的repo查询,该接口针对超大规模日志进行优化。
 
 |字段|类型|必填|说明|
 |:---|:---|:---|:---|
@@ -358,6 +413,68 @@ Authorization: Pandora <auth>
 |startTime|int|是|开始时间，毫秒时间戳|
 |endTime|int|是|结束时间，毫秒时间戳|
 |searchType|int|是|搜索模式：混合模式:0，searching模式:1，直方图模式:2|
+**示例**
+
+```
+curl -X POST https://https://logdb.qiniu.com/v5/test_Repo/s \
+-H 'Content-Type: text/plain' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{"query_string":"*","sort":"time","size":10,"startTime":1483203661000,"endTime":1483203663000,"searchType":1}'
+```
+```
+{
+    	"process": 0.5,
+        "total": 20,
+        "took": 28,
+        "partialSuccess": true,
+        "hits": [
+            {
+                "content": "test"
+            }
+        ],
+        "buckets": [
+            {
+                "key": 1498124340000,
+                "count": 2
+            },
+            {
+                "key": 1498124370000,
+                "count": 2
+            }
+        ]
+}
+```
+```
+curl -X POST https://https://logdb.qiniu.com/v5/test_Repo/s \
+-H 'Content-Type: text/plain' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{"query_string":"*","sort":"time","size":10,"startTime":1483203661000,"endTime":1483203663000,"searchType":1}'
+```
+```
+{
+    	"process": 1,
+        "total": 20,
+        "took": 28,
+        "partialSuccess": false,
+        "hits": [
+            {
+                "content": "test"
+            }
+        ],
+        "buckets": [
+            {
+                "key": 1498124340000,
+                "count": 5
+            },
+            {
+                "key": 1498124370000,
+                "count": 5
+            }
+        ]
+}
+```
+循环调用partialsearch直到partialSuccess=false停止.
+
 
 **Scroll请求语法**
 
@@ -378,6 +495,74 @@ Authorization: Pandora <auth>
 |:---|:---|:---|:---|
 |scroll_id|string|是|使用上一次返回到的ID,用户抽取下一批结果|
 |scroll|string|否|维护这个批量拉取上下文的时间，比如1m，1h等|
+
+**示例**
+
+```
+curl -X POST https://https://logdb.qiniu.com/v5/repos/test_Repo/search \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{"size":1,"query":"content:test","scroll":"3m","sort":"userName:asc","from":1}'
+```
+
+```
+{
+	"scroll_id":"scroll_id1",
+    "total": 10,
+    "partialSuccess": false,
+    "data": [
+        {
+            "content": "test",
+            "highlight": {
+                "content": [
+                    "<tag>test<tag/>"
+                ]
+            }
+        }
+    ]
+}
+```
+```
+curl -X POST https://https://logdb.qiniu.com/v5/scroll \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{"scroll":"3m","scroll_id":"scroll_id1"}'
+```
+
+```
+{
+	"scroll_id":"scroll_id2"
+    "total": 10,
+    "partialSuccess": false,
+    "data": [
+        {
+            "content": "test",
+            "highlight": {
+                "content": [
+                    "<tag>test<tag/>"
+                ]
+            }
+        }
+    ]
+}
+```
+```
+curl -X POST https://https://logdb.qiniu.com/v5/scroll \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
+-d '{"scroll":"3m","scroll_id":"scroll_id2"}'
+```
+
+```
+{
+	"scroll_id":""
+    "total": 10,
+    "partialSuccess": false,
+    "data": []
+}
+```
+当scroll_id为空或者data为空的时候，表示数据批量拉取完成。
+
 
 **查询语法**
 
