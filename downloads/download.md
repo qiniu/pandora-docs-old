@@ -1,6 +1,4 @@
-### Plugin - Java 版本
 
-点击右侧链接下载 -> [Plugin-Java.zip](http://7xtfy5.com1.z0.glb.clouddn.com/Pandora-Plugin-Java.zip)
 
 ### SDK - Go 语言版本
 

@@ -1,23 +1,39 @@
 - **入门**
-  - [准备工作](/getstarted/ready)
   - [产品介绍](/getstarted/concept)
   - [产品架构](/getstarted/architecture)
+  - [准备工作](/getstarted/ready)
 - **快速开始**
-  - [实时大数据工作流引擎](/quickstart/workflow)
-  - [离线大数据工作流引擎](/quickstart/offline)
-  - [时序数据库](/quickstart/tsdb)
+  - [开始之前](/quickstart/ready)
+  - [实时工作流](/quickstart/flow)
+  - [离线工作流](/quickstart/batch)
   - [日志检索服务](/quickstart/logdb)
+  - [时序数据库](/quickstart/tsdb)
   - [XSpark](/quickstart/xspark)
+  - [Grafana应用](/quickstart/grafana)
+  - [Kibana应用](/quickstart/kibana)
   - [报表工作室](/quickstart/report)
-- **API & SDK & 工具**
-  - [签名生成工具](/api/akutil)
-  - [API发送工具](/api/httpie)
+- **SDKs** 
+  - [Java SDK](/sdk/java)
+  - [GO SDK](/sdk/go)
+  - [PHP SDK](/sdk/php)
+- **工具**
+  - [数据推送工具](/util/logkit)
+  - [签名生成工具](/util/akutil)
+  - [API发送工具](/util/httpie)
+- **REST API**
   - [大数据工作流引擎-实时计算API](/api/pipeline)
   - [大数据工作流引擎-离线计算API](/api/offline)
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
-- [**下载中心**](/downloads/download)
 - **最佳实践**
   - [日志分析](/demo/log)
-- [**Q & A**](/qa/qa)
+- **Q & A**
+  - [Pandora平台相关](/qa/pandora)
+  - [工作流相关](/qa/workflow)
+  - [数据推送相关](/qa/logkit)
+  - [日志检索服务相关](/qa/logdb)
+  - [时序数据库相关](/qa/tsdb)
+  - [XSpark相关](/qa/xspark)
+  - [Kibana & Grafana相关](/qa/app)
+  - [其他](/qa/other)
 
