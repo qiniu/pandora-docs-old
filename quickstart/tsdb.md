@@ -344,5 +344,3 @@ SELECT_clause FROM TABLE WHERE time <operator> now() [[- | +] <duration>] [(AND|
 * `d` 天
 * `w` 星期
 
-
-
