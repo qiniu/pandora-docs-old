@@ -5,7 +5,7 @@
 ## 提供哪些服务？
 Pandora 共包含五个组件级服务：
 	
-* [大数据工作流引擎](/quickstart/workflow)：数据接收、（实时/离线）计算和导出；
+* [大数据工作流引擎](/quickstart/flow)：数据接收、（实时/离线）计算和导出；
 * [时序数据库](/quickstart/tsdb)：时间序列数据高速存储、聚合和检索； 
 * [日志检索服务](/quickstart/logdb)：海量日志存储和搜索；
 * [报表工作室](/quickstart/report)：基于数据快速制作动态/静态报表，生成气象观测台；
