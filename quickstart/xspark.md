@@ -1,3 +1,26 @@
+### 概念
+**资源容器（container）：**
+
+XSpark本身是一个云计算应用，所以资源容器的概念其实就是CPU（规格 & 数量）和内存（大小）。
+
+**Zepplin：**
+
+Zepplin是一个数据可视化工具，可以将计算的结果以多种图表的样式进行展示，例如折线图、直方图图等等。
+
+**云存储：**
+
+云存储指的是七牛提供的对象存储服务，它是XSpark的数据来源。
+
+!> XSpark 不仅仅支持云存储，也支持其他多种数据源，例如MySQL、HDFS等等。
+
+**调度节点（Master）：**
+
+调度节点是用来管理和分发**分布式计算任务**，一般来说，当获取较大数据源或计算结果较大时，调度节点配置越高，性能越好；它使用的资源包含在资源容器当中。
+
+**计算节点（worker）：**
+
+计算节点是用来执行**分布式计算任务**，一般来说，计算节点越多，计算速度越快；它使用的资源也包含在资源容器当中。
+
 ### 创建XSpark应用
 
 **操作流程：**
@@ -18,7 +41,7 @@
 
 **操作演示：**
 
-![](_media/xspark-deploy.gif)
+![](_media/xspark1.gif)
 
 
 ### 初始化配置
@@ -40,7 +63,7 @@
 
 **操作演示：**
 
-![](_media/xspark-deploy1.gif)
+![](_media/xspark2.gif)
 
 
 ### 开始使用XSpark
@@ -57,7 +80,7 @@
 
 **操作演示：**
 
-![](_media/xspark-start.gif)
+![](_media/xspark3.gif)
 
 #### 加载第三方依赖
 
@@ -88,13 +111,13 @@ Must be used before SparkInterpreter (%spark) initialized
 Hint: put this paragraph before any Spark code and restart Zeppelin/Interpreter
 ```
 
-![](_media/stopjob.png)
+![](_media/xspark4.png)
 
 
 
 **操作演示：**
 
-![](_media/xspark-start1.gif)
+![](_media/xspark5.gif)
 
 
 #### Spark SQL 示例
@@ -126,7 +149,7 @@ table.registerTempTable("companies")
 
 **操作演示：**
 
-![](_media/sparksql.png)
+![](_media/xspark6.png)
 
 #### 定时任务
 
@@ -144,27 +167,27 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 **操作演示：**
 
-![](_media/dingshi.png)
+![](_media/xsarpk7.png)
 
 
 #### 基于XSpark的Python语言支持
 
-![](_media/xspark-python.png)
+![](_media/xspark8.png)
 
 
 #### 基于XSpark的R语言支持
 
-![](_media/xspark-R.png)
+![](_media/xspark9.png)
 
 #### 基于XSpark的机器学习
 
-![](_media/xspark-mllib.png)
+![](_media/xspark10.png)
 
 
 #### Spark UI
   对于有一定经验的Spark开发人员，可以访问`SparkUI`来看当前运行的任务状态。
   
-![](_media/xspark-sparkui.png)
+![](_media/xspark11.png)
   
 
 
@@ -172,28 +195,28 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
  XSpark提供了容器级别的CPU，内存，磁盘监控。可以给Spark任务的调优和故障排查提供有力的支持。
 
-![](_media/xspark-monitor.png)
+![](_media/xspark12.png)
   
 
 #### XSpark邮件告警功能
 
 邮件告警经常配合定时任务来使用，当任务失败时，会有邮件发送具体的失败信息到指定的邮箱内。
 
-![](_media/xspark-email.png)
+![](_media/xspark13.png)
 
 
 #### XSpark快捷重启Interpreter功能
 
 重启Interpretr会初始化Spark解释器。重启Interpreter会结束掉当前正在运行的spark任务，释放资源。
 
-![](_media/xspark-restart.png)
+![](_media/xspark14.png)
 
 ### Spark-jobserver 使用
 为了能够在提供让用户自己提交代码，管理任务的目的。我们在XSpark里提供了Restful风格的Spark-jobserver。用户可以通过Spark-jobserver的api在非notebook的情况下使用XSpark集群。
 
 首先我们需要获取到你自己的JobServer地址及使用方式。
 
-![](_media/spark-job-server-get.gif)
+![](_media/xspark15.gif)
 
 **API使用方式：**
 

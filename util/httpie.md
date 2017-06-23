@@ -1,10 +1,8 @@
-### httpie
-
 Pandora服务使用七牛统一的签名鉴权服务，我们针对开源的[httpie](https://github.com/jakubroztocil/httpie)服务，增加了七牛的签名认证功能，使用httpie来发送API请求非常便捷。
 
 Pandora httpie github地址：`https://github.com/kirk-enterprise/httpie`
 
-### 安装命令行工具
+#### 安装命令行工具
 
 
 在命令行中输入以下内容安装:
@@ -22,7 +20,7 @@ pip install --upgrade https://github.com/kirk-enterprise/httpie/tarball/master
 
 安装后的工具命令为 `http`。
 
-### 使用httpie
+#### 使用httpie
 
 #### 发送POST请求
 

@@ -2,7 +2,7 @@
 Qiniu Report Studio 是七牛通用的自助报表分析平台。支持众多种类的数据源，如：mysql，mongodb等等。平台本身不存储源数据，因此数据更安全。
 目前发布在七牛应用市场。
 
-![](_media/report-app.png)
+![](_media/report1.png)
 
 ### 创建报表系统
 
@@ -11,13 +11,13 @@ Qiniu Report Studio 是七牛通用的自助报表分析平台。支持众多种
 3. 创建成功后跳到产品列表,这里可以学习下快速上手指南。
 4. 刚进来的时候并没有初始化系统，此时需要你定下`初始化`。
 
-![](_media/report-app-create.png)
+![](_media/report2.png)
 
 当上面步骤操作完成后，出现下面是监控的界面，这里可以看到系统组件的配置。当我们有新feature发布时，点击`升级`可以无缝滴升级到新版本。
 
 除此之外，监控下方是用户管理模块，管理员可以在这里创建/删除用户，重置密码等基本操作。
 
-![](_media/report-app-status.gif)
+![](_media/report3.gif)
 
 到这里你就创建了一个自己的报表系统了。 点击`打开报表Portal`，即可跳转到你的报表系统界面。此时使用刚才创建的用户名/密码登录系统。
 
@@ -40,7 +40,7 @@ Pandora Report 主要分为四部分模块：
 4. 点击眼状图表可预览数据表信息。
 5. 点击`创建数据集`即创建数据集。
 
-![](_media/report-datasource-create.gif)
+![](_media/report4.gif)
 
 #### 创建/制作数据集
 
@@ -54,7 +54,7 @@ Pandora Report 主要分为四部分模块：
 3. 维度、度量之间可以任意切换。
 4. 使用聚合方法，如："求和"，"平均"，"最大"，"最小"，"计数"等。
 
-![](_media/report-dataset.gif)
+![](_media/report5.gif)
 
 **注**：对于NoSQL等schema-free数据源，比如mongodb。系统无法获得schema信息，然而你可以通过保存数据集后加载部分数据，此时便可以推断出你数据里可能含有的字段。在显示出来的数据表头的每个字段名左边有添加到左边侧边栏的操作入口，即可完成获取schema的工作。
 
@@ -81,7 +81,7 @@ Pandora Report 主要分为四部分模块：
 4. 第2步生成的选择器可以重新绘制图表。
 5. 最后一步即是保存绘制好的图表。
 
-![](_media/report-analysor.gif)
+![](_media/report6.gif)
 
 #### 制作报表
 
@@ -93,7 +93,7 @@ Pandora Report 主要分为四部分模块：
 4. 点击保存即可保存报表。
 5. 如果制作报表的时候觉得图表不是很满意，可以点击图表右上方的编辑，跳转到图表绘制页面重新调整。
 
-![](_media/report-dashboard.gif)
+![](_media/report7.gif)
 
 #### 模板引擎
 
@@ -106,4 +106,4 @@ Pandora Report 主要分为四部分模块：
 3. 点击`编辑`有日报生成，邮件生成等等规则的设定。
 4. 回到模板列表，这里的下拉列表选择你要生成的定时任务规则，并点击右侧的开/关来控制执行。
 
-![](_media/report-template.gif)
+![](_media/report8.gif)
