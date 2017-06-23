@@ -515,11 +515,17 @@ wget http://orzfblcum.bkt.clouddn.com/telegraf.darwin.amd64.tar.gz
 ```
 
 去掉行首的注释
+
 `repo`: repo的名字
+
 `auto_create_repo`: 是否自动创建repo以及更新schema
+
 `ak`: 账户的ak
+
 `sk`: 账户的sk
+
 `timeout`: 发送数据的超时时间
+
 
 #### 启动&发送数据
 
