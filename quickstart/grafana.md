@@ -16,7 +16,7 @@
 
 更多特定可以通过[Grafana提供的demo](http://play.grafana.org/)发现更多用法。
 
-#### 时序数据库+Grafana快速上手指南
+#### TSDB+Grafana快速上手指南
 七牛应用中心的Grafana原生支持Pandora TSDB。
 
 ##### 创建Grafana应用
@@ -27,16 +27,20 @@
 2. 点击立即部署按钮开始创建Grafana应用
 ![grafana](https://oiw6da4op.qnssl.com/grafana/img2.png)
 
-输入您的app名和应用别名，选择部署区域(注意！目前TSDB的数据在`华东`，所以选择华东区域会得到更好的体验)，点击确定创建
+输入您的app名和应用别名，选择部署区域(注意！目前TSDB的数据在`华东`，所以Grafana只可部署在华东区域)，点击确定创建
 
 应用名称：账号内唯一应用名称，且只能满足以下条件：（1. 只能包含字母、数字和减号，首尾字符只能为字母或数字。 2. 字符长度不能超过 30）
 应用别名：供显示使用的标题名。
 
 3. 等待app启动后，输入密码（密码长度必须>=6），点击 确认配置
 
+> 注意，因为Grafana App具有公网域名，所以建议设置一个高强度的密码（此密码在进入Grafana App后可以修改）。
+
 ![Grafana](https://oiw6da4op.qnssl.com/grafana/img3.png)
 
 4. 访问Grafana进入Grafana页面
+
+> 注意，该Grafana App是暴露在公网上的，可收藏地址用于后续访问。
 
 ![Grafana](https://oiw6da4op.qnssl.com/grafana/img5.png)
 
@@ -171,3 +175,75 @@ Grafana官方的市场里只有一个[世界地图](https://grafana.com/plugins/
 增加对province的group by(此处要求数据字段中必须有一个tag key为province)
 
 ![增加对province的group by](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-3.png)
+
+
+### 使用Telegraf
+
+[Telegraf](https://github.com/influxdata/telegraf)是开源的metric收集工具,支持多种数据源的metric收集，[支持的数据源列表列表](https://github.com/influxdata/telegraf#input-plugins).
+
+在该工具以及支持的output的基础上，我们给Telegraf增加来输出到Pandora Pipeline的output，使数据可以方便的收集到Pandora Pipeline.
+
+#### 下载&配置
+
+linux系统
+
+```
+wget http://orzfblcum.bkt.clouddn.com/telegraf.linux.amd64.tar.gz
+```
+
+mac系统
+
+```
+wget http://orzfblcum.bkt.clouddn.com/telegraf.darwin.amd64.tar.gz
+```
+
+生成配置文件
+
+```
+./telegraf config > telegraf.conf
+```
+
+以上命令生成一个telegraf的配置文件`telegraf.conf`
+
+修改配置
+
+```
+# # Configuration for Pipeline server to send metrics to
+# [[outputs.pipeline]]
+#  # Configuration for Pandora Pipeline server to send metrics to
+#   [[outputs.pipeline]]
+#   url = "https://pipeline.qiniu.com" # required
+#   ## The target repo for metrics (telegraf will create it if not exists).
+#   repo = "monitor" # required
+#
+#   ## 是否自动创建series
+#   auto_create_repo = false
+#   ## Write timeout (for the Pandora client), formatted as a string.
+#   ## If not provided, will default to 5s. 0s means no timeout (not recommended).
+#   timeout = "5s"
+#   ak = "ACCESS_KEY"
+#   sk = "SECRET_KEY"
+```
+
+去掉行首的注释
+
+`repo`: repo的名字
+
+`auto_create_repo`: 是否自动创建repo以及更新schema
+
+`ak`: 账户的ak
+
+`sk`: 账户的sk
+
+`timeout`: 发送数据的超时时间
+
+
+#### 启动&发送数据
+
+用上述生成的配置文件启动Telegraf
+
+```
+./telegraf -config telegraf.conf
+```
+
+配置文件中默认收集的信息有cpu,diskio,mem,kernel等基础数据，需要更多数据请编辑`telegraf.conf`文件.
