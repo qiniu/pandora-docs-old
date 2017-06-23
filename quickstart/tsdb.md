@@ -65,7 +65,21 @@ VALUES
 WHERE  WITH  WRITE
 ```
 
+**字段类型关系对应：**
 
+> 消息队列中,字段的类型与时序数据库中的字段类型需要作出如下对应:
+> 
+> 消息队列类型:string 对应 时序数据库:string 
+> 
+> 消息队列类型:long 对应 时序数据库:long 
+> 
+> 消息队列类型:float 对应 时序数据库:float
+> 
+> 消息队列类型:date 对应 时序数据库:date 
+> 
+> 消息队列类型:boolean 对应 时序数据库:boolean 
+
+!> 注意：时序数据库不支持复合类型(string[]、long[]、float[])。
 
 ### 创建仓库与序列
 
