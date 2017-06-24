@@ -43,7 +43,7 @@
 |*|查询所有内容|
 |AND|query1 AND query2，查询交集|
 |OR	|query1 OR query2，查询并集|
-|NOT|query1 NOT query2，表示符合query1，不符合query2的结果|
+|NOT|query1 AND NOT query2，表示符合query1，不符合query2的结果|
 |()	|把一个或多个query合并成一个query，提升优先级|
 |[]	|区间查询，包括边界|
 |{}|区间查询，不包括边界|
