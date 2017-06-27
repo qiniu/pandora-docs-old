@@ -51,7 +51,7 @@ datepart的取值遵循string与datetime类型转换的约定，即""yyyy""表�
     若trans_date = 2005-01-29 00:00:00, dateadd(transdate, 1, 'mm') = 2005-02-28 00:00:00
         -- 2005年2月没有29日，日期截取至当月最后一天
     若trans_date = 2005-03-30 00:00:00, dateadd(transdate, -1, 'mm') = 2005-02-28 00:00:00
-此处对trans_date的数值表示仅作示例使用，在文档中有关datetime介绍会经常使用到这种简易的表达方式。 在ODPS SQL中，datetime类型没有直接的常数表示方式，如下使用方式是错误的：
+此处对trans_date的数值表示仅作示例使用，在文档中有关datetime介绍会经常使用到这种简易的表达方式。 在SQL中，datetime类型没有直接的常数表示方式，如下使用方式是错误的：
     select dateadd(2005-03-30 00:00:00, -1, 'mm') from tbl1;
 如果一定要描述datetime类型常量，请尝试如下方法：
     select dateadd(cast(""2005-03-30 00:00:00"" as datetime), -1, 'mm') from tbl1;
@@ -171,7 +171,7 @@ datetime getdate()
 ```
 返回值：返回当前日期和时间，datetime类型。
 备注：
-在一个ODPS SQL任务中(以分布式方式执行)，getdate总是返回一个固定的值。返回结果会是ODPS SQL执行期间的任意时间，时间精度精确到秒。
+在一个SQL任务中(以分布式方式执行)，getdate总是返回一个固定的值。返回结果会是SQL执行期间的任意时间，时间精度精确到秒。
 ```
 
 -
@@ -409,7 +409,7 @@ partition by col1[, col2]：指定开窗口的列。
     | groupb     | 2.4704244205196    |
     | groupb     | -1.28051882084434  |
     +------------+--------------------+
-想要从每组中抽取约10%的值，可以用以下ODPS SQL完成：
+想要从每组中抽取约10%的值，可以用以下SQL完成：
     select key, value
     from (
         select key, value, cluster_sample(10, 1) over(partition by key) as flag
@@ -835,11 +835,11 @@ path:String类型，用于描述在json中的path，以$开头。
    ""owner"":""amy""
  }
 通过以下查询，可以提取json对象中的信息：
- odps> SELECT get_json_object(src_json.json, '$.owner') FROM src_json;
+SELECT get_json_object(src_json.json, '$.owner') FROM src_json;
  amy
- odps> SELECT get_json_object(src_json.json, '$.store.fruit[0]') FROM src_json;
+SELECT get_json_object(src_json.json, '$.store.fruit[0]') FROM src_json;
  {""weight"":8,""type"":""apple""}
- odps> SELECT get_json_object(src_json.json, '$.non_exist_key') FROM src_json;
+SELECT get_json_object(src_json.json, '$.non_exist_key') FROM src_json;
  NULL
 示例2
 get_json_object('{""array"":[[aaaa,1111],[bbbb,2222],[cccc,3333]]}','$.array[1].[1]') = ""2222""
@@ -1067,7 +1067,6 @@ occurrence：Bigint类型常量，必须>=0，其它类型或小于0时抛异常
     regexp_extract('foothebar', 'foo(.*?)(bar)', 2) = bar
     regexp_extract('foothebar', 'foo(.*?)(bar)', 0) = foothebar
     regext_extract('8d99d8', '8d(\d+)d8') = 99
-    -- 如果是在ODPS客户端上提交正则计算的SQL，需要使用两个""""作为转移字符
     regexp_extract('foothebar', 'foothebar')
     -- 异常返回，pattern中没有指定group
 ```
@@ -2083,7 +2082,7 @@ separator：String类型常量，分隔符。其他类型或非常量将引发�
 str：String类型，若输入为bigint，double或者datetime类型会隐式转换为string后参与运算，其它类型报异常。
 返回值：String类型。
 备注:
-对语句”select wm_concat(‘,’, name) from test_src;”，若test_src为空集合，这条ODPS SQL语句返回NULL值。
+对语句”select wm_concat(‘,’, name) from test_src;”，若test_src为空集合，这条SQL语句返回NULL值。
 ```
 
 -
@@ -2132,52 +2131,6 @@ expri是要测试的值。所有这些值类型必须相同或为NULL，否则�
 
 **函数名称**
 
-decode
-
-**函数声明**
-
-```
-decode(expression, search, result[, search, result]...[, default])
-```
-**参数说明**
-
-```
-expression：要比较的表达式。
-search：和expression进行比较的搜索项。
-result：search和expression的值匹配时的返回值。
-default：可选项，如果所有的搜索项都不匹配，则返回此default值，如果未指定，则会返回NULL。
-返回值：返回匹配的search；如果没有匹配，返回default；如果没有指定default，返回NULL。
-备注:
-至少要指定三个参数。
-所有的result类型必须一致，或为NULL。不一致的数据类型会引发异常。所有的search和expression类型必须一致，否则报异常。
-如果decode中的search选项有重复时且匹配时，会返回第一个值。
-示例：
-    select
-        decode(customer_id,
-            1, 'Taobao',
-            2, 'Alipay',
-            3, 'Aliyun',
-            NULL, 'N/A',
-            'Others') as result
-    from sale_detail;
-上面的decode函数实现了下面if-then-else语句中的功能：
-    if customer_id = 1 then
-        result := 'Taobao';
-    elsif customer_id = 2 then
-        result := 'Alipay';
-    elsif customer_id = 3 then
-        result := 'Aliyun';
-    ...
-    else
-        result := 'Others';
-    end if;
-但需要用户注意的是，通常情况下ODPS SQL在计算NULL = NULL时返回NULL，但在decode函数中，NULL与NULL的值是相等的。 在上述事例中，当customer_id的值为NULL时，decode函数返回”N/A”
-```
-
--
-
-**函数名称**
-
 greatest
 
 **函数声明**
@@ -2217,71 +2170,3 @@ NULL为最小。
 ```
 
 -
-
-**函数名称**
-
-ordinal
-
-**函数声明**
-
-```
-ordinal(bigint nth, var1, var2, …)
-```
-**参数说明**
-
-```
-nth：Bigint类型，指定要返回的位置，为NULL时返回NULL。
-var1，var2：类型可以为bigint，double，datetime或者string。
-返回值：
-排在第nth位的值，当不存在隐式转换时返回同输入参数类型。
-有类型转换时，double，bigint，string之间的转换返回double。string，datetime之间的转换返回datetime。不允许其它的隐式转换。
-NULL为最小。
-示例：
-    ordinal(3, 1, 3, 2, 5, 2, 4, 6) = 2
-```
-
--
-
-**函数名称**
-
-sample
-
-**函数声明**
-
-```
-boolean sample(x, y, column_name)
-```
-**参数说明**
-
-```
-x，y：Bigint类型，表示哈希为x份，取第y份。y可省略，省略时取第一份，如果省略参数中的y，则必须同时省略column_name。x，y为整型常量， 大于0，其它类型或小于等于0时抛异常，若y>x也抛异常。x，y任一输入为NULL时返回NULL。
-column_name是采样的目标列。column_name可以省略，省略时根据x，y的值随机采样。任意类型，列的值可以为NULL。不做隐式类型转换。 如果column_name为常量NULL会报异常。
-返回值：Boolean类型。
-备注:
-为了避免NULL值带来的数据倾斜，因此对于column_name中为NULL的值，会在x份中进行均匀哈希。如果不加column_name，则数据量比较少时输出不一定均匀， 在这种情况下建议加上column_name，以获得比较好的输出结果。
-示例：假定存在表tbla，表内有列名为cola的列，
-    select * from tbla where sample (4, 1 , cola) = true;
-    -- 表示数值会根据cola hash为4份，取第1份
-    select * from tbla where sample (4, 2) = true;
-    -- 表示数值会对每行数据做随机哈希分配为4份，取第2份
-```
-
--
-
-**函数名称**
-
-uuid
-
-**函数声明**
-
-```
-string uuid()
-```
-**参数说明**
-
-```
-返回一个随机ID，形式示例：”29347a88-1e57-41ae-bb68-a9edbdd94212”
-```
-
--
-
