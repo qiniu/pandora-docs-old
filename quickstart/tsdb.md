@@ -79,7 +79,7 @@ WHERE  WITH  WRITE
 > 
 > 消息队列类型:boolean 对应 时序数据库:boolean 
 
-!> 注意：时序数据库不支持复合类型(string[]、long[]、float[])。
+!> 注意：时序数据库不支持复合类型(array[string/long/float])。
 
 ### 创建仓库与序列
 

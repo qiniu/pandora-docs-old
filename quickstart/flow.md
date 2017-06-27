@@ -13,9 +13,7 @@ float
 long
 date
 boolean
-string[]
-long[]
-float[]
+array[string/long/float]
 ```
 
 共计八种类型。
