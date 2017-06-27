@@ -928,7 +928,7 @@ srcStr,key为NULL或者没有匹配的key时，返回NULL
 示例：
 keyvalue('0:11:2', 1) = '2'
 keyvalue(""decreaseStore:1xcard:1isB2C:1	f:21910cart:1shipping:2pf:0market:shoesinstPayAmount:0"", """","":"",""tf"") = ""21910""
-keyvalue(""阿里云=飞天=2;飞天=数据平台"", "";"",""="", ""阿里云"") 返回未知结果，请用户避免这种用法
+keyvalue(""七牛=pandora=2;七牛=数据平台"", "";"",""="", ""七牛云"") 返回未知结果，请用户避免这种用法
 ```
 
 -
