@@ -21,8 +21,10 @@
   - [签名生成工具](/util/akutil)
   - [API发送工具](/util/httpie)
 - **REST API**
-  - [大数据工作流引擎-实时计算API](/api/pipeline)
-  - [大数据工作流引擎-离线计算API](/api/offline)
+  - [实时工作流API](/api/flow)
+  - [离线工作流API](/api/batch)
+  - [UDF API](/api/udf)
+  - [UDF 系统函数说明](/api/func)
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
 - **最佳实践**
