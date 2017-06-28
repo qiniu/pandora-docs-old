@@ -115,7 +115,7 @@ Content-Type: application/json
 **请求语法**：
 
 ```
-GET /v2/udf/jars?page=1&size=5&sortBy=-uploadTime
+GET /v2/udf/jars?from=1&size=2&sort=uploadTime
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -131,7 +131,7 @@ Authorization: Pandora <auth>
 **示例**
 
 ```
-curl -X GET https://pipeline.qiniu.com/v2/udf/jars?page=1&size=2&sortBy=uploadTime&order=desc \
+curl -X GET https://pipeline.qiniu.com/v2/udf/jars?from=1&size=2&sort=uploadTime \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y='
 ```
@@ -250,7 +250,7 @@ Content-Type: application/json
 **请求语法**：
 
 ```
-GET /v2/udf/funcs?page=1&size=2&sortBy=-uploadTime&jarName=xxx
+GET /v2/udf/funcs?from=1&size=2&sort=uploadTime:desc&jarName=xxx
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -347,7 +347,7 @@ UDF调试调试表达式必须符合 `select udf1(param...) as column2, udf2(par
 **请求语法**：
 
 ```
-GET /v2/udf/builtins?page=1&size=2&sortBy=funcName&order=desc
+GET /v2/udf/builtins?from=1&size=2&sort=funcName:desc
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -364,7 +364,7 @@ Authorization: Pandora <auth>
 **示例**
 
 ```
-curl -X GET https://pipeline.qiniu.com/v2/udf/builtins?page=1&size=2&sortBy=funcName \
+curl -X GET https://pipeline.qiniu.com/v2/udf/builtins?from=1&size=2&sort=funcName:desc \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 ```
