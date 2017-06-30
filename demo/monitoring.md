@@ -1,14 +1,22 @@
-#### 运维监控 -- 快速搭建一个监控系统
+#### 运维监控 -- 快速搭建一个服务器性能监控系统
 
 运维监控是大数据应用最为基础的功能之一，Pandora提供的工作流引擎和时序数据库组合配合开源的Telegraf可以满足运维监控的需求！
 
-#### 典型场景
+#### 监控内容
 
-* 机器的基础信息监控，比如cpu，内存，网络，磁盘，内核等
-* 对特定组件的监控，比如redis，MongoDB,mesos,kubernetes,elasticsearch,apache,aws cloudwatch,docker等
-* 对自研组建的监控
-* 对运维数据进行实时监控，按照特定时间段、特定关键字聚合
-* 对异常情况进行报警通知
+服务器基础性能信息：
+
+* 运行时长；
+* 可用内存；
+* 可用内存百分比；
+* 线程总数；
+* SWAP使用百分比；
+* CPU使用百分比；
+* 平均负载；
+* 当前内存使用情况；
+* 内存使用情况分布；
+* 进程分布情况；
+* I/O使用情况；
 
 #### 效果图
 
@@ -23,13 +31,13 @@
 **第一步：下载&配置**
 
 ```
-linux系统：
+# linux系统：
 wget http://orzfblcum.bkt.clouddn.com/telegraf.linux.amd64.tar.gz
 
-mac系统：
+# mac系统：
 wget http://orzfblcum.bkt.clouddn.com/telegraf.darwin.amd64.tar.gz
 
-以linux系统为例，将下载的文件解压，然后将生成配置文件重定向到文件`telegraf.conf`中；
+# 以linux系统为例，将下载的文件解压，然后将生成配置文件重定向到文件`telegraf.conf`中；
 
 tar xvf telegraf.linux.amd64.tar.gz
 
@@ -37,6 +45,8 @@ tar xvf telegraf.linux.amd64.tar.gz
 ```
 
 **第二步：修改配置**
+
+将下列的配置信息填写完成后，复制到`telegraf.conf`文件的最顶端，然后保存`telegraf.conf`文件；
 
 ```
    # Configuration for Pandora Pipeline server to send metrics to
@@ -55,13 +65,13 @@ tar xvf telegraf.linux.amd64.tar.gz
 ```
 
 
-`repo`: 时序数据库的仓库名称，默认为monitor，建议无需修改；
+`repo`: 工作流名称，默认为monitor；
 
 `ak`: 七牛账户的公钥；
 
 `sk`: 七牛账户的私钥；
 
-将内容填写完整的上述配置拷贝到`telegraf.conf`文件，保存文件
+
 
 **第三步：启动&发送数据**
 
