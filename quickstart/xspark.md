@@ -211,6 +211,23 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 ![](_media/xspark14.png)
 
+#### XSpark 备份/恢复代码
+
+当你需要重新新建另外一个XSpark实例时，而又不想丢弃之前在Zeppelin写了的代码，这时候你应该尝试XSpark提供的代码备份/恢复功能了。当然除此之外，常常备份自己的代码是个好习惯。
+
+##### 备份代码
+
+点击备份，它会自动备份您当前实例的所有代码。
+
+![](_media/backup_code.gif)
+
+##### 恢复代码
+
+恢复时第一步需要选择要恢复的代码来自于哪一个您曾经备份过的XSpark实例， 第二步选择需要恢复的代码。
+
+![](_media/recover_code.gif)
+
+
 ### Spark-jobserver 使用
 为了能够在提供让用户自己提交代码，管理任务的目的。我们在XSpark里提供了Restful风格的Spark-jobserver。用户可以通过Spark-jobserver的api在非notebook的情况下使用XSpark集群。
 
