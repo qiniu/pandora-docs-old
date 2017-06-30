@@ -124,6 +124,14 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
+|from |int|否|分页条件，从第几条开始展示，不填则返回全部|
+|size |int|否|分页条件，返回多少条展示，不填则返回全部|
+|sort |string|否|排序字段，格式如列名:排序顺序，如sort=uploadTime:desc, sort=uploadTime:asc，如果不填排序顺序，如sort=uploadTime，则默认顺序排列|
+
+**响应内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
 |jarName |string|是|jar包名称|
 |description|string|是|jar包描述|
 |uploadTime |string|是|jar包上传时间|
@@ -255,6 +263,16 @@ Content-Type: application/json
 Authorization: Pandora <auth>
 ```
 
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|from |int|否|分页条件，从第几条开始展示，不填则返回全部|
+|size |int|否|分页条件，返回多少条展示，不填则返回全部|
+|sort |string|否|排序字段，格式如列名:排序顺序，如sort=jarName:desc, sort=jarName:asc，如果不填排序顺序，如sort=jarName，则默认顺序排列|
+|jarName |string|否|选择指定jar包对应的注册函数，jarName=a,b,c，代表查询a,b,c三个jar包的所有注册函数|
+|funcName |string|否|选择指定函数名的注册函数，funcName=a,b,c，代表查询a,b,c三个函数名对应的注册函数信息|
+
 **响应报文**
 
 ```
@@ -353,6 +371,15 @@ Authorization: Pandora <auth>
 ```
 
 **请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|from |int|否|分页条件，从第几条开始展示，不填则返回全部|
+|size |int|否|分页条件，返回多少条展示，不填则返回全部|
+|sort |string|否|排序字段，格式如列名:排序顺序，如sort=funcName:desc, sort=funcName:asc，如果不填排序顺序，如sort=funcName，则默认顺序排列|
+|category |string|否|选择指定类别对应的内置函数，category=窗口函数，代表查询所有窗口函数|
+
+**响应内容**
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
