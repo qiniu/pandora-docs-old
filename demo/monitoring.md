@@ -85,5 +85,25 @@ tar xvf telegraf.linux.amd64.tar.gz
 
 ![配置Grafana数据源](http://oo6e9ks0k.bkt.clouddn.com/QQ20170629-0.png)
 
+
 5. 第五步： 导入Grafana dashboard配置文件
 
+下载Grafana dashboard配置文件
+
+```
+wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
+```
+
+将下载的dashboard导入Grafana
+
+![将下载的dashboard导入Grafana](http://orzfblcum.bkt.clouddn.com/WechatIMG3135.jpeg)
+
+
+![将下载的dashboard导入Grafana](http://orzfblcum.bkt.clouddn.com/WechatIMG3136.jpeg)
+
+
+![将下载的dashboard导入Grafana](http://orzfblcum.bkt.clouddn.com/WechatIMG3137.jpeg)
+
+完成！
+
+![最终能看到的效果](http://orzfblcum.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-30%20%E4%B8%8B%E5%8D%8812.07.25.png)
