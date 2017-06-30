@@ -306,7 +306,7 @@ Content-Type: application/json
 **请求语法**：
 
 ```
-POST /v2/udf/funcs/<FuncName>/debugs
+POST /v2/udf/debug
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
@@ -318,17 +318,19 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|funcName|string|是|udf的自定义函数名称（主键），如sum,avg|
 |udfExpression |string|是|要调试的UDF的表达式，来验证udf的输出是否符合预期，如str_lenth("debug_udf"）|
+
+**说明**
+目前仅支持UDF调试，暂不支持UDAF，UDTF调试
 
 **示例**
 
 ```
-curl -X POST https://pipeline.qiniu.com/v2/udf/funcs/str_len/debugs \
+curl -X POST https://pipeline.qiniu.com/v2/udf/debug \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 111e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{
-    "udfExpression": "select str_len("abcd") as a1, str_len("ab") as a2"
+    "udfExpression": "select str_len("abcd") as a1, ucase("ab") as a2"
 }'
 ```
 
@@ -339,7 +341,7 @@ curl -X POST https://pipeline.qiniu.com/v2/udf/funcs/str_len/debugs \
 Content-Type: application/json
 {
     result:[
-        {"a1":4, "a2": 2}
+        {"a1":"4", "a2": "AB"}
     ]
 }
 ```
