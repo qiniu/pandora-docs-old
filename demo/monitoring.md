@@ -87,6 +87,9 @@ tar xvf telegraf.linux.amd64.tar.gz
 
 ![配置Grafana数据源](_media/monitor1.gif)
 
+注意事项：
+
+![](_media/monitor3.png)
 
 **第五步： 导入Grafana dashboard配置文件**
 
@@ -99,5 +102,9 @@ wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
 将下载的dashboard导入Grafana
 
 ![将下载的dashboard导入Grafana](_media/monitor2.gif)
+
+注意事项：
+
+![](_media/monitor4.png)
 
 完成！
