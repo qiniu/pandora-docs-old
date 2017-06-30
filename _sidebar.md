@@ -29,6 +29,7 @@
   - [日志检索服务API](/api/logdb)
 - **最佳实践**
   - [日志分析](/demo/log)
+  - [十分钟快速搭建一个监控系统](/demo/monitoring)
 - **Q & A**
   - [Pandora平台相关](/qa/pandora)
   - [工作流相关](/qa/workflow)
