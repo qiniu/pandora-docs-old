@@ -1,4 +1,4 @@
-### 运维监控 -- 最佳实践
+### 运维监控 -- 十分钟快速搭建一个监控系统
 
 运维监控是大数据应用最为基础的功能之一，Pandora提供的transform和TSDB组合配合开源的Telegraf可以满足运维监控的需求！
 
@@ -9,6 +9,10 @@
 * 对自研组建的监控
 * 对运维数据进行实时监控，按照特定时间段、特定关键字聚合
 * 对异常情况进行报警通知
+
+#### 效果图
+
+![最终能看到的效果](http://orzfblcum.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-30%20%E4%B8%8B%E5%8D%8812.07.25.png)
 
 #### 最佳实践
 
@@ -105,5 +109,3 @@ wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
 ![将下载的dashboard导入Grafana](http://orzfblcum.bkt.clouddn.com/WechatIMG3137.jpeg)
 
 完成！
-
-![最终能看到的效果](http://orzfblcum.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-30%20%E4%B8%8B%E5%8D%8812.07.25.png)
