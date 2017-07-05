@@ -167,7 +167,7 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 **操作演示：**
 
-![](_media/xsarpk7.png)
+![](_media/xspark7.png)
 
 
 #### 基于XSpark的Python语言支持
