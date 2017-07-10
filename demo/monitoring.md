@@ -108,3 +108,9 @@ wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
 ![](_media/monitor4.png)
 
 完成！
+
+
+#### 高级用法
+
+* [告警配置方法](https://qiniu.github.io/pandora-docs/#/quickstart/grafana?id=报警使用方法)
+* [自研组件监控](https://qiniu.github.io/pandora-docs/#/demo/customMonitor)
