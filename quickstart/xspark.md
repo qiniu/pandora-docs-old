@@ -68,6 +68,19 @@ Zepplin是一个数据可视化工具，可以将计算的结果以多种图表�
 
 ### 开始使用XSpark
 
+#### XSpark数据源
+
+目前XSpark 支持以KODO,FUSION 作为数据源来做数据分析。各数据源以不同的URL Schema来区分。
+
+如：
+
+```
+KODO: qiniu://
+
+FUSION: fusion://
+```
+本文档如无特别说明则默认以KODO作为数据源来阐述使用方式。如需使用FUSION, 请跳转[附件1](#fj1)
+
 #### Spark scala 示例
 
 **操作流程：**
@@ -523,3 +536,26 @@ object SampleJob extends NewSparkJob {
 ```
 
 更多详情可以参考 [Spark-JobServer](https://github.com/spark-jobserver/spark-jobserver/tree/v0.7.0#new-sparkjob-api)
+
+
+### 附件
+
+#### <a href="#fj1" id="fj1">1. FUSION使用说明</a>
+
+当前XSpark 支持以FUSION作为数据源来进行数据分析。FUSION使用首先需要使用```fusion://``` 最为文件的schema。
+
+**文件路径规则：**
+```
+fusion://域名/日期/小时/文件名
+```
+
+!> 文件路径中“域名”，“日期”不支持通配。支持“小时”及“文件名”通配。如：```fusion://{域名}/{日期}/2[1-3]/*``` 表示获取21，22，23点的所有日志。
+
+**例子：**
+
+```
+val textFile=sc.textFile("fusion://if-pbl.qiniudn.com/2017-05-22/16/part-00000.gz")
+textFile.count()
+```
+
+默认只支持访问当前账号下的fusion数据源。如需访问其他账号请联系七牛客服人员。
