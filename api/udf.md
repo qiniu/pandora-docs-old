@@ -185,7 +185,7 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|funcName|string|是|udf的自定义函数名称（主键），如sum,avg|
+|funcName|string|是|udf的自定义函数名称（主键），如sum,avg。【注意】函数名大小写不敏感，将统一转成小写注册|
 |className |string|是|自定义udf的全路径名称com.company.biz.udf.SUM|
 |jarName|string|是|udf包名称，从中解析出UDF类|
 |funcDeclaration|string|否|函数定义式，用来简要表达函数的输入输出，double add(double m, double n)|
