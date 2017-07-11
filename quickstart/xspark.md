@@ -68,6 +68,19 @@ Zepplin是一个数据可视化工具，可以将计算的结果以多种图表�
 
 ### 开始使用XSpark
 
+#### XSpark数据源
+
+目前XSpark 支持以KODO,FUSION 作为数据源来做数据分析。各数据源以不同的URL Schema来区分。
+
+如：
+
+```
+KODO: qiniu://
+
+FUSION: fusion://
+```
+本文档如无特别说明则默认以KODO作为数据源来阐述使用方式。如需使用FUSION, 请跳转[附件1](#fj1)
+
 #### Spark scala 示例
 
 **操作流程：**
@@ -167,7 +180,7 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 **操作演示：**
 
-![](_media/xsarpk7.png)
+![](_media/xspark7.png)
 
 
 #### 基于XSpark的Python语言支持
@@ -210,6 +223,23 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 重启Interpretr会初始化Spark解释器。重启Interpreter会结束掉当前正在运行的spark任务，释放资源。
 
 ![](_media/xspark14.png)
+
+#### XSpark 备份/恢复代码
+
+当你需要重新新建另外一个XSpark实例时，而又不想丢弃之前在Zeppelin写了的代码，这时候你应该尝试XSpark提供的代码备份/恢复功能了。当然除此之外，常常备份自己的代码是个好习惯。
+
+##### 备份代码
+
+点击备份，它会自动备份您当前实例的所有代码。
+
+![](_media/backup_code.gif)
+
+##### 恢复代码
+
+恢复时第一步需要选择要恢复的代码来自于哪一个您曾经备份过的XSpark实例， 第二步选择需要恢复的代码。
+
+![](_media/recover_code.gif)
+
 
 ### Spark-jobserver 使用
 为了能够在提供让用户自己提交代码，管理任务的目的。我们在XSpark里提供了Restful风格的Spark-jobserver。用户可以通过Spark-jobserver的api在非notebook的情况下使用XSpark集群。
@@ -506,3 +536,26 @@ object SampleJob extends NewSparkJob {
 ```
 
 更多详情可以参考 [Spark-JobServer](https://github.com/spark-jobserver/spark-jobserver/tree/v0.7.0#new-sparkjob-api)
+
+
+### 附件
+
+#### <a href="#fj1" id="fj1">1. FUSION使用说明</a>
+
+当前XSpark 支持以FUSION作为数据源来进行数据分析。FUSION使用首先需要使用```fusion://``` 最为文件的schema。
+
+**文件路径规则：**
+```
+fusion://域名/日期/小时/文件名
+```
+
+!> 文件路径中“域名”，“日期”不支持通配。支持“小时”及“文件名”通配。如：```fusion://{域名}/{日期}/2[1-3]/*``` 表示获取21，22，23点的所有日志。
+
+**例子：**
+
+```
+val textFile=sc.textFile("fusion://if-pbl.qiniudn.com/2017-05-22/16/part-00000.gz")
+textFile.count()
+```
+
+默认只支持访问当前账号下的fusion数据源。如需访问其他账号请联系七牛客服人员。
