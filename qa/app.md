@@ -16,6 +16,8 @@
 
 ![Grafana工作原理图](https://pandora-kibana.qiniu.com/grafanaproxy.jpg)
 
+!> 注意：Grafana连接到GrafanaProxy的数据通路必须是可信的，必须不能走公网，因为Grafana会将鉴权所用的AK,SK通过basic auth的方式发送到GrafanaProxy.
+
 1. 下载grafana proxy
 
 ```
