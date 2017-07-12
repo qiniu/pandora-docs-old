@@ -53,7 +53,7 @@ HTTP/1.1 200 OK
 |:---|:---|:---|:---|
 |DataSourceName|string|是|数据源名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
 |region|string|是|计算与存储所使用的物理资源所在区域</br>目前仅支持“nb”(华东区域)|
-|type|string|是|数据源类型，可选值为`kodo`和`hdfs`|
+|type|string|是|数据源类型，可选值为[`kodo`,`hdfs`,`cdn`]|
 |spec|json|是|指定该数据源自身属性相关的信息|
 |schema|array|是|字段信息|
 |schema.key|string|是|字段名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符,支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
@@ -74,6 +74,13 @@ HTTP/1.1 200 OK
 |spec.bucket|string|是|对象存储数据中心名称，</br>命名规则：4-63个字符，支持字母、数字、中划线|
 |spec.keyPrefixes|array|否|包含一个或者多个文件前缀；</br>命名规则：0-128个字符，不支持英文 `\`、`<`、`>`符号|
 |spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
+
+ 当type为`cdn`的时候spec定义如下:
+ 
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+|spec.domain|string|是|融合cdn的某一个特定的域名|
+
 
 !> 注意：`region`参数是为了降低用户传输数据的成本，请尽量选择离自己数据源较近的区域。
 
@@ -494,7 +501,7 @@ POST /v2/schemas
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-	"type": <Kodo|HDFS>, 
+	"type": <Kodo|HDFS|CDN>, 
 	"spec": <Spec>
 }
 ```
@@ -515,6 +522,13 @@ Type为HDFS时，Spec结构：
 |:---|:---|:---|:---|
 | spec.paths |array|是|一个或者多个文件路径|
 | spec.fileType |string|是|文件类型，合法取值为`json`, `parquet`, `text`|
+
+Type为CDN时，Spec结构：
+
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+| spec.domain |string|是|该CDN域名某一特定域名|
+
 
 
 **响应内容** 
