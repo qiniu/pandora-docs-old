@@ -10,6 +10,7 @@
   - [时序数据库](/quickstart/tsdb)
   - [XSpark](/quickstart/xspark)
   - [Grafana应用](/quickstart/grafana)
+  - [Grafana报警配置](/quickstart/monitor)
   - [Kibana应用](/quickstart/kibana)
   - [报表工作室](/quickstart/report)
 - **SDKs** 
