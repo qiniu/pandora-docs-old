@@ -101,7 +101,7 @@ wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
 
 将下载的dashboard导入Grafana
 
-![将下载的dashboard导入Grafana](_media/monitor2.gif)
+![将下载的dashboard导入Grafana](_media/monitor5.gif)
 
 注意事项：
 
