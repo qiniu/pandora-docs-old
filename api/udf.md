@@ -165,7 +165,7 @@ Content-Type: application/json
 }
 ```
 
-### UDF函数注册
+### UDF函数注册
 
 **请求语法**：
 
