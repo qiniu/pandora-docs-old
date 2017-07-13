@@ -65,7 +65,8 @@ HTTP/1.1 200 OK
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
 |spec.paths|array|是|包含一个或者多个hdfs文件路径</br>例如：`hdfs://192.168.1.1:9000/usr/local`</br>可以使用系统默认魔法变量，下文中详解|
-|spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
+|spec.fileType|string|是|文件类型，合法取值为`json`、`csv`、`text`和`parquet`|
+|spec.delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
 
  当type为`kodo`的时候spec定义如下:
  
@@ -73,7 +74,8 @@ HTTP/1.1 200 OK
 |:---|:---|:---|:---|
 |spec.bucket|string|是|对象存储数据中心名称，</br>命名规则：4-63个字符，支持字母、数字、中划线|
 |spec.keyPrefixes|array|否|包含一个或者多个文件前缀；</br>命名规则：0-128个字符，不支持英文 `\`、`<`、`>`符号|
-|spec.fileType|string|是|文件类型，合法取值为`json`、`text`和`parquet`|
+|spec.fileType|string|是|文件类型，合法取值为`json`、`csv`、`text`和`parquet`|
+|spec.delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
 
  当type为`fusion`的时候spec定义如下:
  
@@ -568,6 +570,7 @@ Authorization: Pandora <auth>
          "bucket": <Bucket>,
          "keyPrefix": <Prefix|Path>,
          "format": <ExportFormat>,
+         "delimiter": <Delimiter>,
          "compression": <compression>,
          "retention": <Retention>,
          "partitionBy": <PartitionBy>，
@@ -585,6 +588,7 @@ Authorization: Pandora <auth>
 |bucket|string|是|对象存储bucket名称|
 |keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`manual`的时候，就是文件名</br>命名规则：0-128个字符，不支持英文 `:` 、`\`、`<`、`>`符号|
 |format|string|否|文件导出格式,支持`json`、`csv`、`text`、`orc`、`parquet`五种类型|
+|delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
@@ -602,7 +606,6 @@ Authorization: Pandora <auth>
 * `min` 上传时的分钟
 * `sec` 上传时的秒钟
 
-
 ### 创建离线计算导出任务-HDFS
 
 **请求语法**
@@ -616,6 +619,7 @@ Authorization: Pandora <auth>
     "spec": {
          "path": <path_to_write>,
          "format": <ExportFormat>,
+         "delimiter": <Delimiter>,
          "compression": <compression>,
          "partitionBy": <PartitionBy>，
          "fileCount": <FileCount>,
@@ -631,6 +635,7 @@ Authorization: Pandora <auth>
 |type|string|是|导出的类型，目前允许的值为"kodo"|
 |path|string|是|导出的路径。例如：`hdfs://192.168.1.1:9000/usr/local`；命名规则：0-128个字符，不支持英文 `\`、`<`、`>`符号|
 |format|string|否|文件导出格式,支持,`json`、`csv`、`text`、`orc`、`parquet`五种类型|
+|delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
 |fileCount|int|是|计算结果导出的文件数量，应当大于0，小于等于1000|
