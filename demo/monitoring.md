@@ -115,3 +115,4 @@ wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
 * [告警配置方法](https://qiniu.github.io/pandora-docs/#/quickstart/grafana?id=报警使用方法)
 * [自研组件监控](https://qiniu.github.io/pandora-docs/#/demo/customMonitor)
 * [配置nginxMetric监控](https://qiniu.github.io/pandora-docs/#/demo/nginxMetric)
+* [配置php-fpm监控](https://qiniu.github.io/pandora-docs/#/demo/phpfpm)
