@@ -78,26 +78,26 @@ SQL计算就是自己编写SQL语句，对数据源或消息队列中的数据�
 这个示例中包含了一个名为 `SimpleUdf`的Class，在这个Class中有4个方法：
 
 ```
-1. string parseTime(string t)
+1. String parseTime(String t)
 将 Input RFC3339 格式转为 date time 时间格式
 @param input rfc3339 格式，形如 2017-04-05T16:41:42.651614Z
 @return 返回date time格式时间 形如 2017-04-05 16:41:42
 如 parseTime("2017-04-05T16:41:42.651614Z")
 
-2. string parseTime(long t)
+2. String parseTime(long t)
 将时间戳转为 date time 时间格式
 @param input 时间戳，单位为毫秒
 @return 返回date time格式时间 形如 2017-04-05 16:41:42
 如 parseTime(1499324233000)
 
-3. string parseTime(long t, string unit)
+3. String parseTime(long t, String unit)
 将 Input RFC3339 格式转为 date time 时间格式
 @param input 时间戳，单位为毫秒
 @param unit 指定时间戳的单位，支持 s （秒）, ms（毫秒）, us（微妙）, ns (纳秒)
 @return 返回date time格式时间 形如 2017-04-05 16:41:42
 如 parseTime(1499324233000, "ms")
 
-3. string parseTime(long t, string unit)
+3. String parseTime(long t, String unit)
 将 Input RFC3339 格式转为 date time 时间格式
 @param input 时间戳，单位为毫秒
 @param unit 指定时间精度，1毫秒等于多少该精度单位时间
