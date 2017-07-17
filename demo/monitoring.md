@@ -31,8 +31,11 @@
 **第一步：下载&配置**
 
 ```
-# linux系统：
+# linux 64位系统：
 wget http://orzfblcum.bkt.clouddn.com/telegraf.linux.amd64.tar.gz
+
+# linux 32位系统：
+wget http://orzfblcum.bkt.clouddn.com/telegraf.linux.386.tar.gz
 
 # mac系统：
 wget http://orzfblcum.bkt.clouddn.com/telegraf.darwin.amd64.tar.gz
