@@ -1037,3 +1037,4 @@ Authorization: Pandora <auth>
 |http code|error message|说明|
 |:---|:------------|:--|
 |400|E8301: The Params you provided is invalid|提供的参数不合法,请检查|
+| 401 | bad token | 鉴权不通过 、token已过期、机器时间未同步 |

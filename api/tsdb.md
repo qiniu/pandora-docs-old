@@ -62,7 +62,8 @@ curl -X POST https://tsdb.qiniu.com/v4/repos/test_repo \
     "metadata":{
         "info":"this repo is be for the use of test"
     }
-}' ```
+}' 
+```
 
 ### 创建序列
 
@@ -457,6 +458,7 @@ Authorization: Pandora <auth>
 | 500 | E9001: server internal error | 服务器内部错误,请联系管理员解决 |
 | 400 | E6000: Request data format not supplied as expected | 传入的body格式不对 |
 | 404 | E6004: The request resource not found | 请求的资源不存在。 |
+| 401 | bad token | 鉴权不通过 、token已过期、机器时间未同步 |
  
 **仓库(Repo)层错误**
  

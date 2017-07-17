@@ -148,3 +148,6 @@ sql的计算任务暂时没这个函数，使用自定义计算可以完成这�
 
 这种情况可能是OutputData包名写错了，我们的OutputData和SourceData都要在`userWrite.bean`这个包(package)下面，是固定的，不能改变。
 
+> 希望客户端APP可以上报采集数据，如何生成打点的token鉴权？
+
+可以在页面 http://pandora-toolkits.qiniu.com/auth 生成token鉴权，生成的token鉴权保证只要数据推送接口可以通过鉴权，其他接口均无法使用。
