@@ -9,7 +9,7 @@ nginx的访问日志(access.log)
 
 #### 快速开始
 
-* 根据您机器的操作系统版本下载logkit
+##### 根据您机器的操作系统版本下载logkit
 
 https://github.com/qiniu/logkit/wiki/Download
 
@@ -29,22 +29,22 @@ confs/default.conf
 下面我们将为您介绍如何配置子配置文件以收集nginx的日志。
 
 
-* 明确本机的 nginx 配置文件 log_format 位置 如图1
+##### 明确本机的 nginx 配置文件 log_format 位置 如图1
 
 ![图1 Nginx日志格式](http://op26gaeek.bkt.clouddn.com/logformat.png)
 
 
 假设该配置文件路径为： `/opt/nginx_logs/logs/access.log`
 
-* 明确服务使用的 nginx 日志样式，如图2
+##### 明确服务使用的 nginx 日志样式，如图2
 
 ![图2 服务nginx日志样式](http://op26gaeek.bkt.clouddn.com/realnginxconfig.png)
 
 假设我们使用的 nginx 日志样式为 `main`
 
-* 根据我们明确的nginx配置文件，填写nginx日志收集的logkit配置文件，如图3，填写内容覆盖到 `confs/default.conf` 即可
+##### 根据我们明确的nginx配置文件，填写nginx日志收集的logkit配置文件，如图3，填写内容覆盖到 `confs/default.conf` 即可
 
-[图3 nginx runner 配置文件](http://op26gaeek.bkt.clouddn.com/nginx%01config.png)
+![图3 nginx runner 配置文件](http://op26gaeek.bkt.clouddn.com/nginx%01config.png)
 
 ```
 {
@@ -80,17 +80,17 @@ confs/default.conf
 }
 ```
 
-* 运行logkit
+##### 运行logkit
 
 ```
 nohup ./logkit -f logkit.conf > logkit.log 2>&1 
 ```
 
-* 登录七牛官方网站，在大数据工作流引擎中即可看到已经创建的数据传输通道，如图4。
+##### 登录七牛官方网站，在大数据工作流引擎中即可看到已经创建的数据传输通道，如图4。
 
 ![图4 大数据工作流引擎](http://op26gaeek.bkt.clouddn.com/logdbexport.png)
 
-* 在日志检索界面查询数据，如图5所示
+##### 在日志检索界面查询数据，如图5所示
 
 ![图5 日志检索搜索界面示意图](http://op26gaeek.bkt.clouddn.com/logdbsearch.png)
 
@@ -99,11 +99,11 @@ nohup ./logkit -f logkit.conf > logkit.log 2>&1
 
 #### 进阶功能：配置Grafana进行监控
 
-* 创建Grafana App，如图6所示
+##### 创建Grafana App，如图6所示
 
 ![图6 Grafana APP 创建](http://op26gaeek.bkt.clouddn.com/newbuildGrafana.png)
 
-* 配置Grafana LogDB 数据源，如图7所示，点击logdb使用指南，可以按照使用指南的指导在Grafana配置数据源。
+##### 配置Grafana LogDB 数据源，如图7所示，点击logdb使用指南，可以按照使用指南的指导在Grafana配置数据源。
 
 ![图7 Grafana数据源配置](http://op26gaeek.bkt.clouddn.com/logdbGrafana.png) 
 
@@ -115,7 +115,7 @@ nohup ./logkit -f logkit.conf > logkit.log 2>&1
 - Version 固定为 `2.x`
 
 
-* 载入现成的Grafana配置
+##### 载入现成的Grafana配置
 
 下载json http://op26gaeek.bkt.clouddn.com/logdbgrafana.json
 
@@ -126,7 +126,9 @@ nohup ./logkit -f logkit.conf > logkit.log 2>&1
 ![图8](http://op26gaeek.bkt.clouddn.com/logdbgrafanawhole.png)
 
 
-* 自定义的 Grafana DashBoard配置示例，如图9所示
+##### 自定义
+
+自定义的 Grafana DashBoard 配置示例，如图9所示
 
 ![图9 Grafana DashBoard配置示例](http://op26gaeek.bkt.clouddn.com/nginxrespcode.png)
 
