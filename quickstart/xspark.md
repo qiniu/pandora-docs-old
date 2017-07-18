@@ -540,7 +540,7 @@ object SampleJob extends NewSparkJob {
 
 ### 附件
 
-#### <a href="#fj1" id="fj1">1. FUSION使用说明</a>
+#### <a href="#fj1" onclick="return false" id="fj1">1. FUSION使用说明</a>
 
 当前XSpark 支持以FUSION作为数据源来进行数据分析。FUSION使用首先需要使用```fusion://``` 最为文件的schema。
 
