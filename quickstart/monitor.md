@@ -6,7 +6,7 @@ Alert list用来显示最近出现的报警；
 
 ![Alert list用来显示最近出现的报警](http://oo6e9ks0k.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-15%20%E4%B8%8B%E5%8D%885.58.48.png)
 
-Notification用来定义通知方式，比方说`邮件`,`slack`等；
+Notification用来定义通知方式，比方说`邮件`,`slack`,`钉钉`,`WebHook`等；
 
 ![Notification用来定义通知方式](http://oo6e9ks0k.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-15%20%E4%B8%8B%E5%8D%885.59.23.png)
 
