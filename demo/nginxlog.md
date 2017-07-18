@@ -103,7 +103,7 @@ nohup ./logkit -f logkit.conf > logkit.log 2>&1
 
 ![图6 Grafana APP 创建](http://op26gaeek.bkt.clouddn.com/newbuildGrafana.png)
 
-2. 配置Grafana LogDB 数据源，如图7所示
+2. 配置Grafana LogDB 数据源，如图7所示，点击logdb使用指南，可以按照使用指南的指导在Grafana配置数据源。
 
 ![图7 Grafana数据源配置](http://op26gaeek.bkt.clouddn.com/logdbGrafana.png) 
 
@@ -135,6 +135,4 @@ nohup ./logkit -f logkit.conf > logkit.log 2>&1
 欢迎享用并体验！
 
 
-
-
-更多logkit配置，参见 [logkit wiki文档](https://github.com/qiniu/logkit/wiki)
+除了nginx日志，logkit还支持收集其他日志，更多logkit的高级用法，参见 [logkit wiki文档](https://github.com/qiniu/logkit/wiki)
