@@ -530,6 +530,7 @@ Authorization: Pandora <auth>
   "spec": {
         "destRepoName": <DestRepoName>,
         "series": <SeriesName>,
+        "omitInvalid": <OmitInvalid>,
         "tags": {
             "tag1": <#key1>,
             "tag2": <#key2>,
@@ -550,6 +551,7 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 | destRepoName |string|是|数据库名称|
 | series |string|是|序列名称|
+| omitInvalid |bool|否|是否忽略无效数据，默认值为false|
 | tags |map|是|索引字段|
 | fields |map|是|普通字段|
 | timestamp |string|否|时间戳字段</br>会用rfc3339日期格式进行解析</br>如果格式不正确则会抛弃这一条数据</br>如果此项为空，则默认使用当前时间|
@@ -587,7 +589,8 @@ Authorization: Pandora <auth>
   "type": <logdb>,
   "whence": <ExportWhence>,
   "spec": {
-        "destRepoName": <DestRepoName>,              
+        "destRepoName": <DestRepoName>,
+        "omitInvalid": <OmitInvalid>,
         "doc": {
             "toRepoSchema1": <#fromRepoSchema1>,
             "toRepoSchema2": {
@@ -603,6 +606,7 @@ Authorization: Pandora <auth>
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
 | destRepoName |string|是|日志仓库名称|
+| omitInvalid |bool|否|是否忽略无效数据，默认值为false|
 | doc |map|是|字段关系说明</br> `fromRepoSchema`表示源消息队列字段名称</br>`toRepoSchema`表示目标日志仓库字段名称|
 
 > 消息队列中,字段的类型与日志检索服务中的字段类型需要作出如下对应:
