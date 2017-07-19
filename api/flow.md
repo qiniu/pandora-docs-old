@@ -287,7 +287,8 @@ Authorization: Pandora <auth>
   "container": {
        "type": <ContainerType>,
        "count": <ContainerCount>
-  }
+  },
+  "whence": <TransformWhence>
 }
 ```
 
@@ -307,8 +308,9 @@ Authorization: Pandora <auth>
 | code |string|否|`sql`语句代码|
 | interval |string|否|计算任务的运行时间间隔</br>目前支持`5s`、`10s`、`20s`、`30s`、</br>`1m`、`5m`和`10m`的粒度</br>如果不指定，系统默认使用`1m`|
 |container|map|否|计算资源的数量及类型|
-|type|string|否|目前支持`M16C4`和`M32C8`</br>分别代表</br>`4核(CPU)16G(内存)`、`8核(CPU)32G(内存)`|
+|type|string|否|目前支持`1U2G`、`1U4G`、`2U4G`、`4U8G`、`4U16G`和`8U16G`</br>分别代表</br>`1核(CPU)2G(内存)`、`1核(CPU)4G(内存)`、`2核(CPU)4G(内存)`、`4核(CPU)8G(内存)`、`4核(CPU)16G(内存)`、`8核(CPU)16G(内存)`|
 |count|int|否|指资源`type`的数量,最小为1,没有上限|
+|whence|string|否|计算数据的起始位置, 目前支持oldest、newest, 分别表示从指定仓库的最早、最新数据开始计算, 默认值为newest|
 
 !> 注意:`mode`加`code`是基础的数据计算方式,自定义计算(plugin)是更为高级的数据计算方式,要注意`mode/code`和自定义计算两种计算方式可以共存,但不可以一种都不指定。当自定义计算和`mode/code`共存时,系统优先执行自定义计算,后执行mode/code。
 
