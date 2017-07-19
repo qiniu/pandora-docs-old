@@ -652,6 +652,35 @@ Authorization: Pandora <auth>
 * `min` 上传时的分钟
 * `sec` 上传时的秒钟
 
+### 导出数据至日志检索服务
+
+**请求语法**
+
+```
+POST /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <logdb>,
+  "spec": {
+        "logdbRepo": <LogdbRepo>,
+        "omitInvalid": <OmitInvalid>,              
+        "doc": {
+            "LogdbRepoField1": <JobField1>,
+            "LogdbRepoField2": <JobField2>,
+            "LogdbRepoField3": <JobField3>,         
+            ......
+        }
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+| logdbRepo |string|是|日志仓库名称|
+| omitInvalid |bool|否|是否忽略无效数据，默认值为false|
+| doc |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`LogdbRepoField`表示目标日志仓库字段名称|
 
 ### 更新离线计算导出任务
 
