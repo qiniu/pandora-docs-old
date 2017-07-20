@@ -478,7 +478,7 @@ curl -X POST https://logdb.qiniu.com/v5/test_Repo/s \
 
 **Scroll请求语法**
 
-scroll接口用于啦取大规模数据，需要配合搜素日志查询接口来使用。
+scroll接口用于拉取大规模数据，需要配合搜素日志查询接口来使用。
 
 ```
 POST /v5/scroll
