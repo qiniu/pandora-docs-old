@@ -253,10 +253,10 @@ keyName=valName<TAB>keyName=valName ...
 curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/data \
 -H 'Content-Type: application/text' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
--d '{
+-d '
 	userName=小张		age=22   addresses=["beijing","shanghai"] profile={"position":"engineer",salary:15000} 
 	userName=小王		age=28   addresses=["hangzhou","shenzhen"] profile={"position":"engineer",salary:12000}
-	}'
+	'
 ```
 
 ### 创建计算任务
