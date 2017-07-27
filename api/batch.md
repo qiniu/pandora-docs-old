@@ -663,7 +663,7 @@ Authorization: Pandora <auth>
 {
   "type": <logdb>,
   "spec": {
-        "logdbRepo": <LogdbRepo>,
+        "destRepoName": <DestRepoName>,
         "omitInvalid": <OmitInvalid>,              
         "doc": {
             "LogdbRepoField1": <JobField1>,
@@ -678,7 +678,7 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-| logdbRepo |string|是|日志仓库名称|
+| destRepoName |string|是|日志仓库名称|
 | omitInvalid |bool|否|是否忽略无效数据，默认值为false|
 | doc |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`LogdbRepoField`表示目标日志仓库字段名称|
 
