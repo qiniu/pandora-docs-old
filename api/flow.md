@@ -223,7 +223,7 @@ Authorization: Pandora <auth>
 
 ```
 POST /v2/repos/<RepoName>/data
-Content-Type: application/text
+Content-Type: text/plain
 Authorization: Pandora <auth>
 keyName=valName<TAB>keyName=valName ...
 keyName=valName<TAB>keyName=valName ...
@@ -251,7 +251,7 @@ keyName=valName<TAB>keyName=valName ...
 
 ```
 curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/data \
--H 'Content-Type: application/text' \
+-H 'Content-Type: text/plain' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '
 	userName=小张		age=22   addresses=["beijing","shanghai"] profile={"position":"engineer",salary:15000} 
