@@ -682,6 +682,44 @@ Authorization: Pandora <auth>
 | omitInvalid |bool|否|是否忽略无效数据，默认值为false|
 | doc |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`LogdbRepoField`表示目标日志仓库字段名称|
 
+### 导出数据至实时数据库服务
+
+**请求语法**
+
+```
+POST /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <tsdb>,
+  "spec": {
+        "destRepoName": <DestRepoName>,
+        "omitInvalid": <OmitInvalid>, 
+        "series": <Series>,             
+        "tags": {
+        	"tag1": <JobField1>,
+        	"tag2": <JobField2>,
+        	...
+        },
+        "fields": {
+        	"field1": <JobField3>,
+        	"field2": <JobField4>,
+        	...
+        },
+        "timestamp": <JobField5> 
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+| destRepoName |string|是|日志仓库名称|
+| omitInvalid |bool|否|是否忽略无效数据，默认值为false|
+| tags |map|是|索引字段|
+| fields |map|是|普通字段|
+| timestamp |string|否|时间戳字段，`JobField`表示离线Job的字段名称|
+
 ### 更新离线计算导出任务
 
 **请求语法**
