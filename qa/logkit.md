@@ -1,6 +1,6 @@
 > 如何快速试用logkit？
 
-可以查看我们的[logkit快速开始](https://qiniu.github.io/pandora-docs/#/quickstart/workflow?id=%e4%bd%bf%e7%94%a8logkit%e5%90%91%e5%b7%a5%e4%bd%9c%e6%b5%81%e4%b8%ad%e6%8e%a8%e9%80%81%e6%95%b0%e6%8d%ae)文档。
+可以查看我们的[logkit快速开始](https://qiniu.github.io/pandora-docs/#/util/logkit?id=logkit)文档。
 
 > 在哪里可以查看logkit的代码及详细的文档？
 
