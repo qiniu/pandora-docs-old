@@ -67,6 +67,7 @@ HTTP/1.1 200 OK
 |spec.paths|array|是|包含一个或者多个hdfs文件路径</br>例如：`hdfs://192.168.1.1:9000/usr/local`</br>可以使用系统默认魔法变量，下文中详解|
 |spec.fileType|string|是|文件类型，合法取值为`json`、`csv`、`text`和`parquet`|
 |spec.delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
+|spec.containsHeader|bool|否|csv文件是否包含header标志，当文件类型为csv时，containsHeader为必填项|
 
  当type为`kodo`的时候spec定义如下:
  
@@ -76,6 +77,7 @@ HTTP/1.1 200 OK
 |spec.keyPrefixes|array|否|包含一个或者多个文件前缀；</br>命名规则：0-128个字符，不支持英文 `\`、`<`、`>`符号|
 |spec.fileType|string|是|文件类型，合法取值为`json`、`csv`、`text`和`parquet`|
 |spec.delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
+|spec.containsHeader|bool|否|csv文件是否包含header标志，当文件类型为csv时，containsHeader为必填项|
 
  当type为`fusion`的时候spec定义如下:
  
@@ -571,6 +573,7 @@ Authorization: Pandora <auth>
          "keyPrefix": <Prefix|Path>,
          "format": <ExportFormat>,
          "delimiter": <Delimiter>,
+         "containsHeader":<True|False>
          "compression": <compression>,
          "retention": <Retention>,
          "partitionBy": <PartitionBy>，
@@ -589,6 +592,7 @@ Authorization: Pandora <auth>
 |keyPrefix|string|否|导出的文件名的前缀，当离线任务的`scheduler`是`manual`的时候，就是文件名</br>命名规则：0-128个字符，不支持英文 `:` 、`\`、`<`、`>`符号|
 |format|string|否|文件导出格式,支持`json`、`csv`、`text`、`orc`、`parquet`五种类型|
 |delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
+|containsHeader|bool|否|csv文件是否包含header标志，当文件类型为csv时，containsHeader为必填项|
 |compression|string|否|压缩类型, 具体支持类型与`format`值相关，详见`注1`|
 |retention|int|否|数据储存时限,以天为单位,当不大于0或该字段为空时,则永久储存|
 |partitionBy|array|否|指定作为分区的字段，为一个字符数组，合法的元素值是字段名称|
