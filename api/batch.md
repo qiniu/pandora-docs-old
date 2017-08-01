@@ -656,6 +656,35 @@ Authorization: Pandora <auth>
 * `min` 上传时的分钟
 * `sec` 上传时的秒钟
 
+### 导出数据至HTTP地址
+
+**请求语法**
+
+```
+POST /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <http>,
+  "spec": {
+    "host": <Host>,
+    "uri": <RequestURI>,
+    "format": <ExportFormat>
+  }
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+| host |string|是|服务器地址（ip或域名）</br>例如:`https://pipeline.qiniu.com` </br>或 `127.0.0.1:7758`|
+| uri |string|是|请求资源路径（具体地址,不包含ip或域名）</br>例如:`/test/repos`|
+| format |string|否|导出方式</br>支持`text`和`json`</br>如果没有填写此项，默认为`text`|
+
+!> 注1:  当导出格式为`text`时，导出的服务端需要支持`Content-Type(MimeType)`为`text/plain`的请求; 当导出格式为`json`时，导出服务端需要支持`Content-Type(MimeType)`为`application/json`的请求。
+!> 注2: `text`的导出数据格式为：`Key1=Value1\tKey2=Value2\tKey3=Value3`; `json`的导出数据格式为：`{"Key1": Value1, "Key2": Value2, "Key3": Value3}`。
+
 ### 导出数据至日志检索服务
 
 **请求语法**
