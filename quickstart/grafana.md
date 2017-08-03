@@ -175,4 +175,3 @@ Grafana官方的市场里只有一个[世界地图](https://grafana.com/plugins/
 增加对province的group by(此处要求数据字段中必须有一个tag key为province)
 
 ![增加对province的group by](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-3.png)
-
