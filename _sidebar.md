@@ -13,6 +13,12 @@
   - [Grafana报警配置](/quickstart/monitor)
   - [Kibana应用](/quickstart/kibana)
   - [报表工作室](/quickstart/report)
+- **场景最佳实践**
+  - [日志分析](/demo/log)
+  - [nginx 日志分析](/demo/nginxlog)
+  - [服务器性能监控](/demo/monitoring)
+  - [nginx metric性能监控](/demo/nginxMetric)
+  - [php-fpm性能监控](/demo/phpfpm)
 - **SDKs** 
   - [Java SDK](/sdk/java)
   - [GO SDK](/sdk/go)
@@ -28,12 +34,6 @@
   - [UDF 系统函数说明](/api/func)
   - [时序数据库API](/api/tsdb)
   - [日志检索服务API](/api/logdb)
-- **最佳实践**
-  - [日志分析](/demo/log)
-  - [nginx 日志分析](/demo/nginxlog)
-  - [服务器性能监控](/demo/monitoring)
-  - [nginx metric性能监控](/demo/nginxMetric)
-  - [php-fpm性能监控](/demo/phpfpm)
 - **Q & A**
   - [Pandora平台相关](/qa/pandora)
   - [工作流相关](/qa/workflow)
