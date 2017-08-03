@@ -715,7 +715,7 @@ Authorization: Pandora <auth>
 | omitInvalid |bool|否|是否忽略无效数据，默认值为false|
 | doc |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`LogdbRepoField`表示目标日志仓库字段名称|
 
-### 导出数据至实时数据库服务
+### 导出数据至时序数据库服务
 
 **请求语法**
 
