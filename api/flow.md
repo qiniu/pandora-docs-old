@@ -680,8 +680,7 @@ Authorization: Pandora <auth>
 |accessKey|string|是|七牛账户的公钥|
 |fields|map|是|字段关系说明</br>`key`为`kodo-bucket`的字段名</br>`value`为导出数据的消息队列的字段名|
 |rotateInterval|int|否|切分文件的时长,单位为秒(`s`)|
-|format|string|否|文件导出格式</br>支持`json`、`text`、`parquet`、`csv`四种形式</br>默认为`json`|
-|delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
+|format|string|否|文件导出格式</br>支持`json`、`text`、`parquet`、`csv`四种形式</br>默认为`json`</br>取值为`csv`时，导出数据的字段之间采用逗号(`,`)分隔|
 |compress|bool|否|是否开启文件压缩功能</br>默认为`false`|
 | retention |int|否|数据储存时限</br>以天为单位</br>当不大于0或该字段为空时，则永久储存|
 
