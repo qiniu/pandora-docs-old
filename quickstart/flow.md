@@ -76,7 +76,7 @@ UDF(User-Defined Function)用户自定义函数。
 
 首先，在下方中，下载 UDF-java 项目工程。
 
-点击右侧链接下载 -> [UDF-Java.zip]()
+点击右侧链接下载 -> [UDF-Java.zip](http://onzeipdi1.bkt.clouddn.com/UDF-Java.zip)
 
 解压后，使用Java IDE导入Pandora-UDF项目。
 
