@@ -59,7 +59,7 @@ Authorization: Pandora <auth>
 |region|string|是|计算与存储所使用的物理资源所在区域</br>目前仅支持“nb”(华东区域)|
 |schema|array|是|数据的字段信息</br>由‘字段名称’、‘字段类型’、‘数组类型’、‘是否必填’组成</br>|
 | schema.key|string|是|字段名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符,支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
-| schema.valtype|string|是|字段类型</br>目前仅支持：</br>`boolean`：布尔类型</br>`long`：整型</br>`date`：RFC3339日期格式</br>`float`：64位精度浮点型</br>`string`：字符串</br>`array`：数组</br>`map`：嵌套类型，可嵌套，最多5层，类似于json object|
+| schema.valtype|string|是|字段类型</br>目前仅支持：</br>`boolean`：布尔类型</br>`long`：整型</br>`date`：RFC3339日期格式</br>`float`：64位精度浮点型</br>`string`：字符串</br>`array`：数组</br>`map`：嵌套类型，可嵌套，最多5层，类似于json object</br>`jsonstring`：符合json格式的字符串</br>|
 | schema.elemtype|string|否|数组类型</br>当`schema.valtype:"array"`时必填</br>目前仅支持`long`、`float`、`string`|
 | schema.required|bool|否|是否必填</br>用户在传输数据时`key`字段是否必填|
 
@@ -238,13 +238,15 @@ keyName=valName<TAB>keyName=valName ...
 |keyName |string|是|字段名称|
 |valName |string|是|对应字段名称的数据内容<br/> 注意：如果是`string`类型</br>那么 `\t`、`\r`、`\n` `\` 需要用`\`转义</br>空格`' '` 可以不转义|
 
+> 多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔，单次分隔的长度不超过100KB。
+>
 > 对于`array`类型：
 > 
 > 打点格式为`[e1,e2,...,en]`，数组元素采用逗号分割，且所有元素使用`[]`包括，当元素类型为`string`时，需要加上双引号;
 > 
 > 对于`map`类型：
 > 
-> 打点格式为json字符串，比如`{"f1":123,"f2":"abc"}`，注意所有元素使用`{}`包括;另外，多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔，单次分隔的长度不超过100KB。
+> 打点格式为json字符串，比如`{"f1":123,"f2":"abc"}`，注意所有元素使用`{}`包括;
 
 
 **示例**
@@ -617,7 +619,13 @@ Authorization: Pandora <auth>
 > 
 > 消息队列类型:float 对应 日志检索服务:float
 > 
-> 消息队列类型:array、map 对应 日志检索服务:object
+> 消息队列类型:array[string] 对应 日志检索服务:string
+> 
+> 消息队列类型:array[long] 对应 日志检索服务:long
+> 
+> 消息队列类型:array[float] 对应 日志检索服务:float
+> 
+> 消息队列类型:map 对应 日志检索服务:object
 > 
 > 消息队列类型:date 对应 日志检索服务:date 
 
@@ -628,9 +636,9 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job2 \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Pandora 2J1e7iG13J66GA8vWBzZdF-UR_d1MF-kacOdUUS4:NTi3wH_WlGxYOnXsvgUrO4XMD6Y=' \
 -d '{
-  "type": "logDB",
+  "type": "logdb",
   "spec": {
-	  "destRepoName": "logDB_testRepo", 
+	  "destRepoName": "logdb_testRepo", 
 	  "doc":{
 			"user":"userName",
 			"profile":{
