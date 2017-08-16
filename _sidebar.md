@@ -16,6 +16,7 @@
 - **场景最佳实践**
   - [日志分析](/demo/log)
   - [nginx 日志分析](/demo/nginxlog)
+  - [apache 日志分析](/demo/nginxlog)
   - [服务器性能监控](/demo/monitoring)
   - [nginx metric性能监控](/demo/nginxMetric)
   - [php-fpm性能监控](/demo/phpfpm)
