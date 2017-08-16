@@ -238,7 +238,7 @@ keyName=valName<TAB>keyName=valName ...
 |keyName |string|是|字段名称|
 |valName |string|是|对应字段名称的数据内容<br/> 注意：如果是`string`类型</br>那么 `\t`、`\r`、`\n` `\` 需要用`\`转义</br>空格`' '` 可以不转义|
 
-> 多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔，单次分隔的长度不超过100KB。
+> 多个`keyName`和`valName`之间应使用单个 `<TAB>` 分隔。
 >
 > 对于`array`类型：
 > 
