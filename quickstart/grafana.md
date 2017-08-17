@@ -133,14 +133,44 @@
 ### 折线图
 
 
+#### LogDB 折线图配置
 
-### 柱状图
+0. 点击创建，或者编辑图表的时候，会出现图表编辑器
+1. Query 是Logdb 支持的查询语言，如`host:$host AND status:$status AND request_time:>=$request_time`，其中`$`符号引用的变量是下文中将要介绍到的模板变量
+2. Metric 是我们对数据进行的聚合运算种类，LogDB 现在支持
+	1. Count 计数聚合
+	2. Sum, Avg, Min, Max 求和、平均、最大、最小
+	3. Extended Stats 包含以上的常见聚合指标，同时计算了标准差等高级指标
+	4. Percentiles 分位数，计算任意指定的分位数，常用来计算中位数、95值等
+	5. Unique Count 去重计数，常用来求UV
+	6. Moving Average 滑动平均值，需要首先定义另一个聚合指标，有Simple, Linear, Exponentially Weighted, Holt Linear, Holt Winters 五种模型支持
+	7. Derivative 差分，需要首先定义另一个聚合指标，计算滑动窗口的差值
+	8. Raw Document 原始文档
+3. Group By 条件，聚合的分组函数
+	1. Terms 根据某个字段的分词结果/字段值（如果没有分词的话）进行聚合，求top N
+	2. Filters 可以设置多个查询条件，每个查询条件结果作为一个分组，比如可以将 `a:<500`, `a:>=500 AND a:<1000` 这两组条件作为Filter，则每个分组都只包含符合该分组查询条件的结果
+	3. Date Histogram 按照时序方式进行聚合，需要指定一个时间字段，和时间间隔，比如对timestamp 字段进行时序聚合，每1分钟聚合一组数据（折线图必须指定一个Date Histogram的聚合条件）
+	4. Histogram 类似于Date Histogram 分组，但是可以不限于时间字段，只要指定一个字段和步长，则对这个字段按照指定的步长进行分组。比如对响应时间，可以按照100ms 步长进行分组，分组结果构成是 0-100ms, 100-200ms, 200-300ms 等
 
-待续
+
+![LogDB折线图](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%8A%98%E7%BA%BF%E5%9B%BE.png)
+
+### 柱状图/散点图
+
+1. 选择Display 选框
+2. Bars 代表将图像切换成柱状图模式
+3. Lines 是折线图
+4. Points 是散点图
+
+![柱状图](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%9F%B1%E7%8A%B6%E5%9B%BE.png)
 
 ### 堆叠图
 
-待续
+1. 选择Display 选框
+2. Stack 代表选择堆叠图模式，多条曲线结果将会堆叠在图像上
+3. Percent 代表堆叠过程中，将数据转化为百分比而非绝对值
+
+![堆叠图](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E5%A0%86%E5%8F%A0%E5%9B%BE.png)
 
 ### 饼状图
 
