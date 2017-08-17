@@ -753,6 +753,40 @@ Authorization: Pandora <auth>
 | fields |map|是|普通字段|
 | timestamp |string|否|时间戳字段，`JobField`表示离线Job的字段名称|
 
+### 导出数据至报表平台
+
+**请求语法**
+
+```
+POST /v2/jobs/<JobName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <report>,
+  "spec": {
+        "database": <Database>,
+        "table": <TableName>,
+        "autoCreation": [True|False],
+        "columns": {
+            "column1": <JobField1>,
+            "column2": <JobField2>,
+            ...
+        },
+        "saveMode": <SaveMode>
+}
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|database|string|是|数据库名称|
+|table|bool|是|数据表名称|
+|autoCreation|bool|否|是否自动创建数据库和数据表，默认True|
+|saveMode|string|否|计算结果的保存模式：overwrite(默认) 默认重写整张表， append 在已有的表数据上追加数据。默认append模式|
+|columns |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`columnN`表示报表服务字段名称|
+
+
 ### 更新离线计算导出任务
 
 **请求语法**
