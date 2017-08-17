@@ -1,8 +1,8 @@
-### Grafana是什么
+### Grafana 简介
 [Grafana](https://oiw6da4op.qnssl.com/181919_0KHT_865233.jpg)
 是开源的用来实时展示、分析和报警的软件，在七牛的应用中心提供Grafana应用，Pandora 时序数据库、日志检索服务都适配了Grafana，可以用Grafana实时展示、分析时序数据库和日志检索服务中的数据，并报警。
 
-### 特点
+#### 特点
 
 > 可视化
 
