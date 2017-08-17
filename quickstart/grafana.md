@@ -174,11 +174,53 @@
 
 ### 饼状图
 
-待续
+Step 1 
+
+选择饼状图，进行创建。或者从已有的饼状图进行编辑。
+
+![选择饼状图](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E9%A5%BC%E7%8A%B6%E5%9B%BE.png)
+
+Step 2
+
+按照跟其他的报表一样过程，配置图中1-5，查询条件、聚合函数、以及Group by 条件。因为饼状图表达的是分类关系，所以除了Date Histogram之外一定要有一个其他的Group by 条件。比如Terms，Filters 或者Histogram 条件。图中示意的是Terms 条件。
+
+![饼状图配置](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E9%A5%BC%E7%8A%B6%E5%9B%BE-%E9%85%8D%E7%BD%AE.png)
+
+Step 3
+
+在Options 有更多进行图表调整的功能。
+
+1. Value 可以选择min, max, avg, current, total 四个选项。可以确定饼图中具体数值是通过最近一段时间怎么计算得来，分别是最近一段时间的最小值、最大值、平均值、当前值、总计值。这个选项非常重要，图中数值依赖此配置进行计算。
+2. 2-5 选项是图例的设置。Show Legend 选择是否展示图例，Position 是代表图例在饼图的哪个方向（下方或者右方等），以及是否展示图例的真实值和百分比。
+
+![饼状图配置1](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E9%A5%BC%E7%8A%B6%E5%9B%BE-legend.png)
+
 
 ### 数据表格
 
-待续
+Step 1 
+
+选择数据表格，进行创建。或者从已有的数据表格进行编辑。
+
+![选择数据表格](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E9%80%89%E6%8B%A9.png)
+
+Step 2-1 查询时序数据计算结果
+
+按照跟其他的报表一样过程，配置图中1-5，查询条件、聚合函数、以及Group by 条件。
+
+![数据表格-计算结果](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA.png)
+
+Step 2-2 查询时序数据原始数据
+
+如果想要查看原始数据搜索结果，请在这里选择Metric 为 Raw Document。
+
+![数据表格-原始数据](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE.png)
+
+Step 3 挑选展示的列
+
+在Options 中可以在Columns 设置中挑选你想要展示在界面上的数据表的列。
+
+![数据表格-挑选列](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E6%8C%91%E9%80%89%E5%B1%95%E7%A4%BA%E5%88%97.png)
 
 ### 中国地图
 
@@ -190,15 +232,15 @@ Grafana官方的市场里只有一个[世界地图](https://grafana.com/plugins/
 
 下面是使用该中国地图的方法:
 
-1. 新建一个pili map panel的图表
+Step 1. 新建一个pili map panel的图表
 
 ![新建一个pili map panel的图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-0.png)
 
-2. 点击panel title，开始编辑图表
+Step 2. 点击panel title，开始编辑图表
 
 ![点击panel title，开始编辑图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-1.png)
 
-3. 配置图表
+Step 3. 配置图表
 
 ![配置图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-2.png)
 
@@ -358,3 +400,15 @@ Notification用来定义通知方式，比方说`邮件`,`slack`,`钉钉`,`WebHo
 
 七牛应用市场的图表类型目前有，折线图，柱状图，堆叠图，饼状图，如果有需要其他模板的，请联系我们。
 
+
+##### 报警不支持模板变量
+
+因为模板变量是前端动态展示的，每个不同用户每次进入系统这个值都有可能不同。但报警的时候需要固定的配置，所以暂时还不支持在报警中使用模板变量。
+
+#### Grafana 数据源配置问题
+
+要注意以下几个常见的问题：
+
+1. 选择数据源的时候必须选择Daily的模式，同时[repoName-]YYYY.MM.DD 除了repoName 需要替换成真实的数据仓库名字之外，**其它部分必须保持一致，不能包含额外空格**
+2. 时间字段默认为@timestamp 必须要修改为真实的时间字段，**要注意字段不能带@符号**
+3. 数据源默认时间间隔，**必须要有时间单位**，比如10s,1m等，不能只输入数字，否则查询会保护问题
