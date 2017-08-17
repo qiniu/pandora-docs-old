@@ -2,7 +2,7 @@
 [Grafana](https://oiw6da4op.qnssl.com/181919_0KHT_865233.jpg)
 是开源的用来实时展示、分析和报警的软件，在七牛的应用中心提供Grafana应用，Pandora 时序数据库、日志检索服务都适配了Grafana，可以用Grafana实时展示、分析时序数据库和日志检索服务中的数据，并报警。
 
-### Grafana有什么特点
+### 特点
 
 > 可视化
 
@@ -16,10 +16,8 @@
 
 更多特定可以通过[Grafana提供的demo](http://play.grafana.org/)发现更多用法。
 
-### Grafana快速上手指南
-七牛应用中心的Grafana原生支持Pandora TSDB。
 
-##### 创建Grafana应用
+### 创建应用
 
 1. 首先登陆七牛portal的应用平台 找到Grafana
 ![grafana](https://oiw6da4op.qnssl.com/grafana/img1.png)
@@ -44,10 +42,9 @@
 
 ![Grafana](https://oiw6da4op.qnssl.com/grafana/img5.png)
 
-##### Pandora TSDB + Grafana使用方法
+### 创建TSDB数据源
 
 在Grafana中使用Pandora TSDB之前，我们需要先添加数据源。
-
 
 1. 登录grafana，点击菜单中的 Data Sources
 ![点击菜单中的 Data Sources](https://oiw6da4op.qnssl.com/grafana/QQ20170308-1@2x.png)
@@ -84,6 +81,54 @@
 
 9. 编辑完成后点击 保存 按钮保存新添加的模板
 ![保存模板](https://oiw6da4op.qnssl.com/grafana/QQ20170308-9@2x.png)
+
+### 创建LogDB数据源
+
+在grafana中使用pandora logdb之前，我们需要先添加数据源。
+
+1、首先，登陆grafana，点击菜单中的 Data Sources
+
+![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-1@2x.png)
+
+2、点击 Add data source 按钮
+
+![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-0@2x.png)
+
+3、填入相应参数，点击添加按钮即可
+
+
+![img](http://oji8s4dhx.bkt.clouddn.com/QQ20170321-0.png)
+
+	注意： 
+	1. url 必须填入 http://localhost:8999/logdb
+	2. index 名字填写时候必须选择Daily，同时[repoName-]YYYY.MM.DD，用实际的数据仓库名字替换repoName。注意中括号内不能包含任何诸如空格、制表位等空白和特殊字符。
+	3. Time field name 是指定数据仓库中的时间字段，默认值@timestamp，必须替换为实际的字段名字，否则将无法生效。
+	4. ES 版本固定选择2.x 
+
+其中，repoName 名可以在七牛portal的logdb页面中找到
+
+![img](http://oji8s4dhx.bkt.clouddn.com/QQ20170321-1.png)
+
+4、完数据源后，在菜单中选择 dashbords -> new 就可以新建自己的dashbords来展示数据了
+
+![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-5@2x.png)
+
+5、 选择graph可以创建新的图表
+
+![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-6@2x.png)
+
+6、点击图标标题，然后点击弹出菜单的Edit即可编辑图标
+
+![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-7@2x.png)
+
+7、编辑界面中的 datasource 选择刚才添加的datasource，即可实时预览和智能提示
+
+![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-8@2x.png)
+
+8、编辑完成后点击 保存 按钮保存新添加的模板
+
+![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-9@2x.png)
+
 
 ### 报警
 
