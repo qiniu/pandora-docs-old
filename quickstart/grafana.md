@@ -1,8 +1,8 @@
-#### Grafana是什么
+### Grafana是什么
 [Grafana](https://oiw6da4op.qnssl.com/181919_0KHT_865233.jpg)
 是开源的用来实时展示、分析和报警的软件，在七牛的应用中心提供Grafana应用，Pandora 时序数据库、日志检索服务都适配了Grafana，可以用Grafana实时展示、分析时序数据库和日志检索服务中的数据，并报警。
 
-#### Grafana有什么特点
+### Grafana有什么特点
 
 > 可视化
 
@@ -16,7 +16,7 @@
 
 更多特定可以通过[Grafana提供的demo](http://play.grafana.org/)发现更多用法。
 
-#### TSDB+Grafana快速上手指南
+### Grafana快速上手指南
 七牛应用中心的Grafana原生支持Pandora TSDB。
 
 ##### 创建Grafana应用
@@ -85,9 +85,9 @@
 9. 编辑完成后点击 保存 按钮保存新添加的模板
 ![保存模板](https://oiw6da4op.qnssl.com/grafana/QQ20170308-9@2x.png)
 
-##### 报警使用方法
+### 报警
 
-1. 定义通知方式
+#### 定义通知方式
 
 ![定义通知方式](http://oo6e9ks0k.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-15%20%E4%B8%8B%E5%8D%885.58.37.png)
 
@@ -95,11 +95,11 @@ Alert list用来显示最近出现的报警；
 
 ![Alert list用来显示最近出现的报警](http://oo6e9ks0k.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-15%20%E4%B8%8B%E5%8D%885.58.48.png)
 
-Notification用来定义通知方式，比方说`邮件`,`slack`等；
+Notification用来定义通知方式，比方说`邮件`,`slack`,`钉钉`,`WebHook`等；
 
 ![Notification用来定义通知方式](http://oo6e9ks0k.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-15%20%E4%B8%8B%E5%8D%885.59.23.png)
 
-2. 设定阈值
+#### 设定阈值
 
 打开报警设置页面
 
@@ -117,13 +117,11 @@ Notification用来定义通知方式，比方说`邮件`,`slack`等；
 
 ![查看报警的历史记录](http://oo6e9ks0k.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-15%20%E4%B8%8B%E5%8D%886.06.30.png)
 
-3. 删除报警规则
-
-删除报警规则
+#### 删除报警规则
 
 ![删除报警规则](http://oo6e9ks0k.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-06-15%20%E4%B8%8B%E5%8D%886.06.41.png)
 
-#### Grafana常见问题
+### 常见问题
 
 ##### 点击访问后，看不到Grafana
 
@@ -131,8 +129,8 @@ Notification用来定义通知方式，比方说`邮件`,`slack`等；
 
 ##### 看不到图
 看不到图的问题多种多样，建议按照下面顺序排查
-1. 在图中所选的时间段内，是否有数据打进TSDB
 
+1. 在图中所选的时间段内，是否有数据打进TSDB
 2. 数据量是否很少导致点无法连成线
 
 ![数据量是否很少导致点无法连成线](http://oo6e9ks0k.bkt.clouddn.com/1327FAE695E586CE266566B445C0391B.jpg)
