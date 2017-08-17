@@ -130,6 +130,149 @@
 ![img](https://oiw6da4op.qnssl.com/grafana/QQ20170308-9@2x.png)
 
 
+### 折线图
+
+
+
+### 柱状图
+
+待续
+
+### 堆叠图
+
+待续
+
+### 饼状图
+
+待续
+
+### 数据表格
+
+待续
+
+### 中国地图
+
+Grafana官方的市场里只有一个[世界地图](https://grafana.com/plugins/grafana-worldmap-panel),无法展示具体省份
+
+七牛容器应用市场提供了的Grafana内置了全国地图，名字叫[pili map panel](https://github.com/pre-dem/dem-grafana/tree/master/src/github.com/grafana/grafana/data/plugins/pili-map-panel),是七牛PiLi团队开发的一个开源的中国地图。
+
+注意该中国地图的精度只到省份，无法显示市区县的数据，并且只支持Pandora TSDB这种数据源(Data Source)
+
+下面是使用该中国地图的方法:
+
+1. 新建一个pili map panel的图表
+
+![新建一个pili map panel的图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-0.png)
+
+2. 点击panel title，开始编辑图表
+
+![点击panel title，开始编辑图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-1.png)
+
+3. 配置图表
+
+![配置图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-2.png)
+
+选择数据源(目前只支持Pandora TSDB类型的数据源)
+
+选择series
+
+选择字段和聚合函数
+
+去掉group by time(此处必须去掉，否则图出不来)
+
+增加对province的group by(此处要求数据字段中必须有一个tag key为province)
+
+![增加对province的group by](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-3.png)
+
+
+### 模板变量
+
+Grafana 提供了非常强大的模板变量功能。如下图所示，用户可以在监控面板上配置多个模板变量，通过下拉列表或者输入框的形式输入用户关心的选项。在页面上可以做到不同查询条件轻松切换，让报表更加生动活泼。
+
+![Grafana模板变量功能](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E7%A4%BA%E4%BE%8B.png)
+
+![Grafana模板变量动图](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E7%A4%BA%E4%BE%8B.gif)
+
+
+#### 时间间隔
+
+设置步骤
+
+![创建时间间隔变量](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E6%97%B6%E9%97%B4%E9%97%B4%E9%9A%94%E5%8F%98%E9%87%8F.gif)
+
+1. 如下图所示可以在设置按钮中选择 templating 按钮
+2. 选择New 按钮新建一个模板变量
+3. 选择Interval 变量类型，我们可以用这种变量表达时间间隔，同时设置Name 和 Label，Name是变量名称，实际引用的时候用`$变量名称`进行引用；Label 本身无实际作用，主要是用来展示在界面，让用户更加容易理解的。
+4. 我们可以看到在Values 中，已经有大量预置的时间间隔，我们可以在其中增加，诸如1m（1分钟）,1h（1小时）,1d（1天）等时间间隔变量
+5. 在界面，我们可以见到已经生成了名为时间间隔的下拉框列表，列表中包括了我们设置的时间间隔预设值
+6. 我们将时序查询的interval 设置为 $t (t 为我们设置的变量Name)。此时在下拉框里选择不同的时间间隔，图表将随之进行切换。
+
+![创建时间间隔变量-引用变量](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E6%97%B6%E9%97%B4%E9%97%B4%E9%9A%94%E5%8F%98%E9%87%8F-%E6%95%88%E6%9E%9C.gif)
+
+
+
+#### 基于查询结果的下拉列表
+
+
+0. 前置步骤请参考**时间间隔**变量设置
+1. 选择**Query** 类型
+2. Data source 选择你查询的目标数据源
+3. Query 是查询所有可能值的查询语句，ES/Logdb 的查询方式是`{"find": "terms", "field": "status"}`，其中`status`  是我们查询的目标字段，在这里可以替换成你需要的字段。TSDB/Influxdb 的查询方式是`SHOW TAG VALUES WITH KEY = "status" `，查询`status` 字段的所有出现值。这里更深入的语法请参考ES 和Influxdb 的官方文档。
+4. Regex 可以选择对于返回的状态值进行正则表达式过滤
+5. Sort 选择排序方式
+6. Multi-value 控制下拉框是否可以支持多选，如果不选中则只能单选
+7. Include all value 控制是否可以支持All选项，支持全选所有的值，只在多选的模式下有效果
+8. Preview of values 可以预览这个字段的所有值 
+
+![创建查询结果变量](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E6%9F%A5%E8%AF%A2%E5%8F%98%E9%87%8F.png)
+
+在设置完成后，我们将会获得一个下拉列表，而下拉列表中所有的值都是在数据源中出现的真实数据列表。
+
+#### 数据源
+
+数据源变量是为了达到在多个数据源进行数据切换功能的变量
+
+0. 前置步骤请参考**时间间隔**变量设置
+1. 选择**Datasource** 类型
+2. Type 选择数据源类型，此处以ES 为例子
+3. Instance Name filter 对于数据源的正则表达式过滤符
+4. Preview of values 所有符合条件数据源的预览
+
+
+![创建数据源变量](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E6%95%B0%E6%8D%AE%E6%BA%90%E5%8F%98%E9%87%8F.png)
+
+在设置完成后，我们将会获得一个下拉列表，而下拉列表中所有的值都是在数据源中出现的真实数据列表。
+
+![数据源变量效果](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E6%95%B0%E6%8D%AE%E6%BA%90%E5%8F%98%E9%87%8F-%E6%95%88%E6%9E%9C.png)
+
+
+#### 自定义变量
+
+自定义变量一般是由用户自定义设置取值范围的变量类型
+
+0. 前置步骤请参考**时间间隔**变量设置
+1. 选择**Custom** 类型
+2. 此处是用户设置的所有值，可以在选框中进行选择，用逗号分隔所有的合法值
+3. Include all value 控制是否可以支持All选项，支持全选所有的值，只在多选的模式下有效果
+4. Multi-value 控制下拉框是否可以支持多选，如果不选中则只能单选
+5. Include all value 控制是否可以支持All选项，支持全选所有的值，只在多选的模式下有效果
+6. Preview of values 可以预览这个字段的所有值 
+
+![自定义变量](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F.png)
+
+#### 交互式查询
+
+当用户想要进行数据探索的时候，交互式查询变量是非常有效的一个工具，可以在这里自由添加查询条件，进行数据的筛选。交互式查询配置相对简单，只要指定一个目标的查询数据源。
+
+![交互式查询效果](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E4%BA%A4%E4%BA%92%E5%BC%8F%E6%9F%A5%E8%AF%A2.gif)
+
+
+#### 常量
+
+![常量的配置方式](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E5%B8%B8%E9%87%8F.png)
+
+![常量的效果](https://pandora-kibana.qiniu.com/grafana-demo/grafana%E5%8F%98%E9%87%8F-%E5%88%9B%E5%BB%BA-%E5%B8%B8%E9%87%8F-%E6%95%88%E6%9E%9C.png)
+
 ### 报警
 
 #### 定义通知方式
@@ -185,36 +328,3 @@ Notification用来定义通知方式，比方说`邮件`,`slack`,`钉钉`,`WebHo
 
 七牛应用市场的图表类型目前有，折线图，柱状图，堆叠图，饼状图，如果有需要其他模板的，请联系我们。
 
-##### 在Grafana中有没有中国地图
-
-Grafana官方的市场里只有一个[世界地图](https://grafana.com/plugins/grafana-worldmap-panel),无法展示具体省份
-
-七牛容器应用市场提供了的Grafana内置了全国地图，名字叫[pili map panel](https://github.com/pre-dem/dem-grafana/tree/master/src/github.com/grafana/grafana/data/plugins/pili-map-panel),是七牛PiLi团队开发的一个开源的中国地图。
-
-注意该中国地图的精度只到省份，无法显示市区县的数据，并且只支持Pandora TSDB这种数据源(Data Source)
-
-下面是使用该中国地图的方法:
-
-1. 新建一个pili map panel的图表
-
-![新建一个pili map panel的图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-0.png)
-
-2. 点击panel title，开始编辑图表
-
-![点击panel title，开始编辑图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-1.png)
-
-3. 配置图表
-
-![配置图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-2.png)
-
-选择数据源(目前只支持Pandora TSDB类型的数据源)
-
-选择series
-
-选择字段和聚合函数
-
-去掉group by time(此处必须去掉，否则图出不来)
-
-增加对province的group by(此处要求数据字段中必须有一个tag key为province)
-
-![增加对province的group by](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-3.png)
