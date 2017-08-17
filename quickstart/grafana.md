@@ -198,7 +198,29 @@ Step 3
 
 ### 数据表格
 
-待续
+Step 1 
+
+选择数据表格，进行创建。或者从已有的数据表格进行编辑。
+
+![选择数据表格](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E9%80%89%E6%8B%A9.png)
+
+Step 2-1 查询时序数据计算结果
+
+按照跟其他的报表一样过程，配置图中1-5，查询条件、聚合函数、以及Group by 条件。
+
+![数据表格-计算结果](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA.png)
+
+Step 2-2 查询时序数据原始数据
+
+如果想要查看原始数据搜索结果，请在这里选择Metric 为 Raw Document。
+
+![数据表格-原始数据](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE.png)
+
+Step 3 挑选展示的列
+
+在Options 中可以在Columns 设置中挑选你想要展示在界面上的数据表的列。
+
+![数据表格-挑选列](https://pandora-kibana.qiniu.com/grafana-demo/grafana%20%E5%9B%BE%E8%A1%A8-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC-%E6%8C%91%E9%80%89%E5%B1%95%E7%A4%BA%E5%88%97.png)
 
 ### 中国地图
 
@@ -210,15 +232,15 @@ Grafana官方的市场里只有一个[世界地图](https://grafana.com/plugins/
 
 下面是使用该中国地图的方法:
 
-1. 新建一个pili map panel的图表
+Step 1. 新建一个pili map panel的图表
 
 ![新建一个pili map panel的图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-0.png)
 
-2. 点击panel title，开始编辑图表
+Step 2. 点击panel title，开始编辑图表
 
 ![点击panel title，开始编辑图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-1.png)
 
-3. 配置图表
+Step 3. 配置图表
 
 ![配置图表](http://oo6e9ks0k.bkt.clouddn.com/QQ20170619-2.png)
 
