@@ -42,7 +42,7 @@
 
 ![Grafana](https://oiw6da4op.qnssl.com/grafana/img5.png)
 
-### 创建TSDB数据源
+### TSDB数据源
 
 在Grafana中使用Pandora TSDB之前，我们需要先添加数据源。
 
@@ -82,7 +82,7 @@
 9. 编辑完成后点击 保存 按钮保存新添加的模板
 ![保存模板](https://oiw6da4op.qnssl.com/grafana/QQ20170308-9@2x.png)
 
-### 创建LogDB数据源
+### LogDB数据源
 
 在grafana中使用pandora logdb之前，我们需要先添加数据源。
 
