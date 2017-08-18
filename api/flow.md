@@ -628,6 +628,8 @@ Authorization: Pandora <auth>
 > 消息队列类型:map 对应 日志检索服务:object
 > 
 > 消息队列类型:date 对应 日志检索服务:date 
+> 
+> 消息队列类型:jsonstring 对应 日志检索服务:object
 
 **示例**
 

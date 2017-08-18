@@ -5,7 +5,7 @@
 
 1.名称：用来标识这个节点的唯一性，同时这个名字也作为工作流的名称。
 
-2.字段信息：用来定义数据结构；在类型方面，目前支持：
+2.字段信息：用来定义数据结构；在类型方面，目前支持以下类型：
 
 ```
 string
@@ -14,11 +14,15 @@ long
 date
 boolean
 array[string/long/float]
+map
+jsonstring
 ```
 
-共计八种类型。
-
 !> 注意：`float`类型的精度是64位。
+
+!> 注意：`jsonstring`类型的取值必须为符合json格式的字符串（以`{}`或者`[]`包括，例如`{"user": "Jone", "age": 25}`、`["abc", 123]`等）。`jsonstring`类型适用于json内部字段名称、数目不确定的使用场景，例如某一`jsonstring`类型可以取值为`{"user": "Jone", "age": 25}`，也可以取值为`{"user": "Jone", "weight": "60KG"}`，字段名称或者数目发送变化时不需要对消息队列的schema进行任何更改，便于导出到`logdb`类型为`object`的字段中，然后就可以使用json内部字段名称进行常规搜索。
+
+!> 注意：`jsonstring`类型存在局限性：某一`jsonstring`类型的字段经过transform后将被转换为普通的`string`类型。
 
 !> 注意：每一个数据源/消息队列中的每一条数据都将被保存2天时间，超过时间后自动删除。
 
@@ -260,6 +264,8 @@ from
 > 消息队列类型:array[long] 对应 日志检索服务:long
 > 
 > 消息队列类型:array[float] 对应 日志检索服务:float
+> 
+> 消息队列类型:jsonstring 对应 日志检索服务:object
 
 **操作演示：**
 
