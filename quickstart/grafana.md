@@ -102,7 +102,7 @@
 	注意： 
 	1. url 必须填入 http://localhost:8999/logdb
 	2. index 名字填写时候必须选择Daily，同时[repoName-]YYYY.MM.DD，用实际的数据仓库名字替换repoName。注意中括号内不能包含任何诸如空格、制表位等空白和特殊字符。
-	3. Time field name 是指定数据仓库中的时间字段，默认值@timestamp，必须替换为实际的字段名字，否则将无法生效。
+	3. Time field name 是指定数据仓库中的时间字段，默认值@timestamp，必须替换为实际的字段名字，要注意字段不能带@符号，否则将无法生效。
 	4. ES 版本固定选择2.x 
 
 其中，repoName 名可以在七牛portal的logdb页面中找到
