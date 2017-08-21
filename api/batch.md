@@ -1000,7 +1000,7 @@ Content-Type: application/json
       {
           "type":<Type>,
           "tableName": <TableName>,
-          "spec":<Spec>
+          "schema":<Schema>
       },
        ...
     }
@@ -1020,17 +1020,17 @@ Content-Type: application/json
 |sourceSchemas.type|string|是|数据源类型，仅支持`streaming`和`batch`类型，其中`streaming`表示实时数据源，`batch`为离线数据源|
 |sourceSchemas.tableName|string|是|数据源表名称</br>命名规则：1-128个字符，支持字母、数字、下划线，必须以字母开头|
 
- 当type为`streaming`的时候spec定义如下:
+当type为`streaming`时,`sourceSchemas.schema`定义如下:
  
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-|spec.schema|string|是|based64编码的数据源schema，解码后格式为`"{\"type\":\"record\",\"name\":\"subject\",\"fields\":[{\"name\":\"f1\",\"type\":\"string\"},{\"name\":\"f2\",\"type\":\"long\"}]}"`|
+|sourceSchemas.schema|string|是|based64编码的数据源schema，解码后格式为`"{"schema":"{\"type\":\"record\",\"name\":\"subject\",\"fields\":[{\"name\":\"field1\",\"type\":\"string\"},{\"name\":\"field2\",\"type\":\"string\"}]}"`|
 
- 当type为`batch`的时候spec定义如下:
+ 当type为`batch`时，`sourceSchemas.schema`定义如下:
  
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
-|spec.schema|string|是|based64编码的数据源schema，解码后格式为`[{"key": <Key>,"valtype": <ValueType>}, ...]`|
+|sourceSchemas.schema|string|是|based64编码的数据源schema，解码后格式为`[{"key": <Key>,"valtype": <ValueType>}, ...]`|
 
 
 **响应报文**
