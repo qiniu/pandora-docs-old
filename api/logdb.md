@@ -481,7 +481,7 @@ curl -X POST https://logdb.qiniu.com/v5/test_Repo/s \
 scroll接口用于拉取大规模数据，需要配合搜素日志查询接口来使用。
 
 ```
-POST /v5/scroll
+POST /v5/repos/<RepoName>/scroll
 Authorization: Pandora <auth>
 {
     "scroll_id": <scroll_id>,
