@@ -48,6 +48,9 @@ wget http://orzfblcum.bkt.clouddn.com/telegraf.linux.amd64.tar.gz
 
 mac系统
 
+!> 注意：mac版本的Telegraf存在不能收集CPU，diskio的问题，这是Telegraf本身的问题，此处的mac版本只做测试流程用途。
+
+
 ```
 wget http://orzfblcum.bkt.clouddn.com/telegraf.darwin.amd64.tar.gz
 ```
