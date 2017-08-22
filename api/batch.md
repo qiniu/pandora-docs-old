@@ -1017,6 +1017,72 @@ Authorization: Pandora <auth>
 |Cancelling|停止中|用于停止中间状态，不允许任何操作|
 
 
+### DAG 推断schema
+
+**请求语法**
+
+```
+POST /dag/schemaInfer
+Content-Type: application/json
+{
+    "appId": <AppId>,
+    "computation": {
+      "type": "sql",
+      "code": "<SQL CODE>"
+    },
+    "sourceSchemas": [
+      {
+          "type":<Type>,
+          "tableName": <TableName>,
+          "schema":<Schema>
+      },
+       ...
+    }
+}
+
+
+```
+
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+|appId|string|是|所属用户标识|
+|computation|object|是|计算方式|
+|computation.type|string|是|代码类型，仅支持`sql`|
+|computation.code|string|是|代码片段，可以使用魔法变量|
+|sourceSchemas.type|string|是|数据源类型，仅支持`streaming`和`batch`类型，其中`streaming`表示实时数据源，`batch`为离线数据源|
+|sourceSchemas.tableName|string|是|数据源表名称</br>命名规则：1-128个字符，支持字母、数字、下划线，必须以字母开头|
+
+当type为`streaming`时,`sourceSchemas.schema`定义如下:
+ 
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+|sourceSchemas.schema|string|是|based64编码的数据源schema，解码后格式为`"{"schema":"{\"type\":\"record\",\"name\":\"subject\",\"fields\":[{\"name\":\"field1\",\"type\":\"string\"},{\"name\":\"field2\",\"type\":\"string\"}]}"`|
+
+ 当type为`batch`时，`sourceSchemas.schema`定义如下:
+ 
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+|sourceSchemas.schema|string|是|based64编码的数据源schema，解码后格式为`[{"key": <Key>,"valtype": <ValueType>}, ...]`|
+
+
+**响应报文**
+
+```
+200 ok
+{
+    "schema": [
+        {
+            "key": <Key>,
+            "valtype": <ValueType>,
+            "required": <Required>
+        },
+        ...
+    ]
+}
+
+```
 
 
 ## 错误代码及相关说明
