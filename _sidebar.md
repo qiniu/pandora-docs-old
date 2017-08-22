@@ -20,9 +20,7 @@
   - [nginx metric性能监控](/demo/nginxMetric)
   - [php-fpm性能监控](/demo/phpfpm)
 - **SDKs** 
-  - [Java SDK](/sdk/java)
-  - [GO SDK](/sdk/go)
-  - [PHP SDK](/sdk/php)
+  - [SDK下载地址](/sdk/sdks)
 - **工具**
   - [数据推送工具](/util/logkit)
   - [签名生成工具](/util/akutil)
