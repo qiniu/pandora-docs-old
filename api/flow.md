@@ -494,7 +494,7 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 | RepoName |string|是|需要导出数据的消息队列名称|
 | ExportName |string|是|导出任务名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
-| Type |string|是|导出方式</br>目前支持`http`、`logDB`、`mongoDB`、`tsdb`、`kodo`</br>在这里我们选择`http`|
+| Type |string|是|导出方式</br>目前支持`http`、`logdb`、`mongodb`、`tsdb`、`kodo`、`report`</br>在这里我们选择`http`|
 |whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出</br>默认值为oldest|
 | Spec |json|是|导出任务的参数主体</br>选择不同的`type`</br>`Spec`也需要填写不同的参数</br>将在下面分开讲解|
 | host |string|是|服务器地址（ip或域名）</br>例如:`https://pipeline.qiniu.com` </br>或 `127.0.0.1:7758`|
@@ -789,6 +789,36 @@ curl -X POST https://pipeline.qiniu.com/v2/repos/test_Repo/exports/export_job3 \
 	}
 }'
 ```
+
+### 导出数据至报表平台
+
+**请求语法**
+
+```
+POST /v2/repos/<RepoName>/exports/<ExportName>
+Content-Type: application/json
+Authorization: Pandora <auth>
+{
+  "type": <report>,
+  "whence": <ExportWhence>,
+  "spec": {
+        "database": <Database>,
+        "tableName": <TableName>,
+        "columns": {
+            "column1": <#key1>,
+            "column2": <#key2>,
+            ...
+        }
+     }
+}
+```
+**请求内容**
+
+|参数|类型|必填|说明|
+|:---|:---|:---:|:---|
+| database |string|是|数据库名称|
+| tableName |string|是|数据表名称|
+| columns |map|是|字段关系说明</br> `keyN`表示源消息队列字段名称</br>`columnN`表示报表服务数据表字段名称|
 
 ### 更新导出任务
 
