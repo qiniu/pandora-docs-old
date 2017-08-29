@@ -213,7 +213,7 @@ Authorization: Pandora <auth>
    "scheduler":{
        "type": <crontab|loop|manual|depend>,
        "spec": {
-           "crontab": <0 0 0/1 * * ?>,
+           "crontab": <0 0 0/1 * *>,
            "loop": <1h|3m|....>
        } 
    },
@@ -300,7 +300,7 @@ Authorization: Pandora <auth>
    "scheduler":{
        "type": <crontab|loop|manual|depend>,
        "spec": {
-           "crontab": <0 0 0/1 * * ?>,
+           "crontab": <0 0 0/1 * *>,
            "loop": <1h|3m|....>
        }
    },
@@ -347,7 +347,7 @@ Authorization: Pandora <auth>
 		   "scheduler":{
 		       "type": <crontab|loop|manual|depend>,
 		       "spec": {
-		           "crontab": <0 0 0/1 * * ?>,
+		           "crontab": <0 0 0/1 * *>,
 		           "loop": <1h|3m|....>
 		       }
 		   },
@@ -417,7 +417,7 @@ Authorization: Pandora <auth>
    "scheduler":{
        "type": <crontab|loop|manual|depend>,
        "spec": {
-           "crontab": <0 0 0/1 * * ?>,
+           "crontab": <0 0 0/1 * *>,
            "loop": <1h|3m|....> 
 		  } 
 	},
