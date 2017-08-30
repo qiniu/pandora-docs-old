@@ -3,6 +3,7 @@
 `https://logdb.qiniu.com`
 
 ### API返回内容
+* 所有参数默认大小写敏感
 
 **响应报文** 
 
@@ -268,6 +269,7 @@ Authorization: Pandora <auth>
    "scroll":"3m",
    "sort":"userName:asc",
    "from":1,
+   "fields":"<F1>,<F2>",
    "highlight":{  
       "pre_tags":[  
          "<tag1>"
@@ -298,11 +300,11 @@ Authorization: Pandora <auth>
 |scroll|string|否|scroll查询时ScrollID保存时间,如果不需要通过游标的方式拉取大量数据，可不填|
 |fields|string|否|选择返回的数据中只展示部分字段。比如 fields=k1,k2，则返回的结果中只有k1,和k2字段|
 |highlight|map|否|返回结果高亮配置|
-|pre_tags|string数组|是|表示高亮元素的前置标签，通常为`<em>`|
-|post_tags|string数组|是|表示高亮元素的后置标签，通常为`</em>`|
-|fields|map|是|表示要高亮的字段，以及其高亮设置，比如设置高亮的窗口大小|
-|require_field_match|bool|否|表示是否必须要强制匹配搜索符合的结果高亮，默认为false|
-|fragment_size|int|是|高亮的最大字符窗口大小|
+|highlight.pre_tags|string数组|是|表示高亮元素的前置标签，通常为`<em>`|
+|highlight.post_tags|string数组|是|表示高亮元素的后置标签，通常为`</em>`|
+|highlight.fields|map|是|表示要高亮的字段，以及其高亮设置，比如设置高亮的窗口大小|
+|highlight.require_field_match|bool|否|表示是否必须要强制匹配搜索符合的结果高亮，默认为false|
+|highlight.fragment_size|int|是|高亮的最大字符窗口大小|
 
 **示例**
 
