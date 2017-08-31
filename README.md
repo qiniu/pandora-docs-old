@@ -5,13 +5,13 @@
 ## 提供哪些服务？
 Pandora 共包含五个组件级服务：
 	
-* [大数据工作流引擎](/quickstart/flow)：数据接收、（实时/离线）计算和导出；
-* [时序数据库](/quickstart/tsdb)：时间序列数据高速存储、聚合和检索； 
-* [日志检索服务](/quickstart/logdb)：海量日志存储和搜索；
-* [报表工作室](/quickstart/report)：基于数据快速制作动态/静态报表，生成气象观测台；
-* [XSpark](/quickstart/xspark)：基于Spark和容器云，快速进行海量数据分析与可视化；
+* [大数据工作流引擎](/quickstart/flow.md)：数据接收、（实时/离线）计算和导出；
+* [时序数据库](/quickstart/tsdb.md)：时间序列数据高速存储、聚合和检索； 
+* [日志检索服务](/quickstart/logdb.md)：海量日志存储和搜索；
+* [报表工作室](/quickstart/report.md)：基于数据快速制作动态/静态报表，生成气象观测台；
+* [XSpark](/quickstart/xspark.md)：基于Spark和容器云，快速进行海量数据分析与可视化；
 
-点击 [产品介绍](/getstarted/concept) 了解详情。
+点击 [产品介绍](/getstarted/concept.md) 了解详情。
 
 ## 特性与优势
 > Pandora提供了精简的API和友好的界面来帮助用户搭建数据业务线，屏蔽了复杂的大数据技术体系，使用户可以非常快速的搭建起业务体系；同时Pandora基于公有云环境，极大的降低了用户对于资源维护的成本，无需IDC机房、无需集群管理、无需运维。
@@ -26,5 +26,5 @@ Pandora 共包含五个组件级服务：
 
 1. 登录`http://www.qiniu.com`注册您的个人或企业账户。
 2. 在`七牛产品控制台`申请开通大数据产品服务。
-3. 阅读[产品介绍](/getstarted/concept)和[产品架构](/getstarted/architecture)了解产品详情。
+3. 阅读[产品介绍](/getstarted/concept.md)和[产品架构](/getstarted/architecture.md)了解产品详情。
 4. 在**快速开始**中了解各个子产品的使用方式。
