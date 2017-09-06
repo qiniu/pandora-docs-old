@@ -764,8 +764,8 @@ Authorization: Pandora <auth>
 {
   "type": <report>,
   "spec": {
-        "database": <Database>,
-        "table": <TableName>,
+        "dbName": <DBName>,
+        "tableName": <TableName>,
         "autoCreation": [True|False],
         "columns": {
             "column1": <JobField1>,
@@ -780,8 +780,8 @@ Authorization: Pandora <auth>
 
 |参数|类型|必填|说明|
 |:---|:---|:---:|:---|
-|database|string|是|数据库名称|
-|table|bool|是|数据表名称|
+|dbName|string|是|数据库名称|
+|tableName|bool|是|数据表名称|
 |autoCreation|bool|否|是否自动创建数据库和数据表，默认True|
 |saveMode|string|否|计算结果的保存模式：overwrite(默认) 默认重写整张表， append 在已有的表数据上追加数据。默认append模式|
 |columns |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`columnN`表示报表服务字段名称|
