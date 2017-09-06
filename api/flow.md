@@ -802,7 +802,7 @@ Authorization: Pandora <auth>
   "type": <report>,
   "whence": <ExportWhence>,
   "spec": {
-        "database": <Database>,
+        "dbName": <DBName>,
         "tableName": <TableName>,
         "columns": {
             "column1": <#key1>,
