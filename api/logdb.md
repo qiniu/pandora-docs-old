@@ -107,7 +107,7 @@ Authorization: Pandora <auth>
 			* 其他特殊的filter。
 
 
-####`standard`
+#### `standard`
 	
 	划分document时以unicode字符作为结束的标志，然后过滤掉大部分标点符号，将所有字母变为小写。如果不清楚选择哪个分词器，默认使用这个。
 	
@@ -115,10 +115,10 @@ Authorization: Pandora <auth>
 		
 	standard分词器处理后，实例文档变为:`the, 2, quick, brown, foxes, jumped, over, the, lazy, dog's, bone`几个词
 
-####`keyword`
+#### `keyword`
 	document不划分，整体作为个token。如果字段为ID、国家等类似的时，强烈建议选择此分词器
 
-####`whitespace` 
+#### `whitespace` 
 	划分document时，碰到空格即认为一个token的结束
 	
 	whitespace分词器处理后，实例文档变为:  `The, 2, QUICK, Brown-Foxes, jumped, over, the, lazy, dog's, bone.`
@@ -126,10 +126,10 @@ Authorization: Pandora <auth>
 	
 	keyword分词器处理后，实例文档变为: `The 2 QUICK Brown-Foxes jumped over the lazy dog's bone.`。 注意：此时搜索单个单词无法匹配到该数据，只能输入全部的docuemtn才能成功匹配。
 
-####`no`
+#### `no`
 	不分词不索引。 不能直接通过条件搜索到
 	
-####`index_ansj`
+#### `index_ansj`
 	 根据中文语义分词，目前基于我们的系统词库来做分词依据
 
 
