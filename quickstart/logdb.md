@@ -16,6 +16,58 @@
 * 所属区域：必填项；所属区域,计算与存储所使用的物理资源所在区域,目前支持华东区域；此参数是为了降低用户传输数据的成本；应当尽量选择离自己数据源较近的区域。
 * 数据存储时限：必填项；数据存储的时限，最小为1天，最大为30天，存储时间超过这个时限的数据，将会被系统自动删除，为0时，数据永久存储。
 
+
+**分词方式详解:**
+
+分词器简单来说定义了两个方面：
+
+	1. 如何将一段文档划分为多个词
+	2. 如何对这些词做过滤和处理
+
+	
+下面通过阐述一个简单的例子来对分词器如何工作做一个简单的说明。
+
+实例文档：
+	
+	The 2 QUICK Brown-Foxes jumped over the lazy dog's bone.
+
+
+简单来说文档在索引的过程中会有以下两个个步骤，了解这个步骤有助于用户理解如何更好的使用LOGDB进行搜索。
+
+	1. 解析此document为多个token，token通常指以非字母数字结束的一个字符串（还有其他的区分方式，比如）,比如'apple+orange'则为两个token 'apple' 'orange'
+	2. 进入TokenFilter阶段，即是对每个Token根据所选择的分词器做过滤处理。比如下面几个常见的filter
+			
+			* lowercase filter，将所有字母变为小写
+			* stopword filter， 过滤掉所有定义的stopword，一些常见的比如 'a','the'等
+			* 其他特殊的filter。
+
+
+#### `standard`
+	
+	划分document时以unicode字符作为结束的标志，然后过滤掉大部分标点符号，将所有字母变为小写。如果不清楚选择哪个分词器，默认使用这个。
+	
+	unicode字符：详见http://unicode.org/reports/tr29/
+		
+	standard分词器处理后，实例文档变为:`the, 2, quick, brown, foxes, jumped, over, the, lazy, dog's, bone`几个词
+
+#### `keyword`
+	document不划分，整体作为个token。如果字段为ID、国家等类似的时，强烈建议选择此分词器
+
+#### `whitespace` 
+	划分document时，碰到空格即认为一个token的结束
+	
+	whitespace分词器处理后，实例文档变为:  `The, 2, QUICK, Brown-Foxes, jumped, over, the, lazy, dog's, bone.`
+	
+	
+	keyword分词器处理后，实例文档变为: `The 2 QUICK Brown-Foxes jumped over the lazy dog's bone.`。 注意：此时搜索单个单词无法匹配到该数据，只能输入全部的docuemtn才能成功匹配。
+
+#### `no`
+	不分词不索引。 不能直接通过条件搜索到
+	
+#### `index_ansj`
+	 根据中文语义分词，目前基于我们的系统词库来做分词依据
+
+
 **操作演示：**
 
 ![](_media/logdb1.gif)
@@ -35,6 +87,7 @@
 **操作演示：**
 
 ![](_media/logdb2.gif)
+
 
 ### 条件编写规范
 

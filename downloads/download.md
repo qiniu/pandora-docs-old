@@ -18,10 +18,10 @@ Github地址：[SDK-Python](https://github.com/qiniu/pandora-python-sdk)
 
 ### Logkit
 
-[Linux 版本](http://op26gaeek.bkt.clouddn.com/logkit.tar.gz)
+[Linux 版本](https://pandora-dl.qiniu.com/logkit.tar.gz)
 
-[Mac 版本](http://op26gaeek.bkt.clouddn.com/logkit_mac.tar.gz)
+[Mac 版本](https://pandora-dl.qiniu.com/logkit_mac.tar.gz)
 
-[Windows 版本 64位](http://op26gaeek.bkt.clouddn.com/logkit_windows.zip)
+[Windows 版本 64位](https://pandora-dl.qiniu.com/logkit_windows.zip)
 
 [其他版本下载](https://github.com/qiniu/logkit/wiki/Download)

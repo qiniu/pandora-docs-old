@@ -3,6 +3,7 @@
 `https://logdb.qiniu.com`
 
 ### API返回内容
+* 所有参数默认大小写敏感
 
 **响应报文** 
 
@@ -78,23 +79,61 @@ Authorization: Pandora <auth>
 |schema|json|是|字段信息|
 |key|string|是|字段名称，用来标识该字段的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`，1-128个字符，支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |valtype|string|是|字段类型，目前支持`string`、`float`、`long`、`boolean`,`date`，`ip`,`geo_point`和`object`共8种类型；</br>其中`date`支持`RFC3339Nano`和`RFC3339Nano(Numeric time zone offsets format)`，</br>例：`2006-01-02T15:04:05.999999999Z07:00`和`2006-01-02T15:04:05.999999999+08:00`;`geo_point`为经纬度坐标，如 `[ -71.34, 41.12 ]`|
-| schema.analyzer |string|否|文本分词方式，支持`standard`,`whitespace`,`index_ansj`(中文分词),`keyword`,`no`5种内置分词方式；同时支持`pattern`类型的自定义分词器，见`analyzers`定义。其中`no`分词器表示不索引。
-| analyzers |json|否|自定义分词器，解释见详解。
+| schema.analyzer |string|否|文本分词方式，支持`standard`,`whitespace`,`index_ansj`(中文分词),`keyword`,`no`5种内置分词方式；同时支持`pattern`类型的自定义分词器，见`analyzers`定义。| analyzers |json|否|高级用户自定义分词器，解释见详解。
 | children|json|否| 定义子repo，详情见children详解。
 
 **分词方式详解:**
 
-`standard`: 以unicode字符作为词表，详见http://unicode.org/reports/tr29/
+分词器简单来说定义了两个方面：
 
-`whitespace`:  以空白符来切词
+	1. 如何将一段文档划分为多个词
+	2. 如何对这些词做过滤和处理
 
-`index_ansj`: 中文分词器
+	
+下面通过阐述一个简单的例子来对分词器如何工作做一个简单的说明。
 
-`keyword`:  不分词
+实例文档：
+	
+	The 2 QUICK Brown-Foxes jumped over the lazy dog's bone.
 
-`no`: 不分词不索引
 
-**自定义分词方式analyzers 详解:**
+简单来说文档在索引的过程中会有以下两个个步骤，了解这个步骤有助于用户理解如何更好的使用LOGDB进行搜索。
+
+	1. 解析此document为多个token，token通常指以非字母数字结束的一个字符串（还有其他的区分方式，比如）,比如'apple+orange'则为两个token 'apple' 'orange'
+	2. 进入TokenFilter阶段，即是对每个Token根据所选择的分词器做过滤处理。比如下面几个常见的filter
+			
+			* lowercase filter，将所有字母变为小写
+			* stopword filter， 过滤掉所有定义的stopword，一些常见的比如 'a','the'等
+			* 其他特殊的filter。
+
+
+#### `standard`
+	
+	划分document时以unicode字符作为结束的标志，然后过滤掉大部分标点符号，将所有字母变为小写。如果不清楚选择哪个分词器，默认使用这个。
+	
+	unicode字符：详见http://unicode.org/reports/tr29/
+		
+	standard分词器处理后，实例文档变为:`the, 2, quick, brown, foxes, jumped, over, the, lazy, dog's, bone`几个词
+
+#### `keyword`
+	document不划分，整体作为个token。如果字段为ID、国家等类似的时，强烈建议选择此分词器
+
+#### `whitespace` 
+	划分document时，碰到空格即认为一个token的结束
+	
+	whitespace分词器处理后，实例文档变为:  `The, 2, QUICK, Brown-Foxes, jumped, over, the, lazy, dog's, bone.`
+	
+	
+	keyword分词器处理后，实例文档变为: `The 2 QUICK Brown-Foxes jumped over the lazy dog's bone.`。 注意：此时搜索单个单词无法匹配到该数据，只能输入全部的docuemtn才能成功匹配。
+
+#### `no`
+	不分词不索引。 不能直接通过条件搜索到
+	
+#### `index_ansj`
+	 根据中文语义分词，目前基于我们的系统词库来做分词依据
+
+
+###高级用户自定义分词详解
 
 目前支持只支持 type="pattern"。
 
@@ -102,7 +141,7 @@ Authorization: Pandora <auth>
 
 `stopwords`表示停词，会在索引时被过滤掉。在下面例子中，如果文本中有‘bug'，那么搜索时则不会被搜索到。
 
-`pattern`使用正则表达如何分词，比如 `"[^\\w]+"`表示按 非字母分词，那么text=`type_1-type_4`，会被分为：`"type_1","type_4"`两个词。
+`pattern`使用正则表达如何划分document，比如 `"[^\\w]+"`表示按 非字母分词，那么text=`type_1-type_4`，会被分为：`"type_1","type_4"`两个词。
 
 定义好后，则可以在schema中的analyzer字段指明使用`testAnalyzerName`。
 
@@ -268,6 +307,7 @@ Authorization: Pandora <auth>
    "scroll":"3m",
    "sort":"userName:asc",
    "from":1,
+   "fields":"<F1>,<F2>",
    "highlight":{  
       "pre_tags":[  
          "<tag1>"
@@ -298,11 +338,11 @@ Authorization: Pandora <auth>
 |scroll|string|否|scroll查询时ScrollID保存时间,如果不需要通过游标的方式拉取大量数据，可不填|
 |fields|string|否|选择返回的数据中只展示部分字段。比如 fields=k1,k2，则返回的结果中只有k1,和k2字段|
 |highlight|map|否|返回结果高亮配置|
-|pre_tags|string数组|是|表示高亮元素的前置标签，通常为`<em>`|
-|post_tags|string数组|是|表示高亮元素的后置标签，通常为`</em>`|
-|fields|map|是|表示要高亮的字段，以及其高亮设置，比如设置高亮的窗口大小|
-|require_field_match|bool|否|表示是否必须要强制匹配搜索符合的结果高亮，默认为false|
-|fragment_size|int|是|高亮的最大字符窗口大小|
+|highlight.pre_tags|string数组|是|表示高亮元素的前置标签，通常为`<em>`|
+|highlight.post_tags|string数组|是|表示高亮元素的后置标签，通常为`</em>`|
+|highlight.fields|map|是|表示要高亮的字段，以及其高亮设置，比如设置高亮的窗口大小|
+|highlight.require_field_match|bool|否|表示是否必须要强制匹配搜索符合的结果高亮，默认为false|
+|highlight.fragment_size|int|是|高亮的最大字符窗口大小|
 
 **示例**
 
