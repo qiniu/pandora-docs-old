@@ -66,7 +66,7 @@ Authorization: Pandora <auth>
 | schema.elemtype|string|否|数组类型</br>当`schema.valtype:"array"`时必填</br>目前仅支持`long`、`float`、`string`|
 | schema.required|bool|否|是否必填</br>用户在传输数据时`key`字段是否必填|
 |options|map|否|表达一些repo的可选项|
-|options.withIP|string|否|在写入的数据中加入用户的来源IP信息，并命名为<ipkeyname>字段，若命名为空则不加入来源IP到数据中。|
+|options.withIP|string|否|在写入的数据中加入用户的来源IP信息，并命名为<ipkeyname>字段，加入到schema中，类型为string；若命名为空则不加入。|
 
 !> 注意：`region`参数是为了降低用户传输数据的成本，请尽量选择离自己数据源较近的区域。
 
