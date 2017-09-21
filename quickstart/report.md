@@ -223,3 +223,45 @@ Pandora Report 主要分为四部分模块：
 #### 柱状图报表制作过程
 
 ![](http://pandora-kibana.qiniu.com/distribute-bar.gif)
+
+#### 桑基图报表制作过程
+
+> 桑基图（Sankey diagram），即桑基能量分流图，也叫桑基能量平衡图。它是一种特定类型的流程图，图中延伸的分支的宽度对应数据流量的大小，通常应用于能源、材料成分、金融等数据的可视化分析。因1898年Matthew Henry Phineas Riall Sankey绘制的“蒸汽机的能源效率图”而闻名，此后便以其名字命名为“桑基图”。
+因1898年Matthew Henry Phineas Riall Sankey绘制的“蒸汽机的能源效率图”而闻名，此后便以其名字命名为“桑基图”。
+桑基图最明显的特征就是，始末端的分支宽度总和相等，即所有主支宽度的总和应与所有分出去的分支宽度的总和相等，保持能量的平衡。
+
+适用场景：
+1. 网站用户细分分析
+2. 数据流向图
+
+![](http://pandora-kibana.qiniu.com/report-sanky.gif)
+
+
+#### treemap报表制作过程
+
+![](http://pandora-kibana.qiniu.com/report-treemap.gif)
+
+
+#### 热力图报表制作过程
+
+![](http://pandora-kibana.qiniu.com/report-heatmap.gif)
+
+#### 基于日历的热力图（活跃图）报表制作过程
+
+![](http://pandora-kibana.qiniu.com/report-calendar-heatmap.gif)
+
+#### 导向力报表制作过程
+
+![](http://pandora-kibana.qiniu.com/report-directed-force.gif)
+
+#### Sunburst报表制作过程
+
+![](http://pandora-kibana.qiniu.com/report-sunburst.gif)
+
+#### 气泡报表制作过程
+
+![](http://pandora-kibana.qiniu.com/report-bubble.gif)
+
+#### 箱形图报表制作过程
+
+![](http://pandora-kibana.qiniu.com/report-box-plot.gif)
