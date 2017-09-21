@@ -699,9 +699,9 @@ Authorization: Pandora <auth>
         "destRepoName": <DestRepoName>,
         "omitInvalid": <OmitInvalid>,              
         "doc": {
-            "LogdbRepoField1": <JobField1>,
-            "LogdbRepoField2": <JobField2>,
-            "LogdbRepoField3": <JobField3>,         
+            "LogdbRepoField1": <#JobField1>,
+            "LogdbRepoField2": <#JobField2>,
+            "LogdbRepoField3": <#JobField3>,         
             ......
         }
 }
@@ -730,16 +730,16 @@ Authorization: Pandora <auth>
         "omitInvalid": <OmitInvalid>, 
         "series": <Series>,             
         "tags": {
-        	"tag1": <JobField1>,
-        	"tag2": <JobField2>,
+        	"tag1": <#JobField1>,
+        	"tag2": <#JobField2>,
         	...
         },
         "fields": {
-        	"field1": <JobField3>,
-        	"field2": <JobField4>,
+        	"field1": <#JobField3>,
+        	"field2": <#JobField4>,
         	...
         },
-        "timestamp": <JobField5> 
+        "timestamp": <#JobField5> 
 }
 ```
 
@@ -766,10 +766,10 @@ Authorization: Pandora <auth>
   "spec": {
         "dbName": <DBName>,
         "tableName": <TableName>,
-        "autoCreation": [True|False],
         "columns": {
-            "column1": <JobField1>,
-            "column2": <JobField2>,
+            "column1": <#JobField1>,
+            "column2": <#JobField2>,
+            "column3": <#JobField3>,
             ...
         },
         "saveMode": <SaveMode>
@@ -782,9 +782,8 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 |dbName|string|是|数据库名称|
 |tableName|bool|是|数据表名称|
-|autoCreation|bool|否|是否自动创建数据库和数据表，默认True|
 |saveMode|string|否|计算结果的保存模式：overwrite(默认) 默认重写整张表， append 在已有的表数据上追加数据。默认append模式|
-|columns |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`columnN`表示报表服务字段名称|
+|columns |map|是|字段关系说明</br> `JobField`表示离线Job的字段名称</br>`columnN`表示报表服务数据表字段名称|
 
 
 ### 更新离线计算导出任务
