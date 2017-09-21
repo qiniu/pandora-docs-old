@@ -51,4 +51,17 @@ Pandora Report 主要分为四部分模块：
 
 #### 饼状图的报表制作过程
 
-![](http://pandora-kibana.qiniu.com/birth_name-pie.gif)
+![](http://pandora-kibana.qiniu.com/birth-name-pie.gif)
+
+
+#### big number报表制作过程
+
+![](http://pandora-kibana.qiniu.com/big-number.gif)
+
+#### 带趋势的big number报表制作过程
+
+![](http://pandora-kibana.qiniu.com/big-number-trendline.gif)
+
+#### 柱状图报表制作过程
+
+![](http://pandora-kibana.qiniu.com/distribute-bar.gif)
