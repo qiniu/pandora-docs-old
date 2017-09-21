@@ -295,7 +295,20 @@ Authorization: Pandora <auth>
        "type": <ContainerType>,
        "count": <ContainerCount>
   },
-  "whence": <TransformWhence>
+  "whence": <TransformWhence>,
+  "destrepo": [
+      {
+        "key": <Key>,
+        "valtype": <ValueType>,
+        "elemtype": <ElemType>,
+        "required": <Required>,
+        "schema": [
+            ...
+        ]
+      },
+      ...
+  ]
+
 }
 ```
 
