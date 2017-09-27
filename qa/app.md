@@ -21,7 +21,7 @@
 1. 下载grafana proxy
 
 ```
-$ wget http://oji8s4dhx.bkt.clouddn.com/PANDORATSDB.2017-03-21-12-02-43.tar.gz
+$ wget https://pandora-kibana.qiniu.com/GrafanaProxy.2017-09-26-12-26-03.tar.gz
 
 $ tar xvf grafanaProxy.tar.gz 
 
