@@ -42,4 +42,4 @@
   - [Kibana & Grafana相关](/qa/app)
   - [其他](/qa/other)
 - **计费**
-  - [计费](/price)
+  - [计费](/price/price.v1)
