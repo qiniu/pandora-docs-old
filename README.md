@@ -24,7 +24,7 @@ Pandora 共包含五个组件级服务：
 
 ## 新手必看
 
-1. 登录`http://www.qiniu.com`注册您的个人或企业账户。
-2. 在`七牛产品控制台`申请开通大数据产品服务。
+1. 在 https://portal.qiniu.com/ 注册七牛账号
+2. 然后在 https://www.qiniu.com/products/pandora 这个页面申请咨询 pandora 产品
 3. 阅读[产品介绍](/getstarted/concept)和[产品架构](/getstarted/architecture)了解产品详情。
 4. 在**快速开始**中了解各个子产品的使用方式。
