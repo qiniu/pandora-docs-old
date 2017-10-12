@@ -94,6 +94,8 @@ confs/default.conf
 
 除了nginx日志，logkit还支持收集其他日志，更多logkit的高级用法，参见 [logkit wiki文档](https://github.com/qiniu/logkit/wiki)
 
+若使用nginx parser 自动推导的正则表达式报错解析失败，可以参考文档[使用grok Pattern解析](https://github.com/qiniu/logkit/wiki/Grok-Parser#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8grok-parser-%E8%A7%A3%E6%9E%90nginxapache%E6%97%A5%E5%BF%97)
+
 ##### 运行logkit
 
 ```
