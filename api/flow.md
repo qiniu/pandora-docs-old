@@ -711,7 +711,7 @@ Authorization: Pandora <auth>
 |fields|map|是|字段关系说明</br>`key`为`kodo-bucket`的字段名</br>`value`为导出数据的消息队列的字段名|
 |rotationStrategy|string|否|文件切割策略，可取值为`size`、`interval`、`both`，其中，`size`表示文件大小超过`rotateSize`触发切割行为；`interval`表示文件写时长超过`rotateInterval`将进行切割；`both`表示只要满足其中一个条件将触发切割行为。为了保持兼容性，默认值为`interval`|
 |rotateSize|int|否|当文件大小超过该值时将触发切割行为，单位为字节,默认值为`5242880`(5MB)，最大值不超过`1073741824`(1GB)|
-|rotateInterval|int|否|文件切割间隔，单位为秒(`s`)，默认值为`600s`(10分钟)|
+|rotateInterval|int|否|文件切割间隔，单位为秒(`s`)，默认值为`600`(10分钟)|
 |format|string|否|文件导出格式</br>支持`json`、`text`、`parquet`、`csv`四种形式</br>默认为`json`|
 |delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
 |compress|bool|否|是否开启文件压缩功能</br>默认为`false`|
