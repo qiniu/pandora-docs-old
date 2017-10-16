@@ -512,7 +512,7 @@ Authorization: Pandora <auth>
 |:---|:---|:---:|:---|
 | RepoName |string|是|需要导出数据的消息队列名称|
 | ExportName |string|是|导出任务名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
-| Type |string|是|导出方式</br>目前支持`http`、`logdb`、`mongodb`、`tsdb`、`kodo`、`report`</br>在这里我们选择`http`|
+| Type |string|是|导出方式</br>目前支持`http`、`logdb`、`mongo`、`tsdb`、`kodo`、`report`</br>在这里我们选择`http`|
 |whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出</br>默认值为oldest|
 | Spec |json|是|导出任务的参数主体</br>选择不同的`type`</br>`Spec`也需要填写不同的参数</br>将在下面分开讲解|
 | host |string|是|服务器地址（ip或域名）</br>例如:`https://pipeline.qiniu.com` </br>或 `127.0.0.1:7758`|
@@ -689,8 +689,10 @@ Authorization: Pandora <auth>
              "key1": <#value1>,
              "key2": <#value2>,
              ...
-          },
-         "rotateInterval": <Interval>,   
+         },
+         "rotationStrategy": <RotationStrategy>,
+         "rotateSize": <RotateSize>,
+         "rotateInterval": <RotateInterval>,   
          "format": <ExportFormat>,
          "compress": <true|false>,
          "retention": <Retention>
@@ -707,17 +709,17 @@ Authorization: Pandora <auth>
 |email|string|是|数据中心名称所属用户的七牛账户名称|
 |accessKey|string|是|七牛账户的公钥|
 |fields|map|是|字段关系说明</br>`key`为`kodo-bucket`的字段名</br>`value`为导出数据的消息队列的字段名|
-|rotateInterval|int|否|切分文件的时长,单位为秒(`s`)|
+|rotationStrategy|string|否|文件切割策略，可取值为`size`、`interval`、`both`，其中，`size`表示文件大小超过`rotateSize`触发切割行为；`interval`表示文件写时长超过`rotateInterval`将进行切割；`both`表示只要满足其中一个条件将触发切割行为。为了保持兼容性，默认值为`interval`|
+|rotateSize|int|否|当文件大小超过该值时将触发切割行为，单位为字节,默认值为`5242880`(5MB)，最大值不超过`1073741824`(1GB)|
+|rotateInterval|int|否|文件切割间隔，单位为秒(`s`)，默认值为`600`(10分钟)|
 |format|string|否|文件导出格式</br>支持`json`、`text`、`parquet`、`csv`四种形式</br>默认为`json`|
 |delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
 |compress|bool|否|是否开启文件压缩功能</br>默认为`false`|
 | retention |int|否|数据储存时限</br>以天为单位</br>当不大于0或该字段为空时，则永久储存|
 
-!> 注1:当一个文件导出到kodo之后,最多间隔`rotateInterval`之后将再次生成文件做导出。默认值30s,最小值为30s,最大值为60s(当`format`为`parquet`时,最大间隔可以到600s)。
+!> 注1: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
 
-!> 注2: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
-
-!> 注3: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
+!> 注2: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
 
 * `year` 上传时的年份
 * `mon` 上传时的月份
@@ -762,7 +764,7 @@ POST /v2/repos/<RepoName>/exports/<ExportName>
 Content-Type: application/json
 Authorization: Pandora <auth>
 {
-    "type": <mongodb>,
+    "type": <mongo>,
     "whence": <ExportWhence>,
     "spec": {
         "host": <Host>,                          
