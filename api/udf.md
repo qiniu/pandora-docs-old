@@ -258,7 +258,7 @@ Content-Type: application/json
 **请求语法**：
 
 ```
-GET /v2/udf/funcs?from=1&size=2&sort=uploadTime:desc&jarName=xxx
+GET /v2/udf/funcs?from=1&size=2&sort=uploadTime:desc&jarName=a,b,c&funcName=a,b,c
 Content-Type: application/json
 Authorization: Pandora <auth>
 ```
@@ -270,8 +270,8 @@ Authorization: Pandora <auth>
 |from |int|否|分页条件，从第几条开始展示，不填则返回全部|
 |size |int|否|分页条件，返回多少条展示，不填则返回全部|
 |sort |string|否|排序字段，格式如列名:排序顺序，如sort=jarName:desc, sort=jarName:asc，如果不填排序顺序，如sort=jarName，则默认顺序排列|
-|jarName |string|否|选择指定jar包对应的注册函数，jarName=a,b,c，代表查询a,b,c三个jar包的所有注册函数|
-|funcName |string|否|选择指定函数名的注册函数，funcName=a,b,c，代表查询a,b,c三个函数名对应的注册函数信息|
+|jarName |string|否|选择指定jar包对应的注册函数，jarName=a,b,c，逗号分隔字符串，代表查询a,b,c三个jar包的所有注册函数|
+|funcName |string|否|选择指定函数名的注册函数，funcName=a,b,c，逗号分隔字符串，代表查询a,b,c三个函数名对应的注册函数信息|
 
 **响应报文**
 
