@@ -36,6 +36,23 @@ Pandora Report 主要分为四部分模块：
 ![](http://pandora-kibana.qiniu.com/report-main.png)
 
 
+### 数据对应关系
+
+目前报表系统只支持Pandora workflow中的基本数据类型（long,float,string,date,int)
+他们的对应关系如下（workflow的数据类型 -> 报表系统的数据类型)
+
+* string -> VARCHAR(1024)
+* int -> INT 
+* long -> BIGINT 
+* float -> DOUBLE 
+* date -> DATETIME
+
+创建一个包含全部数据类型的数据表的语句应该是这样的
+
+```
+CREATE TABLE example_table(name VARCHAR(1024), age INT, height BIGINT, salary DOUBLE, birthday DATETIME)
+```
+
 ### 分析制作图表
 
 在用户第一次激活报表系统的时候，系统会导入一个名为`example_database`的样例数据库，包含若干个数据表；
