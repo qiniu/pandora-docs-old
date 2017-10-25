@@ -1015,6 +1015,100 @@ Authorization: Pandora <auth>
 |Restarting|重启中|用于重启中间状态，不允许任何操作|
 |Cancelling|停止中|用于停止中间状态，不允许任何操作|
 
+### 创建魔法变量
+
+**请求语法**
+
+ ```
+ POST /v2/variables/<VariableName>
+ Content-Type: application/json
+ Authorization: Pandora <auth>
+ {
+     "type": <Type>,
+     "value": <Value>,
+     "format": <Format>,
+ }
+ ```
+ 
+**请求内容**
+
+|名称|类型|必填|描述|
+|:---|:---|:---|:---|
+|VariableName|string|是|魔法变量名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
+|type|string|是|魔法变量类型，可选值为`time`和`string`，其中`time`类型表示该变量的取值与当前时间有关，如$(now)-5h，其中`h`表示小时，也支持`d`和`m`，分别表示天和分钟|
+|value|string|是|魔法变量值，如`time`类型变量可为：$(now)-5h；`string`类型常量可为：2017-01-01|
+|format|string|可选|仅当type为`time`时需要填写，表示指定的时间格式，如yyyy-mm-dd HH:MM:SS|
+
+
+### 更新魔法变量
+
+**请求语法**
+
+ ```
+ PUT /v2/variables/<VariableName>
+ Content-Type: application/json
+ Authorization: Pandora <auth>
+ {
+     "type": <Type>,
+     "value": <Value>,
+     "format": <Format>
+ }
+ ```
+
+### 按照名称查看魔法变量
+
+**请求语法**
+
+```
+GET /v2/variables/<VariableName>
+Authorization: Pandora <auth>
+```
+
+**响应报文**
+
+ ```
+ {
+     "type": <Type>,
+     "value": <Value>,
+     "format": <Format>
+ }
+ ```
+
+
+### 列举魔法变量
+
+**请求语法**
+
+```
+GET /v2/variables
+Authorization: Pandora <auth>
+```
+
+**响应报文**
+
+ ```
+ {
+   "variables": [
+     {
+        "name": <VariableName>,
+        "type": <Type>,
+        "value": <Value>,
+        "format": <Format>
+     },
+     ...
+   ]
+ }
+ ```
+
+
+### 按照名称删除魔法变量
+
+**请求语法**
+
+```
+DELETE /v2/variables/<VariableName>
+Authorization: Pandora <auth>
+```
 
 
 
