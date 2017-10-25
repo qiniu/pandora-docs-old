@@ -1040,6 +1040,18 @@ Authorization: Pandora <auth>
 |format|string|可选|仅当type为`time`时需要填写，表示指定的时间格式，如yyyy-mm-dd HH:MM:SS|
 
 
+!> 备注：系统默认可用的魔法变量如下:
+
+* `year` 表示`type`为`time`；`value`为当前年份；`format`为 `yyyy`, 如`2017`
+* `mon` 表示`type`为`time`；`value`为当前月份；`format`为 `MM`, 如`01`
+* `day` 表示`type`为`time`；`value`为当前日期；`format`为 `dd`, 如`01`
+* `hour` 表示`type`为`time`；`value`为当前小时；`format`为 `HH`, 如`00`
+* `min` 表示`type`为`time`；`value`为当前分钟；`format`为 `mm`, 如`00`
+* `sec` 表示`type`为`time`；`value`为当前秒数；`format`为 `ss`, 如`00`
+* `date` 表示`type`为`time`；`value`为当前秒数；`format`为 `yyyy-MM-dd`, 如`2017-01-01`
+* `now` 表示`type`为`time`；`value`为当前时间；`format`为 `yyyy-MM-dd HH:mm:ss`, 如`2017-01-01 00:00:00`
+
+
 ### 更新魔法变量
 
 **请求语法**
