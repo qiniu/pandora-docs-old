@@ -1035,9 +1035,21 @@ Authorization: Pandora <auth>
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
 |VariableName|string|是|魔法变量名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
-|type|string|是|魔法变量类型，可选值为`time`和`string`，其中`time`类型表示该变量的取值与当前时间有关，如$(now)-5h，其中`h`表示小时，也支持`d`和`m`，分别表示天和分钟|
-|value|string|是|魔法变量值，如`time`类型变量可为：$(now)-5h；`string`类型常量可为：2017-01-01|
-|format|string|可选|仅当type为`time`时需要填写，表示指定的时间格式，如yyyy-mm-dd HH:MM:SS|
+|type|string|是|魔法变量类型，可选值为`time`和`string`，其中`time`类型表示该变量的取值与当前时间有关，如`$(now)-5h`，其中`h`表示小时，也支持`d`和`m`，分别表示天和分钟|
+|value|string|是|魔法变量值，如`time`类型变量可为`$(now)-5h`；`string`类型常量可为`2017-01-01`|
+|format|string|可选|仅当type为`time`时需要填写，表示指定的时间格式，如`yyyy-MM-dd HH:mm:ss`|
+
+
+!> 备注：系统默认可用的魔法变量如下:
+
+* `year` 表示`type`为`time`；`value`为当前年份；`format`为 `yyyy`, 如`2017`
+* `mon` 表示`type`为`time`；`value`为当前月份；`format`为 `MM`, 如`01`
+* `day` 表示`type`为`time`；`value`为当前日期；`format`为 `dd`, 如`01`
+* `hour` 表示`type`为`time`；`value`为当前小时；`format`为 `HH`, 如`00`
+* `min` 表示`type`为`time`；`value`为当前分钟；`format`为 `mm`, 如`00`
+* `sec` 表示`type`为`time`；`value`为当前秒数；`format`为 `ss`, 如`00`
+* `date` 表示`type`为`time`；`value`为当前秒数；`format`为 `yyyy-MM-dd`, 如`2017-01-01`
+* `now` 表示`type`为`time`；`value`为当前时间；`format`为 `yyyy-MM-dd HH:mm:ss`, 如`2017-01-01 00:00:00`
 
 
 ### 更新魔法变量
