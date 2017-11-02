@@ -15,6 +15,7 @@
 - **场景最佳实践**
   - [日志分析](/demo/log)
   - [nginx 日志分析](/demo/nginxlog)
+  - [关键字报警和日志搜索](/demo/keywordalert)
   - [apache 日志分析](/demo/apachelog)
   - [服务器性能监控](/demo/monitoring)
   - [nginx metric性能监控](/demo/nginxMetric)
