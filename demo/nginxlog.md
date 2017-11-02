@@ -29,78 +29,132 @@ https://github.com/qiniu/logkit/wiki/Download
 ```
 logkit
 logkit.conf
-confs/default.conf
 ```
 
-其中 `logkit.conf` 为主配置文件，用于配置监听的子配置文件夹，修改主配置文件需要重启logkit。
-您需要将其中的 `confs_path` 地址设置要监听的子配置文件夹路径。
-
-`confs` 文件夹就是一个示例的子配置文件夹，子配置文件的更新无需重启logkit，会被logkit实时监听，我们在子配置文件中设置实际要收集的各种配置文件。
-
-下面我们将为您介绍如何配置子配置文件以收集nginx的日志。
-
-
-##### 明确本机的 nginx 配置文件 log_format 位置 如图1
-
-![图1 Nginx日志格式](http://op26gaeek.bkt.clouddn.com/logformat.png)
-
-
-假设该配置文件路径为： `/opt/nginx_logs/logs/access.log`
-
-##### 明确服务使用的 nginx 日志样式，如图2
-
-![图2 服务nginx日志样式](http://op26gaeek.bkt.clouddn.com/realnginxconfig.png)
-
-假设我们使用的 nginx 日志样式为 `main`
-
-##### 根据我们明确的nginx配置文件，填写nginx日志收集的logkit配置文件，如图3，填写内容覆盖到 `confs/default.conf` 即可
-
-![图3 nginx runner 配置文件](http://op26gaeek.bkt.clouddn.com/nginx%01config.png)
-
-```
-{
-    "name":"nginx_runner",
-    "reader":{
-        "mode":"file",
-        "meta_path":"meta",
-    	"log_path":"/opt/nginx_logs/logs/access.log"
-    },
-    "parser":{
-        "name":"nginx_parser",
-        "type":"nginx",
-        "nginx_log_format_path":"/opt/nginx/conf/nginx.conf",
-        "nginx_log_format_name":"main",
-        "nginx_schema":"time_local date,bytes_sent long,request_time float,body_bytes_sent long",
-        "labels":"machine {machineNumber},team {opTeam}"
-    },
-    "senders":[{
-        "name":"pandora_sender",
-        "sender_type":"pandora",
-        "pandora_ak":"your_ak",
-        "pandora_sk":"your_sk",
-        "pandora_host":"https://pipeline.qiniu.com",
-        "pandora_repo_name":"my_nginx_log",
-        "pandora_region":"nb",
-        "pandora_schema_free":"true",
-        "pandora_gzip": "true",
-        "pandora_enable_logdb":"true",
-        "fault_tolerant":"true",
-        "ft_save_log_path":"./ft_log",
-        "ft_strategy":"always_save",
-        "ft_procs":"2"
-}]
-}
-```
-
-除了nginx日志，logkit还支持收集其他日志，更多logkit的高级用法，参见 [logkit wiki文档](https://github.com/qiniu/logkit/wiki)
-
-若使用nginx parser 自动推导的正则表达式报错解析失败，可以参考文档[使用grok Pattern解析](https://github.com/qiniu/logkit/wiki/Grok-Parser#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8grok-parser-%E8%A7%A3%E6%9E%90nginxapache%E6%97%A5%E5%BF%97)
+其中 `logkit.conf` 为主配置文件，用于配置启动监听的端口，启动后可以通过浏览器访问该端口进行logkit的配置。默认情况下为: "http://127.0.0.1:3000"。
 
 ##### 运行logkit
 
 ```
-nohup ./logkit -f logkit.conf > logkit.log 2>&1 
+nohup ./logkit -f logkit.conf > logkit.log 2>&1
 ```
+
+下面我们将为您介绍如何配置logkit以收集nginx的日志。
+
+##### 访问logkit配置页面
+
+通过浏览器打开logkit的页面，在首页可以看到总体的运行情况。
+
+![图1 logkit首页](http://ou3jgt6kj.bkt.clouddn.com/logkitnginx1.png)
+
+点击 【增加Runner】就可以开始配置nginx的数据收集。
+
+##### 明确要收集的 nginx 日志路径
+
+假设该配置文件路径为： `/home/users/nginx/log.log`
+
+![图2 服务nginx日志样式](http://ou3jgt6kj.bkt.clouddn.com/logitnginx2.png)
+
+选择数据源类型为 "从文件读取(file 模式)"
+
+然后在 “日志文件路径” 处填写您的文件路径。
+
+点击【下一步】，进入到【配置解析方式】部分。
+
+##### 配置解析方式
+
+选择【grok 方式解析】，如图所示
+
+![此处输入图片的描述][1]
+
+我们的grok与Logstash的grok方式完全兼容，如果您熟悉，可以跳过这一节的介绍；如果您不熟悉【grok】，没关系，通过下面的简单介绍您就可以完全掌握。
+
+**使用grok parser解析nginx/apache日志的过程，实际上就是利用grok pattern(正则表达式)去匹配您的nginx日志**，对于像nginx/apache日志这样的成熟日志内容，日志的所有组成部分均已经有非常成熟的grok pattern可以使用，下面我们先介绍下用于解析nginx/apache日志时常用的几个内置在logkit的grok pattern。
+
+##### 常用grok pattern介绍
+
+1. `NOTSPACE` 匹配所有非空格的内容，这个是性能较高且最为常用的一个pattern，比如你的日志内容是`abc efg`，那么你只要写两个`NOTSPACE`的组合Pattern即可，如 `%{NOTSPACE:field1} %{NOTSPACE:field2}`。
+1. `QUOTEDSTRING` ， 匹配所有被双引号括起来的字符串内容，跟NOTSAPCE类似，会包含双引号一起解析出来，如`"abc" - "efx sx"` 这样一串日志，写一个组合Pattern`%{QUOTEDSTRING:field1} - %{QUOTEDSTRING:field2}`，field2就包含数据`"efx sx"`，这个同样性能较高，好处是不怕有空格等其他特殊字符，缺点是解析的内容包含了双引号本身，如果要转换成long等类型需要去掉引号。
+1. `DATA` 匹配所有字符，这个pattern需要结合一些特殊的语境使用，如双引号等特殊字符。举例来说 `"abc" - "efx sx"`，这样一串日志，可以写一个组合Pattern `"%{DATA:field1}" - "%{DATA:field2}"`，这个就起到了`QUOTEDSTRING`的效果，另外数据中不会包含双引号。
+1. `HTTPDATE` 匹配常见的HTTP日期类型，类似nginx和Apache生产的timestamp都可以用这个Pattern解析。如`[30/Sep/2017:10:50:53 +0800]`，就可以写一个组合Pattern `[%{HTTPDATE:ts:date}]`，中括号里面包含 `HTTPDATE` 这个Pattern，就把时间字符串匹配出来了。
+1. `NUMBER` 匹配数字类型，包括整数和浮点数，利用这个Pattern就可以把nginx里面的如响应时间这样的数据解析出来。如`"10.10.111.117:8888" [200] "0.002"`，就可以写`"%{NOTSPACE:ip}" [%{NUMBER:status:long}] "%{NUMBER:resptime:float}"` 来解析出status状态码以及resptime响应时间。
+
+基本上，上述这些基础的grok Pattern 组合起来，就可以解决几乎所有nginx的日志解析，但有时候会遇到一些特殊情况，如某个字段可能存在也可能不存在，比如如下两行日志，我们都希望解析。
+
+1. POST中包含HTTP协议信息
+```
+"POST /resouce/abc HTTP/1.1"
+```
+
+2. POST中不包含协议信息
+```
+"GET /resouce/abc"
+```
+
+此时就需要编写一种组合场景，表达`或`的逻辑，此时可以在Pattern组合中融入正则表达式的组概念，如下串即可解析：
+```
+"(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion}))"
+```
+其中括号就是正则表达式的组，组里面还可以包含组，每个组通过"?"问号开头表示可以存在0次或1次，":"冒号后表达匹配的内容。
+
+在nginx日志中常常还会出现内容为空的情况，为空时nginx字段填充`-`横杠，此时也可以用类似的方法写`或`。
+如这两种数据 `0.123` 以及 `-`，如果把"-"当成正常的数字去解析，就会出错，所以需要去掉没有数字的情况，如：
+```
+(?:%{NUMBER:bytes}|-)
+```
+
+最后，假设我们遇到一种不太规则的nginx日志写法，如：
+
+```
+110.220.330.550 - - [12/Oct/2017:14:16:50 +0800] "POST /v2/repos/xsxsxs/data HTTP/1.1" 200 729 2 "-" "Faraday v0.13.1" "-" 127.9.2.1:80 www.qiniu.com xsxsxsxsx122dxsxs 0.019
+```
+
+我们就可以用上面描述的方法拼接出如下的串：
+```
+NGINX_LOG %{NOTSPACE:client_ip} %{USER:ident} %{USER:auth} \[%{HTTPDATE:ts:date}\] "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:http_version:float})?|%{DATA})" %{NUMBER:resp_code} (?:%{NUMBER:resp_bytes:long}|-) (?:%{NUMBER:resp_body_bytes:long}|-) "(?:%{NOTSPACE:referrer}|-)" %{QUOTEDSTRING:agent} %{QUOTEDSTRING:forward_for} %{NOTSPACE:upstream_addr} (%{HOSTNAME:host}|-) (%{NOTSPACE:reqid}) %{NUMBER:resp_time:float}
+```
+
+最后，你可以在logkit的web页面上调试一下，将您的实际日志数据放到【输入样例日志】中查看，点击【解析样例数据】按钮，就可以尝试解析。若无法解析出字段和数据内容，说明您的grok Pattern还需要修正。
+
+![](http://ou3jgt6kj.bkt.clouddn.com/grok_nginx.png)
+
+##### 更方便的调试技巧
+
+1. 访问网址： http://grokdebug.herokuapp.com
+2. 如下图所示，填写各类信息：
+
+![](http://op26gaeek.bkt.clouddn.com/grok_debuger.png)
+
+###### 一条示例日志：
+
+```
+[04/Jun/2016:12:41:45 +0100] 1.25 200 192.168.1.1 5.432µs 101
+```
+
+###### 最终使用的grok pattern
+
+```
+%{TEST_LOG_A}
+```
+
+###### 自动生成grok pattern
+
+对于一些常见的日志，甚至可以先使用【Discover】模块生成一个基本的grok patter再进行调试修改。
+
+![此处输入图片的描述][2]
+
+最终调试完成您的样例数据后，可以点击【下一步】，进入到【配置发送方式】
+
+##### 配置发送方式
+
+![此处输入图片的描述][3]
+
+在发送方式这边，最基本的只需要填写您的”数据源名称“，”七牛的公钥“，以及”七牛的私钥“ 三项即可。
+
+点击【下一步】，【确认并提交】，至此就完成了您的所有配置。
+
+更多logkit的高级用法，参见 [logkit wiki文档](https://github.com/qiniu/logkit/wiki)
+
 
 #### 数据加工
 
@@ -138,7 +192,7 @@ nohup ./logkit -f logkit.conf > logkit.log 2>&1
 
 ##### 配置Grafana LogDB 数据源，如图7所示，点击logdb使用指南，可以按照使用指南的指导在Grafana配置数据源。
 
-![图7 Grafana数据源配置](http://op26gaeek.bkt.clouddn.com/logdbGrafana.png) 
+![图7 Grafana数据源配置](http://op26gaeek.bkt.clouddn.com/logdbGrafana.png)
 
 **注意事项**
 
@@ -231,3 +285,8 @@ nohup ./logkit -f logkit.conf > logkit.log 2>&1
 
 
 ##### 更多功能，欢迎试用体验！！！
+
+
+  [1]: http://ou3jgt6kj.bkt.clouddn.com/logkitnginx3.png
+  [2]: http://ou3jgt6kj.bkt.clouddn.com/logkitnginx4.png
+  [3]: http://ou3jgt6kj.bkt.clouddn.com/logkitnginx5.png
