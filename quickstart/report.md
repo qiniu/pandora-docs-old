@@ -82,7 +82,7 @@ CREATE TABLE example_table(name VARCHAR(1024), age INT, height BIGINT, salary DO
 
 报表制作区分为两部分，左边为图表参数区，右边为预览区。
 
-![](http://pandora-kibana.qiniu.com/figureconfig.png)
+![](http://pandora-kibana.qiniu.com/tableconfig.png)
 
 
 图表参数区主要有
