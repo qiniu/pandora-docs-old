@@ -649,6 +649,8 @@ Authorization: Pandora <auth>
 > 
 > 消息队列类型:jsonstring 对应 日志检索服务:object
 
+!> 注意: 对于消息队列的`jsonstring`类型，导出至日志检索服务的`object`类型时，会将内嵌字段名称中所有圆点(`.`)替换为下划线（由于日志检索服务的object类型的内嵌字段名称不支持圆点(`.`))。例如，消息队列中某一个字段`f1`的类型为`jsonstring`，取值为`{"education.level": "university"}`，最终导出至日志检索服务为`{"education_level": "university"}`，内嵌字段`education.level`中的圆点(`,`)被替换为下划线(`_`)。
+
 **示例**
 
 ```
