@@ -12,3 +12,7 @@ Github地址：[SDK-Python](https://github.com/qiniu/pandora-python-sdk)
 
 ### NodeJs SDK
 Github地址：[SDK-NodeJs](https://github.com/qiniu/pandora-nodejs-sdk)
+
+### Js SDK
+
+Github地址：[SDK-Js](https://github.com/qiniu/pandora-js-sdk)
