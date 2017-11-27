@@ -216,10 +216,16 @@ kubectl create -f logkit_on_k8s.yaml
 $ kubectl --namespace=kube-system get ds/logkit
 ```
 
-此时日志就源源不断的流向您的数据源啦，可以在日志检索中查看，后续配置可以参考[【运维日志分析 -- 日志搜索和关键字报警】](https://qiniu.github.io/pandora-docs/#/demo/keywordalert)
+此时日志就源源不断的流向您的数据源啦，可以在日志检索中查看，如图4 所示。
 
+![此处输入图片的描述][4]
+
+默认就能获得机器的 hostname 信息，Kubernetes container 信息， Kubernetes 的 namespace 信息，Kubernetes 的 pod 信息，容器的 IP 地址，机器的操作系统，已经原始的用户日志。
+
+后续配置可以参考[【运维日志分析 -- 日志搜索和关键字报警】](https://qiniu.github.io/pandora-docs/#/demo/keywordalert)
 
 
   [1]: http://ou3jgt6kj.bkt.clouddn.com/k9slogs.png
   [2]: http://ou3jgt6kj.bkt.clouddn.com/k8slog2.png
   [3]: http://ou3jgt6kj.bkt.clouddn.com/k8slog3.png
+  [4]: http://ou3jgt6kj.bkt.clouddn.com/logdbk8s.png
