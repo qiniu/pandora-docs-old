@@ -20,6 +20,7 @@
   - [apache 日志分析](/demo/apachelog)
   - [服务器性能监控](/demo/monitoring)
   - [nginx metric性能监控](/demo/nginxMetric)
+  - [服务器性能监控](/demo/metrics)
   - [php-fpm性能监控](/demo/phpfpm)
 - **SDKs** 
   - [SDK下载地址](/sdk/sdks)
