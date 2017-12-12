@@ -18,7 +18,7 @@
   - [Kubernetes日志收集与处理](/demo/k8s)
   - [关键字报警和日志搜索](/demo/keywordalert)
   - [apache 日志分析](/demo/apachelog)
-  - [服务器性能监控](/demo/monitoring)
+  - [telegraf服务器监控](/demo/monitoring)
   - [nginx metric性能监控](/demo/nginxMetric)
   - [服务器性能监控](/demo/metrics)
   - [php-fpm性能监控](/demo/phpfpm)
