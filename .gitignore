@@ -72,3 +72,4 @@ _testmain.go
 
 id_rsa
 known_hosts
+.DS_Store
