@@ -1080,6 +1080,7 @@ Authorization: Pandora <auth>
 
  ```
  {
+     "name": <Name>,
      "type": <Type>,
      "value": <Value>,
      "format": <Format>
@@ -1092,7 +1093,7 @@ Authorization: Pandora <auth>
 **请求语法**
 
 ```
-GET /v2/variables
+GET /v2/variables?type=<Type>
 Authorization: Pandora <auth>
 ```
 
@@ -1111,6 +1112,7 @@ Authorization: Pandora <auth>
    ]
  }
  ```
+!> 注意：请求url中`type`参数仅支持`system`和`user`, 分别表示列举出系统内置变量和用户本身以创建变量。
 
 
 ### 按照名称删除魔法变量
@@ -1180,7 +1182,7 @@ Authorization: Pandora <auth>
 |400	|E18303: 提交导出任务失败|
 |400	|E18304: 删除导出任务失败|
 |400	|E18305: 导出任务出现错误|
-|401    |bad token：鉴权不通过 、token已过期、机器时间未同步|
+|401  |bad token：鉴权不通过 、token已过期、机器时间未同步|
 
 
 
