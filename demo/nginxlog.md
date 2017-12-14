@@ -36,7 +36,7 @@ logkit.conf
 ##### 运行logkit
 
 ```
-nohup ./logkit -f logkit.conf > logkit.log 2>&1
+nohup ./logkit -f logkit.conf > logkit.log 2>&1 &
 ```
 
 下面我们将为您介绍如何配置logkit以收集nginx的日志。
