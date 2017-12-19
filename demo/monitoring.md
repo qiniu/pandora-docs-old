@@ -1,6 +1,6 @@
 #### 运维监控 -- 快速搭建一个服务器性能监控系统
 
-运维监控是大数据应用最为基础的功能之一，Pandora提供的工作流引擎和时序数据库组合配合开源的Telegraf可以满足运维监控的需求！
+运维监控是大数据应用最为基础的功能之一，Pandora 提供的工作流引擎和时序数据库组合配合开源的 Telegraf 可以满足运维监控的需求！
 
 #### 监控内容
 
@@ -10,13 +10,13 @@
 * 可用内存；
 * 可用内存百分比；
 * 线程总数；
-* SWAP使用百分比；
-* CPU使用百分比；
+* SWAP 使用百分比；
+* CPU 使用百分比；
 * 平均负载；
 * 当前内存使用情况；
 * 内存使用情况分布；
 * 进程分布情况；
-* I/O使用情况；
+* I/O 使用情况；
 
 #### 效果图
 
@@ -24,11 +24,11 @@
 
 #### 快速开始
 
-下面就Pandora提供的组件来搭建一个运维监控应用，搭建这个应用只需要5步。
+下面就 Pandora 提供的组件来搭建一个运维监控应用，搭建这个应用只需要5步。
 
-!> 注意，为了顺利使用Pandora的各种服务，第一，需要一个已经实名认证的七牛账户；第二，申请开通了Pandora的使用权限；
+!> 注意，为了顺利使用 Pandora 的各种服务，第一，需要一个已经实名认证的七牛账户；第二，申请开通了 Pandora 的使用权限；
 
-!> 注意：mac版本的Telegraf存在不能收集CPU，diskio的问题，这是Telegraf本身的问题，此处的mac版本只做测试流程用途。
+!> 注意：mac 版本的 Telegraf 存在不能收集 CPU，diskio 的问题，这是 Telegraf 本身的问题，此处的 mac 版本只做测试流程用途。
 
 
 **第一步：下载&配置**
@@ -71,7 +71,7 @@ tar xvf telegraf.linux.amd64.tar.gz
 ```
 
 
-`repo`: 工作流名称，默认为monitor；
+`repo`: 工作流名称，默认为 monitor；
 
 `ak`: 七牛账户的公钥；
 
@@ -81,15 +81,15 @@ tar xvf telegraf.linux.amd64.tar.gz
 
 **第三步：启动&发送数据**
 
-用上述生成的配置文件启动Telegraf，输入以下命令：
+用上述生成的配置文件启动 Telegraf，输入以下命令：
 
 ```
 ./telegraf -config telegraf.conf
 ```
 
-**第四步： 配置Grafana数据源**
+**第四步： 配置 Grafana 数据源**
 
-在七牛应用市场打开Grafana应用，然后按照下图所示的配置：
+在七牛应用市场打开 Grafana 应用，然后按照下图所示的配置：
 
 ![配置Grafana数据源](_media/monitor1.gif)
 
@@ -97,15 +97,15 @@ tar xvf telegraf.linux.amd64.tar.gz
 
 ![](_media/monitor3.png)
 
-**第五步： 导入Grafana dashboard配置文件**
+**第五步： 导入 Grafana dashboard 配置文件**
 
-下载Grafana dashboard配置文件
+下载 Grafana dashboard 配置文件
 
 ```
 wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
 ```
 
-将下载的dashboard导入Grafana
+将下载的 dashboard 导入 Grafana
 
 ![将下载的dashboard导入Grafana](_media/monitor5.gif)
 
@@ -120,5 +120,5 @@ wget http://orzfblcum.bkt.clouddn.com/Main%20Dashboard.json
 
 * [告警配置方法](https://qiniu.github.io/pandora-docs/#/quickstart/grafana?id=报警使用方法)
 * [自研组件监控](https://qiniu.github.io/pandora-docs/#/demo/customMonitor)
-* [配置nginxMetric监控](https://qiniu.github.io/pandora-docs/#/demo/nginxMetric)
-* [配置php-fpm监控](https://qiniu.github.io/pandora-docs/#/demo/phpfpm)
+* [配置 nginxMetric 监控](https://qiniu.github.io/pandora-docs/#/demo/nginxMetric)
+* [配置 php-fpm 监控](https://qiniu.github.io/pandora-docs/#/demo/phpfpm)
