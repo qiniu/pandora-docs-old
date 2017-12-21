@@ -77,7 +77,7 @@ Authorization: Pandora <auth>
 |region|string|是|所属区域,计算与存储所使用的物理资源所在区域,目前支持华东区域(代号`nb`)；</br>此参数是为了降低用户传输数据的成本，应当尽量选择离自己数据源较近的区域|
 |retention|string|是|数据存储时限，1天=`1d`，最大支持30天|
 |schema|json|是|字段信息|
-|key|string|是|字段名称，用来标识该字段的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`，1-128个字符，支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
+|key|string|是|字段名称，用来标识该字段的唯一性；</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,60}$`，1-128个字符，支持小写字母、数字、下划线；</br>必须以大小写字母或下划线开头|
 |valtype|string|是|字段类型，目前支持`string`、`float`、`long`、`boolean`,`date`，`ip`,`geo_point`和`object`共8种类型；</br>其中`date`支持`RFC3339Nano`和`RFC3339Nano(Numeric time zone offsets format)`，</br>例：`2006-01-02T15:04:05.999999999Z07:00`和`2006-01-02T15:04:05.999999999+08:00`;`geo_point`为经纬度坐标，如 `[ -71.34, 41.12 ]`|
 | schema.analyzer |string|否|文本分词方式，支持`standard`,`whitespace`,`index_ansj`(中文分词),`keyword`,`no`5种内置分词方式；同时支持`pattern`类型的自定义分词器，见`analyzers`定义。| analyzers |json|否|高级用户自定义分词器，解释见详解。
 | children|json|否| 定义子repo，详情见children详解。
