@@ -182,11 +182,19 @@ kernel 基本信息中可以看到内核的上下文切换(context switch)、 fo
 > 注意： url 必须填入 http://localhost:8999
 ![填入相应参数，点击添加按钮即可](https://oiw6da4op.qnssl.com/grafana/QQ20170308-4@2x.png)
 
+> 【可选】配置LogDB 数据源
+
+如果您使用的是LogDB，可以参考[这里](https://qiniu.github.io/pandora-docs/#/quickstart/grafana?id=logdb%e6%95%b0%e6%8d%ae%e6%ba%90)，进行LogDB数据源配置。
+
 **第四步： 导入 Grafana dashboard 配置文件**
 
 下载 Grafana dashboard 配置文件
 
 [下载配置文件模板 https://pandora-dl.qiniu.com/MetricMemo.json](https://pandora-dl.qiniu.com/MetricMemo.json)
+
+如果您使用的是LogDB，可以参考如下链接
+
+[下载LogDB 配置文件模板 https://pandora-kibana.qiniu.com/MetricsLogdb-1514293429865.json](https://pandora-kibana.qiniu.com/MetricsLogdb-1514293429865.json)
 
 将下载的 dashboard 导入 Grafana
 
