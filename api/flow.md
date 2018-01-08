@@ -68,7 +68,9 @@ Authorization: Pandora <auth>
 |options|map|否|表达一些repo的可选项|
 |options.withIP|string|否|在写入的数据中加入用户的来源IP信息，并命名为<ipkeyname>字段，加入到schema中，类型为string；若命名为空则不加入。|
 
-!> 注意：`region`参数是为了降低用户传输数据的成本，请尽量选择离自己数据源较近的区域。
+!> 注意:
+1. `region`参数是为了降低用户传输数据的成本，请尽量选择离自己数据源较近的区域。
+1. 当前限制每个 `repo` 的 `schema` 数量(包括嵌套map中的schema)不能超过 `500` 个，如果有特殊需求，请联系我们。
 
 **示例**
 
@@ -220,7 +222,10 @@ Authorization: Pandora <auth>
 }
 ```
 
-!> 注意： 更新字段信息时，如果需要保留已有的字段信息，也需要填写上去，这是一次全量更新。
+!> 注意:
+1. 更新字段信息时，如果需要保留已有的字段信息，也需要填写上去，这是一次全量更新。
+1. 当前限制每个 `repo` 的 `schema` 数量(包括嵌套map中的schema)不能超过 `500` 个，如果有特殊需求，请联系我们。
+
 
 ### 数据推送
 
@@ -653,7 +658,7 @@ Authorization: Pandora <auth>
 > 
 > 消息队列类型:jsonstring 对应 日志检索服务:object
 
-!> 注意: 对于消息队列的`jsonstring`类型，导出至日志检索服务的`object`类型时，会将内嵌字段名称中所有圆点(`.`)替换为下划线（由于日志检索服务的object类型的内嵌字段名称不支持圆点(`.`))。例如，消息队列中某一个字段`f1`的类型为`jsonstring`，取值为`{"education.level": "university"}`，最终导出至日志检索服务为`{"education_level": "university"}`，内嵌字段`education.level`中的圆点(`,`)被替换为下划线(`_`)。
+!> 注意: 对于消息队列的`jsonstring`类型，导出至日志检索服务的`object`类型时，会将内嵌字段名称中所有圆点(`.`)替换为下划线（由于日志检索服务的object类型的内嵌字段名称不支持圆点(`.`))。例如，消息队列中某一个字段`f1`的类型为`jsonstring`，取值为`{"education.level": "university"}`，最终导出至日志检索服务为`{"education_level": "university"}`，内嵌字段`education.level`中的圆点(`.`)被替换为下划线(`_`)。
 
 **示例**
 
