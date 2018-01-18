@@ -82,11 +82,11 @@ HTTP/1.1 200 OK
 |spec.containsHeader|bool|否|csv文件是否包含header标志，当文件类型为csv时，containsHeader为必填项|
 
  当type为`fusion`的时候spec定义如下:
- 
+
 |名称|类型|必填|描述|
 |:---|:---|:---|:---|
 |spec.domains|array|是|融合cdn的域名(目前仅支持单域名)|
-
+|spec.fileFilter|string|否|CDN文件过滤规则</br>命名规则：0-64个字符</br>最终的文件地址是'文件前缀+文件过滤规则'</br>请注意过滤规则不要和文件前缀有重复. 注：当数据源为fusion时，支持2种类型的文件过滤表达式（1：固定时间范围，精确到年月日小时。如果2017-06-01 05:00 ~ 2017-07-01 05:00 2.相对时间范围: 设置魔法变量 `fiveDaysAgo = $(now) - 5d` 则fileFilter可以写为 $(fiveDaysAgo) ~ $(now) 范围：五天前到当前调度时间。)|
 
 !> 注意：`region`参数是为了降低用户传输数据的成本，请尽量选择离自己数据源较近的区域。
 
@@ -198,7 +198,6 @@ Authorization: Pandora <auth>
 	"srcs":[
 		{
 			"name":<DataSourceName|JobName>,
-			"fileFilter":<fileFilter>,
 			"type":<DataSource|Job>,
 			"tableName": <TableName>
 		},
@@ -244,7 +243,6 @@ Authorization: Pandora <auth>
 |:---|:---|:---|:---|
 |srcs|array|是|数据来源</br>所有数据来源中最多包含一个离线任务</br>但可以包括多个离线数据源|
 |srcs.name|string|是|数据源名称或离线任务名称|
-|srcs.fileFilter|string|否|文件过滤规则</br>命名规则：0-64个字符</br>最终的文件地址是'文件前缀+文件过滤规则'</br>请注意过滤规则不要和文件前缀有重复. 注：当数据源为fusion时，支持2种类型的文件过滤表达式（1：固定时间范围，精确到年月日小时。如果2017-06-01 05:00 ~ 2017-07-01 05:00 2.相对时间范围$(now) - 12h 范围：当前时间之前12个小时到调度时间。$(now) - 5d 范围：五天前到当前调度时间。)|
 |srcs.type|string|是|数据来源节点类型|
 |srcs.tableName|string|是|数据来源表名称</br>命名规则：1-128个字符，支持字母、数字、下划线，必须以字母开头|
 |computation|object|是|计算方式|
