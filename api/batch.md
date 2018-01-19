@@ -37,6 +37,7 @@ HTTP/1.1 200 OK
      "type": <Type>,
      "spec": <Spec>,
      "noVerifySchema": <NoVerifySchema>,
+     "workflow": <Workflow>,
      "schema": [
        {
          "key": <Key>,
@@ -57,6 +58,7 @@ HTTP/1.1 200 OK
 |type|string|是|数据源类型，可选值为[`kodo`,`hdfs`,`fusion`]|
 |spec|json|是|指定该数据源自身属性相关的信息|
 |noVerifySchema|bool|否|是否推断数据源，默认值为`false`。当值为`true`时，会使用用户填写的`schema`，不会主动触发推断`schema`操作|
+|workflow|string|否|指定当前数据源所属的工作流名称，且该工作流必须提前创建|
 |schema|array|是|字段信息|
 |schema.key|string|是|字段名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符,支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
 |schema.valtype|string|是|字段类型</br>目前仅支持：</br>`boolean`：布尔类型</br>`long`：整型</br>`date`：RFC3339日期格式</br>`float`：64位精度浮点型</br>`string`：字符串|
@@ -1183,6 +1185,13 @@ Authorization: Pandora <auth>
 |400	|E18304: 删除导出任务失败|
 |400	|E18305: 导出任务出现错误|
 |401  |bad token：鉴权不通过 、token已过期、机器时间未同步|
+|400  |E18639: 工作流名称不合法|
+|400  |E18640: 工作流已存在|
+|400  |E18639: 工作流名称不合法|
+|400  |E18641: 工作流不存在|
+|400  |E18642: 工作流格式非法|
+|400  |E18644: 当前工作流禁止启动|
+|400  |E18645: 当前工作流禁止停止|
 
 
 
