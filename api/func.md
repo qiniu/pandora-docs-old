@@ -71,13 +71,12 @@ to_date
 **函数声明**
 
 ```
-Date to_date(string date, string format)
+Date to_date(string date)
 ```
 **参数说明**
 
 ```
-date：String类型，要转换的字符串格式的日期值，若输入为bigint，double或者datetime类型会隐式转换为String类型后参与运算， 为其它类型抛异常，为空串时抛异常。
-format：String类型常量，日期格式。非常量或其他类型会引发异常。format不支持日期扩展格式，其他字符作为无用字符在解析时忽略。 format参数至少包含"yyyy"，否则引发异常，如果format中出现多余的格式串，则只取第一个格式串对应的日期数值，其余的会被视为分隔符。 如to_date("1234-2234 ", "yyyy-yyyy ")会返回1234-01-01 00:00:00。
+date：Datetime类型值，若输入为String类型会自动转换字符串格式为日期值，若为其它类型抛异常，为空串时抛异常。
 返回值：Datetime类型。若任一输入为NULL，返回NULL值。
 示例：
     to_date('2009-07-30 04:17:52') = 2009-07-30
@@ -92,13 +91,23 @@ unix_timestamp
 **函数声明**
 
 ```
-bigint unix_timestamp(datetime date)
+bigint unix_timestamp() 返回当前时间的timestamp
+
+bigint unix_timestamp(string date, string dateFormat) 参数dateFormat默认为 yyyy-MM-dd HH:mm:ss
+
+bigint unix_timestamp(string date) 使用默认dateFormat来解析date并返回
+
 ```
 **参数说明**
 
 ```
 date：Datetime类型日期值，若输入为string类型会隐式转换为datetime类型后参与运算，其它类型抛异常。
+dateFormat：日期值的解析格式，默认 yyyy-MM-dd HH:mm:ss
 返回值：Bigint类型，表示unix格式日期值，date为NULL时返回NULL。
+
+示例：
+ unix_timestamp('2017-01-02 15:00:00','yyyy-MM-dd')
+ 返回1483286400 
 ```
 
 -
