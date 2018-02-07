@@ -49,7 +49,8 @@ Authorization: Pandora <auth>
       ...
     ],
     "options":{
-      "withIP":<ipkeyname>
+      "withIP":<ipkeyname>,
+      "withTimestamp":<timestampKeyName>
     },
     "workflow": <Workflow>
 }
@@ -68,6 +69,7 @@ Authorization: Pandora <auth>
 | schema.required|bool|否|是否必填</br>用户在传输数据时`key`字段是否必填|
 |options|map|否|表达一些repo的可选项|
 |options.withIP|string|否|在写入的数据中加入用户的来源IP信息，并命名为<ipkeyname>字段，加入到schema中，类型为string；若命名为空则不加入|
+|options.withTimestamp|date|否|在写入的数据中加入用户写入数据时的timestamp，并命名为<timestampKeyName>字段，加入到schema中，类型为date；若命名为空则不加入|
 |workflow|string|否|指定当前消息队列所属的工作流名称，且该工作流必须提前创建|
 
 !> 注意:
