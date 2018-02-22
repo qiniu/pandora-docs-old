@@ -51,6 +51,7 @@ Authorization: Pandora <auth>
     "options":{
       "withIP":<ipkeyname>,
       "withTimestamp":<timestampKeyName>
+      "unescapeLine":<true/false>
     },
     "workflow": <Workflow>
 }
@@ -69,7 +70,8 @@ Authorization: Pandora <auth>
 | schema.required|bool|否|是否必填</br>用户在传输数据时`key`字段是否必填|
 |options|map|否|表达一些repo的可选项|
 |options.withIP|string|否|在写入的数据中加入用户的来源IP信息，并命名为<ipkeyname>字段，加入到schema中，类型为string；若命名为空则不加入|
-|options.withTimestamp|date|否|在写入的数据中加入用户写入数据时的timestamp，并命名为<timestampKeyName>字段，加入到schema中，类型为date；若命名为空则不加入|
+|options.withTimestamp|string|否|在写入的数据中加入用户写入数据时的timestamp，并命名为<timestampKeyName>字段，加入到schema中，类型为date；若命名为空则不加入|
+|options.unescapeLine|bool|否|对写入数据的`\\t`和`\\n`进行转译，变为`\t`和`\n`，由于pandora写入时采用的序列化方式会占用`\t`和`\n`这两个符号，所以在sdk中打点时会默认把`\t`转译为`\\t`，把`\n`转译为`\\n`，开启这个选项就是在服务端把这个反转译。开启该选项也会转译数据中原有的这些`\\t`和`\\n`符号|
 |workflow|string|否|指定当前消息队列所属的工作流名称，且该工作流必须提前创建|
 
 !> 注意:
@@ -228,6 +230,7 @@ Authorization: Pandora <auth>
 
 !> 注意:
 1. 更新字段信息时，如果需要保留已有的字段信息，也需要填写上去，这是一次全量更新。
+1. 更新消息队列时，`schema`只允许添加，不允许删除和修改; `region`字段不允许修改; `reponame`无法修改; 其余字段允许修改。
 1. 当前限制每个 `repo` 的 `schema` 数量(包括嵌套map中的schema)不能超过 `500` 个，如果有特殊需求，请联系我们。
 
 
