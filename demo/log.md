@@ -94,11 +94,10 @@
 
 **结果：**
 
-![media_log][1]
+![media_log](/Users/loris/liurui/pandora-docs-old/_media/log4.png )
 
 #### 更多场景
 
 敬请期待...
 	
-[1]:https://qiniu.github.io/pandora-docs/_media/log4.png 
 
