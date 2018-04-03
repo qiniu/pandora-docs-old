@@ -84,11 +84,11 @@ Reading: 0 Writing: 1 Waiting: 1
 3. 在七牛应用市场打开 Grafana 应用，然后按照下图所示的配置：
 
 
-![配置 Grafana 数据源](_media/monitor1.gif)
+![配置 Grafana 数据源](https://pandora-kibana.qiniu.com/monitor1.gif)
 
 注意事项：
 
-![](_media/monitor3.png)
+![](https://pandora-kibana.qiniu.com/monitor3.png)
 
 **第五步： 导入 Grafana dashboard 配置文件**
 
@@ -100,7 +100,7 @@ wget http://orzfblcum.bkt.clouddn.com/NGINX.json
 
 将下载的 dashboard 导入 Grafana
 
-![将下载的 dashboard 导入 Grafana](_media/monitor2.gif)
+![将下载的 dashboard 导入 Grafana](https://pandora-kibana.qiniu.com/monitor2.gif)
 
 
 完成！

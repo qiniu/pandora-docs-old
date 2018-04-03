@@ -19,7 +19,7 @@ Logkit是[七牛Pandora](https://pandora-docs.qiniu.com)开发的一个通用的
 
 Logkit本身支持多种数据源，并且可以同时发送多个数据源的数据到Pandora，每个数据源对应一个逻辑上的runner，一个runner负责一个数据源的数据推送，工作原理如下图所示
 
-![Logkit 工作原理图](https://qiniu.github.io/pandora-docs/_media/logkit.png)
+![Logkit 工作原理图](https://pandora-kibana.qiniu.com/logkit.png)
 
 #### 下载
 

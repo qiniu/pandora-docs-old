@@ -100,5 +100,5 @@
 
 敬请期待...
 	
-[1]:https://qiniu.github.io/pandora-docs/_media/log4.png 
+[1]:https://pandora-kibana.qiniu.com/log4.png
 

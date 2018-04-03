@@ -72,7 +72,7 @@
 
 **操作演示：**
 
-![](_media/logdb1.gif)
+![](https://pandora-kibana.qiniu.com/logdb1.gif)
 
 ### 日志查询
 
@@ -88,7 +88,7 @@
 
 **操作演示：**
 
-![](_media/logdb2.gif)
+![](https://pandora-kibana.qiniu.com/logdb2.gif)
 
 ### 条件编写规范
 

@@ -15,21 +15,21 @@
 
 (4). 登录后，点击<个人面板>的秘钥管理页面。
 
-![](_media/ready1.png)
+![](https://pandora-kibana.qiniu.com/ready1.png)
 
 (5). 点击秘钥管理页面的<创建秘钥>按钮，并启用；秘钥的 AK 和 SK 即 Access Key 和 Secret Key。
 
-![](_media/ready2.png)
+![](https://pandora-kibana.qiniu.com/ready2.png)
 
 (6). 点击<资源主页>按钮，进入产品列表页面，在`Pandora 大数据平台`下点击<申请开通>。
 
-![](_media/ready3.png)
+![](https://pandora-kibana.qiniu.com/ready3.png)
 
 (7). 在申请开通页面填写相应信息后，勾选同意《七牛Pandora服务协议》后，点击<提交申请>按钮，然后等待服务审核通过即可。审核完成会以页面以及邮件方式通知。
 
-![](_media/ready4.png)
+![](https://pandora-kibana.qiniu.com/ready4.png)
 
 (8). 如果您需要使用XSpark、Grafana、Kibana、七牛报表系统，那么需要在资源主页的最下方，申请开通相应的应用。
 
-![](_media/ready5.png)
+![](https://pandora-kibana.qiniu.com/ready5.png)
 

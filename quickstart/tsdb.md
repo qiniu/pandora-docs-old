@@ -100,7 +100,7 @@ WHERE  WITH  WRITE
 
 **操作演示：**
 
-![](_media/tsdb1.gif)
+![](https://pandora-kibana.qiniu.com/tsdb1.gif)
 
 ### 数据查询
 
@@ -114,7 +114,7 @@ WHERE  WITH  WRITE
 
 **操作演示：**
 
-![](_media/tsdb2.gif)
+![](https://pandora-kibana.qiniu.com/tsdb2.gif)
 
 ### SQL编写规范
 
