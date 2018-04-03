@@ -9,14 +9,14 @@
 * AK、SK是七牛账户的公钥和私钥，通过七牛控制台——个人面板中的 `秘钥管理` 页面可以找到；
 * Repo是指实时工作流中的 `数据源` 节点的名称；
 
-![](_media/akutil1.png)
+![](https://pandora-kibana.qiniu.com/akutil1.png)
 
 #### 2.生成签名
 
 填写完成相应内容后，点击 `生成签名` ；
 然后将页面上的第五个面板的内容复制即可；
 
-![](_media/akutil2.png)
+![](https://pandora-kibana.qiniu.com/akutil2.png)
 
 #### 3.生成token
 
