@@ -26,7 +26,7 @@
 
 **操作演示：**
 
-![](_media/batch1.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/batch1.gif)
 
 
 ### 数据计算
@@ -83,7 +83,7 @@ select create_date,id from datesource where create_date = 2017
 
 **操作演示：**
 
-![](_media/batch2.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/batch2.gif)
 
 ### 数据导出
 
@@ -110,4 +110,4 @@ select create_date,id from datesource where create_date = 2017
 
 **操作演示：**
 
-![](_media/batch3.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/batch3.gif)

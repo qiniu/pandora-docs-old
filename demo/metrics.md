@@ -65,6 +65,7 @@ kernel 基本信息中可以看到内核的上下文切换(context switch)、 fo
 * TCP 
 
 这张图展示了系统中处于各个状态的 TCP 连接数量，比如`SYN SENT`、`FIN WAIT` 等, 利用这些数据可以及时发现请求的健康状态，常见的如出现大量的`FIN WAIT`、`CLOST WAIT`等状态的连接，说明出现了很多慢请求或连接有问题，需要排查，通常这一类指标可以结合打开文件句柄数一同查看。
+
 ![tcp](https://pandora-dl.qiniu.com/grafana_tcp.png)
 
 * ICMP、IPV4

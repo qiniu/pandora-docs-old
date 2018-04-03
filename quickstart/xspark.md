@@ -41,7 +41,7 @@ Zepplin是一个数据可视化工具，可以将计算的结果以多种图表�
 
 **操作演示：**
 
-![](_media/xspark1.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark1.gif)
 
 
 ### 初始化配置
@@ -63,7 +63,7 @@ Zepplin是一个数据可视化工具，可以将计算的结果以多种图表�
 
 **操作演示：**
 
-![](_media/xspark2.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark2.gif)
 
 
 ### 开始使用XSpark
@@ -93,7 +93,7 @@ FUSION: fusion://
 
 **操作演示：**
 
-![](_media/xspark3.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark3.gif)
 
 #### 加载第三方依赖
 
@@ -124,13 +124,13 @@ Must be used before SparkInterpreter (%spark) initialized
 Hint: put this paragraph before any Spark code and restart Zeppelin/Interpreter
 ```
 
-![](_media/xspark4.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark4.png)
 
 
 
 **操作演示：**
 
-![](_media/xspark5.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark5.gif)
 
 
 #### Spark SQL 示例
@@ -162,7 +162,7 @@ table.registerTempTable("companies")
 
 **操作演示：**
 
-![](_media/xspark6.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark6.png)
 
 #### 定时任务
 
@@ -180,27 +180,27 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 **操作演示：**
 
-![](_media/xspark7.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark7.png)
 
 
 #### 基于XSpark的Python语言支持
 
-![](_media/xspark8.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark8.png)
 
 
 #### 基于XSpark的R语言支持
 
-![](_media/xspark9.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark9.png)
 
 #### 基于XSpark的机器学习
 
-![](_media/xspark10.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark10.png)
 
 
 #### Spark UI
   对于有一定经验的Spark开发人员，可以访问`SparkUI`来看当前运行的任务状态。
   
-![](_media/xspark11.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark11.png)
   
 
 
@@ -208,21 +208,21 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
  XSpark提供了容器级别的CPU，内存，磁盘监控。可以给Spark任务的调优和故障排查提供有力的支持。
 
-![](_media/xspark12.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark12.png)
   
 
 #### XSpark邮件告警功能
 
 邮件告警经常配合定时任务来使用，当任务失败时，会有邮件发送具体的失败信息到指定的邮箱内。
 
-![](_media/xspark13.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark13.png)
 
 
 #### XSpark快捷重启Interpreter功能
 
 重启Interpretr会初始化Spark解释器。重启Interpreter会结束掉当前正在运行的spark任务，释放资源。
 
-![](_media/xspark14.png)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark14.png)
 
 #### XSpark 备份/恢复代码
 
@@ -232,13 +232,13 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 点击备份，它会自动备份您当前实例的所有代码。
 
-![](_media/backup_code.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/backup_code.gif)
 
 ##### 恢复代码
 
 恢复时第一步需要选择要恢复的代码来自于哪一个您曾经备份过的XSpark实例， 第二步选择需要恢复的代码。
 
-![](_media/recover_code.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/recover_code.gif)
 
 
 ### Spark-jobserver 使用
@@ -246,7 +246,7 @@ XSpark使用`cron表达式`来配置定时任务的执行频率。
 
 首先我们需要获取到你自己的JobServer地址及使用方式。
 
-![](_media/xspark15.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/xspark15.gif)
 
 **API使用方式：**
 

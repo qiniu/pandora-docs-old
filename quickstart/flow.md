@@ -38,7 +38,7 @@ jsonstring
 
 **操作演示：**
 
-![](_media/flow1.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow1.gif)
 
 ### 计算任务
 
@@ -56,7 +56,7 @@ SQL计算就是自己编写SQL语句，对数据源或消息队列中的数据�
 
 **操作演示：**
 
-![](_media/flow2.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow2.gif)
 
 ### 使用UDF
 
@@ -71,7 +71,7 @@ UDF(User-Defined Function)用户自定义函数。
 #### 系统提供的UDF
 系统默认提供了上百种udf，分别为：数学函数、日期函数、字符串函数、聚合函数和窗口函数，我们可以在工作流列表的右上角 `UDF管理` 中查看。
 
-![](_media/flow11.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow11.gif)
 
 #### 自定义UDF
 
@@ -115,13 +115,13 @@ UDF(User-Defined Function)用户自定义函数。
 如 parseTime(149932423300000000, 100000) 解析百纳秒时间戳
 ```
 
-![](_media/flow12.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow12.gif)
 
 我们可以在 `src/main/java/com.pandora/` 目录下新建Class和方法，并在方法中编写udf逻辑，代码编写完成后，需要将这个工程打成Jar包并上传至Pandora，然后就可以注册并使用这个udf了。
 
 !>注意：Jar包名称中不可包含`-`号。
 
-![](_media/flow13.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow13.gif)
 
 上传Jar包并注册UDF成功后，即可在SQL中使用，示例：
 
@@ -153,7 +153,7 @@ from
 
 **操作演示：**
 
-![](_media/flow3.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow3.gif)
 
 #### 编写输入&输出类
 
@@ -183,7 +183,7 @@ from
 
 **操作演示：**
 
-![](_media/flow4.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow4.gif)
 
 
 ### 数据导出
@@ -204,7 +204,7 @@ from
 
 **操作演示：**
 
-![](_media/flow5.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow5.gif)
 
 ### 导出数据至对象存储
 
@@ -234,7 +234,7 @@ from
 
 **操作演示：**
 
-![](_media/flow6.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow6.gif)
 
 ### 导出数据至日志检索服务
 
@@ -268,7 +268,7 @@ from
 
 **操作演示：**
 
-![](_media/flow7.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow7.gif)
 
 ### 导出数据至时序数据库
 
@@ -284,7 +284,7 @@ from
 
 **操作演示：**
 
-![](_media/flow8.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow8.gif)
 
 ### 复杂的业务逻辑
 
@@ -294,7 +294,7 @@ from
 
 **操作演示：**
 
-![](_media/flow9.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow9.gif)
 
 ### 便捷操作
 
@@ -304,4 +304,4 @@ from
 
 **操作演示：**
 
-![](_media/flow10.gif)
+![](/Users/loris/liurui/pandora-docs-old/_media/flow10.gif)
