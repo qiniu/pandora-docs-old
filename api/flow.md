@@ -308,6 +308,9 @@ Authorization: Pandora <auth>
        "count": <ContainerCount>
   },
   "whence": <TransformWhence>,
+  "spec":{
+    "whenceTimestamp":<timestamp>
+  }
   "destrepo": [
       {
         "key": <Key>,
@@ -340,9 +343,10 @@ Authorization: Pandora <auth>
 | code |string|否|`sql`语句代码|
 | interval |string|否|计算任务的运行时间间隔</br>目前支持`5s`、`10s`、`20s`、`30s`、</br>`1m`、`5m`和`10m`的粒度</br>如果不指定，系统默认使用`1m`|
 |container|map|否|计算资源的数量及类型|
-|type|string|否|目前支持`1U2G`、`1U4G`、`2U4G`、`4U8G`、`4U16G`和`8U16G`</br>分别代表</br>`1核(CPU)2G(内存)`、`1核(CPU)4G(内存)`、`2核(CPU)4G(内存)`、`4核(CPU)8G(内存)`、`4核(CPU)16G(内存)`、`8核(CPU)16G(内存)`|
+|type|string|否|目前支持`1U2G`、`1U4G`、`2U4G`、`4U8G`、`4U16G`和`8U16G`</br>分别代表</br>`1核(CPU)2G(内存)`、`1核(CPU)4G(内存)`、`2核(CPU)4G(内存)`、`4·核(CPU)8G(内存)`、`4核(CPU)16G(内存)`、`8核(CPU)16G(内存)`|
 |count|int|否|指资源`type`的数量,最小为1,没有上限|
-|whence|string|否|计算数据的起始位置, 目前支持oldest、newest, 分别表示从指定仓库的最早、最新数据开始计算, 默认值为newest|
+|whence|string|否|计算数据的起始位置, 目前支持oldest、newest,timestamp, 分别表示从指定仓库的最早、最新数据、指定时间开始计算, 默认值为newest|
+|spec.whenceTimestamp|int|否|当且仅当`whence`的选择是timestamp时，指定的实际timestamp值|
 
 !> 注意:`mode`加`code`是基础的数据计算方式,自定义计算(plugin)是更为高级的数据计算方式,要注意`mode/code`和自定义计算两种计算方式可以共存,但不可以一种都不指定。当自定义计算和`mode/code`共存时,系统优先执行自定义计算,后执行mode/code。
 
@@ -513,7 +517,8 @@ Authorization: Pandora <auth>
   "spec": {
 		"host": <Host>,      
 		"uri": <RequestURI>,
-		"format": <ExportFormat>  
+		"format": <ExportFormat>,
+    "whenceTimestamp":<Timestamp>
 	}
 }
 ```
@@ -525,12 +530,12 @@ Authorization: Pandora <auth>
 | RepoName |string|是|需要导出数据的消息队列名称|
 | ExportName |string|是|导出任务名称</br>命名规则: `^[a-zA-Z_][a-zA-Z0-9_]{0,127}$`</br>1-128个字符，支持小写字母、数字、下划线</br>必须以大小写字母或下划线开头|
 | Type |string|是|导出方式</br>目前支持`http`、`logdb`、`mongo`、`tsdb`、`kodo`、`report`</br>在这里我们选择`http`|
-|whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`,</br>分别表示从指定仓库的`最早`、`最新`数据开始导出</br>默认值为oldest|
+|whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`、`timestamp`,</br>分别表示从指定仓库的`最早`、`最新`、`指定时间戳`数据开始导出</br>默认值为oldest|
 | Spec |json|是|导出任务的参数主体</br>选择不同的`type`</br>`Spec`也需要填写不同的参数</br>将在下面分开讲解|
 | host |string|是|服务器地址（ip或域名）</br>例如:`https://pipeline.qiniu.com` </br>或 `127.0.0.1:7758`|
 | uri |string|是|请求资源路径（具体地址,不包含ip或域名）</br>例如:`/test/repos`|
 | format |string|否|导出方式</br>支持`text`和`json`</br>如果没有填写此项，默认为`text`|
-
+| whenceTimestamp|int|否|当且仅当`whence`的选择是timestamp时，指定的实际timestamp值|  
 !> 注意: 导出数据格式和`推送数据`相同。
 
 **示例**
@@ -564,6 +569,7 @@ Authorization: Pandora <auth>
         "series": <SeriesName>,
         "omitInvalid": <OmitInvalid>,
         "omitEmpty": <OmitEmpty>,
+        "whenceTimestamp":<Timestamp>,
         "tags": {
             "tag1": <#key1>,
             "tag2": <#key2>,
@@ -589,7 +595,7 @@ Authorization: Pandora <auth>
 | tags |map|是|索引字段|
 | fields |map|是|普通字段|
 | timestamp |string|否|时间戳字段</br>会用rfc3339日期格式进行解析</br>如果格式不正确则会抛弃这一条数据</br>如果此项为空，则默认使用当前时间|
-
+| whenceTimestamp | int | 否 | 当且仅当`whence`的选择是timestamp时，指定的实际timestamp值 |  
 > 时序数据库中的timestamp字段的类型必须为 date；
 > 消息队列中字段类型为:Long/String/Date 的字段都可以导出至时序数据库中的 timestamp 字段
 
@@ -626,6 +632,7 @@ Authorization: Pandora <auth>
         "destRepoName": <DestRepoName>,
         "omitInvalid": <OmitInvalid>,
         "omitEmpty": <OmitEmpty>,
+        "whenceTimestamp":<Timestamp>,
         "doc": {
             "toRepoSchema1": <#fromRepoSchema1>,
             "toRepoSchema2": {
@@ -644,7 +651,8 @@ Authorization: Pandora <auth>
 | omitInvalid |bool|否|是否忽略无效数据，默认值为false|
 | omitEmpty |bool|否|当某条数据的字段取值全部为null时是否忽略该条数据，默认值为false，设置为true时可避免导出没有意义的数据|
 | doc |map|是|字段关系说明</br> `fromRepoSchema`表示源消息队列字段名称</br>`toRepoSchema`表示目标日志仓库字段名称|
-
+|whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`、`timestamp`,</br>分别表示从指定仓库的`最早`、`最新`、`指定时间戳`数据开始导出</br>默认值为oldest|
+| whenceTimestamp|int|否|当且仅当`whence`的选择是timestamp时，指定的实际timestamp值|  
 > 消息队列中,字段的类型与日志检索服务中的字段类型需要作出如下对应:
 > 
 > 消息队列类型:string 对应 日志检索服务:string / date
@@ -714,7 +722,8 @@ Authorization: Pandora <auth>
          "format": <Format>,
          "delimiter": <Delimiter>,
          "compress": <true|false>,
-         "retention": <Retention>
+         "retention": <Retention>,
+         "whenceTimestamp":<Timestamp>
 	}
 }
 ```
@@ -735,7 +744,8 @@ Authorization: Pandora <auth>
 |delimiter|string|否|csv文件分割符，当文件类型为csv时，delimiter为必填项|
 |compress|bool|否|是否开启文件压缩功能</br>默认为`false`|
 | retention |int|否|数据储存时限</br>以天为单位</br>当不大于0或该字段为空时，则永久储存|
-
+|whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`、`timestamp`,</br>分别表示从指定仓库的`最早`、`最新`、`指定时间戳`数据开始导出</br>默认值为oldest|
+| whenceTimestamp|int|否|当且仅当`whence`的选择是timestamp时，指定的实际timestamp值|  
 !> 注1: `compress` 会压缩成`gzip`格式,但当用户指定`format`为`parquet`时,由于`parquet`已经是压缩好的列存格式,`compress`选项将不起作用。
 
 !> 注2: `keyPrefix`字段表示导出文件名称的前缀,该字段可选,默认值为""(生成文件名会自动加上时间戳格式为`yyyy-MM-dd-HH-mm-ss`),如果使用了一个或者多个魔法变量时不会自动添加时间戳,支持魔法变量,采用`$(var)`的形式求值,目前可用的魔法变量var如下:
@@ -792,7 +802,8 @@ Authorization: Pandora <auth>
         "mode": [<INSERT>|<UPDATE>|<UPSERT>],           
         "updateKey": <UpdateKey>,               
         "doc": <Doc>,                           
-        "version": <MongoVersion>
+        "version": <MongoVersion>,
+        "whenceTimestamp":<Timestamp>
 	}
 }   
 ```
@@ -808,7 +819,8 @@ Authorization: Pandora <auth>
 | updateKey |string[]|否|假如插入方式是UPDATE或UPSERT,需要指定该参数|
 | doc |json|是|插入或者更新的内容,支持mongo的update `$set` `$inc`等语法,可以用`$#colum`,</br>如果不填写该字段,则默认按照源表信息录入|
 | version |int|否|mongo的版本号|
-
+|whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`、`timestamp`,</br>分别表示从指定仓库的`最早`、`最新`、`指定时间戳`数据开始导出</br>默认值为oldest|
+| whenceTimestamp|int|否|当且仅当`whence`的选择是timestamp时，指定的实际timestamp值|  
 **示例**
 
 ```
@@ -843,6 +855,7 @@ Authorization: Pandora <auth>
   "spec": {
         "dbName": <DBName>,
         "tableName": <TableName>,
+        "whenceTimestamp":<Timestamp>,
         "columns": {
             "column1": <#key1>,
             "column2": <#key2>,
@@ -858,6 +871,8 @@ Authorization: Pandora <auth>
 | database |string|是|数据库名称|
 | tableName |string|是|数据表名称|
 | columns |map|是|字段关系说明</br> `keyN`表示源消息队列字段名称</br>`columnN`表示报表服务数据表字段名称|
+|whence|string|否|导出数据的起始位置</br>目前支持`oldest`、`newest`、`timestamp`,</br>分别表示从指定仓库的`最早`、`最新`、`指定时间戳`数据开始导出</br>默认值为oldest|
+| whenceTimestamp|int|否|当且仅当`whence`的选择是timestamp时，指定的实际timestamp值|  
 
 ### 更新导出任务
 
