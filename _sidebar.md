@@ -1,3 +1,5 @@
+- 文档站已迁移到 [七牛开发者中心](https://developer.qiniu.com/insight)
+
 - **入门**
   - [产品介绍](/getstarted/concept)
   - [产品架构](/getstarted/architecture)
